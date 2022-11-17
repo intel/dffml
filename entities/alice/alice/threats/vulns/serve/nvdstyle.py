@@ -50,6 +50,105 @@ SINGLE_CVE_ITEM = {
     "publishedDate": "2022-11-16T00:15Z",
 }
 ALL_CVE_ITEMS = [SINGLE_CVE_ITEM] * 10
+SINGLE_V2_CVE_ITEM = {
+    "format": "NVD_CVE",
+    "resultsPerPage": 1,
+    "startIndex": 0,
+    "timestamp": "2022-11-17T05:23:50.630",
+    "totalResults": 200014,
+    "version": "2.0",
+    "vulnerabilities": [
+        {
+            "cve": {
+                "configurations": [
+                    {
+                        "nodes": [
+                            {
+                                "cpeMatch": [
+                                    {
+                                        "criteria": "cpe:2.3:a:eric_allman:sendmail:5.58:*:*:*:*:*:*:*",
+                                        "matchCriteriaId": "1D07F493-9C8D-44A4-8652-F28B46CBA27C",
+                                        "vulnerable": True,
+                                    }
+                                ],
+                                "negate": False,
+                                "operator": "OR",
+                            }
+                        ]
+                    }
+                ],
+                "descriptions": [
+                    {
+                        "lang": "en",
+                        "value": "The debug command in Sendmail is enabled, allowing attackers to execute commands as root.",
+                    },
+                    {
+                        "lang": "es",
+                        "value": "El comando de depuraci\u00f3n de Sendmail est\u00e1 activado, permitiendo a atacantes ejecutar comandos como root.",
+                    },
+                ],
+                "id": "CVE-1999-0095",
+                "lastModified": "2019-06-11T20:29:00.263",
+                "metrics": {
+                    "cvssMetricV2": [
+                        {
+                            "acInsufInfo": False,
+                            "cvssData": {
+                                "accessComplexity": "LOW",
+                                "accessVector": "NETWORK",
+                                "authentication": "NONE",
+                                "availabilityImpact": "COMPLETE",
+                                "baseScore": 10.0,
+                                "baseSeverity": "HIGH",
+                                "confidentialityImpact": "COMPLETE",
+                                "integrityImpact": "COMPLETE",
+                                "vectorString": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+                                "version": "2.0",
+                            },
+                            "exploitabilityScore": 10.0,
+                            "impactScore": 10.0,
+                            "obtainAllPrivilege": True,
+                            "obtainOtherPrivilege": False,
+                            "obtainUserPrivilege": False,
+                            "source": "nvd@nist.gov",
+                            "type": "Primary",
+                            "userInteractionRequired": False,
+                        }
+                    ]
+                },
+                "published": "1988-10-01T04:00:00.000",
+                "references": [
+                    {
+                        "source": "cve@mitre.org",
+                        "url": "http://seclists.org/fulldisclosure/2019/Jun/16",
+                    },
+                    {
+                        "source": "cve@mitre.org",
+                        "url": "http://www.openwall.com/lists/oss-security/2019/06/05/4",
+                    },
+                    {
+                        "source": "cve@mitre.org",
+                        "url": "http://www.openwall.com/lists/oss-security/2019/06/06/1",
+                    },
+                    {
+                        "source": "cve@mitre.org",
+                        "url": "http://www.securityfocus.com/bid/1",
+                    },
+                ],
+                "sourceIdentifier": "cve@mitre.org",
+                "vulnStatus": "Modified",
+                "weaknesses": [
+                    {
+                        "description": [{"lang": "en", "value": "NVD-CWE-Other"}],
+                        "source": "nvd@nist.gov",
+                        "type": "Primary",
+                    }
+                ],
+            }
+        }
+    ],
+}
+ALL_V2_CVE_ITEMS = [SINGLE_V2_CVE_ITEM] * 10
 
 
 def helper_current_time_in_nist_nvd_format():
@@ -58,9 +157,10 @@ def helper_current_time_in_nist_nvd_format():
 
 
 class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
-    def do_GET(self):
+    def do_GET_contents(self):
         logger = logging.getLogger("alice.emulate.nvd.api")
         client_path_parsed = urllib.parse.urlparse(self.path)
+        logger.debug(client_path_parsed)
         client_query_string = urllib.parse.parse_qs(client_path_parsed.query)
         # Set contents if unkown
         contents = json.dumps({"error": True, "message": "Cause unknown"}).encode()
@@ -147,21 +247,38 @@ class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
                 start_index,
                 results_per_page,
             )
-            results = {
-                "result": {
-                    "CVE_Items": [
-                        SINGLE_CVE_ITEM,
-                    ],
-                    "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
-                    # TODO VEX?
-                    "CVE_data_format": "MITRE",
-                    "CVE_data_type": "CVE",
-                    "CVE_data_version": "4.0",
-                },
-                "resultsPerPage": 1,
-                "startIndex": 0,
-                "totalResults": len(ALL_CVE_ITEMS),
-            }
+            if not client_path_parsed.path.startswith("/2.0"):
+                results = {
+                    "result": {
+                        "CVE_Items": [
+                            SINGLE_CVE_ITEM,
+                        ],
+                        "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
+                        # TODO VEX?
+                        "CVE_data_format": "MITRE",
+                        "CVE_data_type": "CVE",
+                        "CVE_data_version": "4.0",
+                    },
+                    "resultsPerPage": 1,
+                    "startIndex": 0,
+                    "totalResults": len(ALL_CVE_ITEMS),
+                }
+            else:
+                results = {
+                    "vulnerabilities": {
+                        "cve": [
+                            SINGLE_V2_CVE_ITEM,
+                        ],
+                        "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
+                        # TODO VEX?
+                        "CVE_data_format": "MITRE",
+                        "CVE_data_type": "CVE",
+                        "CVE_data_version": "4.0",
+                    },
+                    "resultsPerPage": 1,
+                    "startIndex": 0,
+                    "totalResults": len(ALL_V2_CVE_ITEMS),
+                }
             logger.debug(
                 "Serving validate: results: %r",
                 results,
@@ -172,8 +289,6 @@ class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
             if results_per_page > 40000:
                 results_per_page = 40000
             # Reference: https://gist.github.com/pdxjohnny/47a6ddcd122a8f693ef346153708525a#file-pagination-py-L62-L65
-            items = ALL_CVE_ITEMS
-            total = len(ALL_CVE_ITEMS)
             logger.debug(
                 "Serving feed: start_index: %d results_per_page: %d...",
                 start_index,
@@ -184,24 +299,50 @@ class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
             # TODO Use DFFML source? Use runnning dataflow ctx, results.
             # Turn ctx into event for https://github.com/intel/dffml/issues/919
             start_index += 1
-            results = {
-                "result": {
-                    "CVE_Items": items[
-                        ((start_index - 1) * results_per_page) : (
-                            (start_index - 1) * results_per_page
-                        )
-                        + results_per_page
-                    ],
-                    "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
-                    # TODO VEX?
-                    "CVE_data_format": "MITRE",
-                    "CVE_data_type": "CVE",
-                    "CVE_data_version": "4.0",
-                },
-                "resultsPerPage": results_per_page,
-                "startIndex": start_index,
-                "totalResults": total,
-            }
+            if not client_path_parsed.path.startswith("/2.0"):
+                items = ALL_CVE_ITEMS
+                total = len(ALL_CVE_ITEMS)
+            else:
+                items = ALL_V2_CVE_ITEMS
+                total = len(ALL_V2_CVE_ITEMS)
+            vulns = items[
+                ((start_index - 1) * results_per_page) : (
+                    (start_index - 1) * results_per_page
+                )
+                + results_per_page
+            ]
+            logger.info(
+                "client_path_parsed.path.startswith: %r",
+                client_path_parsed.path.startswith("/2.0"),
+            )
+            if not client_path_parsed.path.startswith("/2.0"):
+                results = {
+                    "result": {
+                        "CVE_Items": vulns,
+                        "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
+                        # TODO VEX?
+                        "CVE_data_format": "MITRE",
+                        "CVE_data_type": "CVE",
+                        "CVE_data_version": "4.0",
+                    },
+                    "resultsPerPage": results_per_page,
+                    "startIndex": start_index,
+                    "totalResults": total,
+                }
+            else:
+                results = {
+                    "vulnerabilities": {
+                        "cve": vulns,
+                        "CVE_data_timestamp": helper_current_time_in_nist_nvd_format(),
+                        # TODO VEX?
+                        "CVE_data_format": "MITRE",
+                        "CVE_data_type": "CVE",
+                        "CVE_data_version": "4.0",
+                    },
+                    "resultsPerPage": results_per_page,
+                    "startIndex": start_index,
+                    "totalResults": total,
+                }
             # Feed example
             # https://gist.github.com/pdxjohnny/599b453dffc799f1c4dd8d8024b0f60e
             #   "resultsPerPage": 2000,
@@ -209,7 +350,7 @@ class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
             #   "totalResults": 3506
             logger.debug(
                 "Serving feed with %d results",
-                len(results["result"]["CVE_Items"]),
+                len(vulns),
             )
             # Serving feed
             contents = json.dumps(results).encode()
@@ -219,6 +360,17 @@ class NVDStyleHTTPHandler(http.server.BaseHTTPRequestHandler):
                 start_index,
                 results_per_page,
             )
+        return contents
+
+    def do_GET(self):
+        logger = logging.getLogger("alice.emulate.nvd.api.do_GET")
+        try:
+            contents = self.do_GET_contents()
+        except Exception as error:
+            import traceback
+
+            logger.error(traceback.format_exc())
+        logger.info(contents[:100])
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.send_header("Content-length", len(contents))
