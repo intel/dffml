@@ -1,3 +1,4 @@
+import types
 import inspect
 
 from ...df.base import op
@@ -16,6 +17,8 @@ def object_to_operations(obj, module=None):
         return object_to_operations(obj, module=obj)
     else:
         python_path = f"{obj.__module__}.{obj.__qualname__}"
+    if inspect.isfunction(obj):
+        obj = types.SimpleNamespace(obj=obj)
     return [
         op(name=f"{python_path}:{name}")(method)
         if not hasattr(method, "imp")
