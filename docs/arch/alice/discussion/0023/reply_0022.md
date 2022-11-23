@@ -1,4 +1,4 @@
-- https://youtu.be/A-S9Z684o4Y
+- Architecting Alice: Volume 0: Context: Part 14: Cross Domain Conceptual Mapping to Reach Equilibrium Lossy Stream of Consciousness: https://www.youtube.com/watch?v=A-S9Z684o4Y&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
 - New problem
   - feature extraction on problem space for concepts (models for strategic plans).
   - Use conceptual to herstorical operation cached putouts mapping models
