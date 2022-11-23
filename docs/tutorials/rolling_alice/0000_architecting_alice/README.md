@@ -167,7 +167,12 @@ References:
     >
     >  Randy Pausch
 - https://en.wikipedia.org/wiki/Alice_(Alice%27s_Adventures_in_Wonderland)#Character
-  - > When writing on her personality in "Alice on the Stage" (April 1887), Carroll described her as "loving and gentle", "courteous to all", "trustful", and "wildly curious, and with the eager enjoyment of Life that comes only in the happy hours of childhood, when all is new and fair, and when Sin and Sorrow are but names — empty words signifying nothing!"[1] Commentators characterise her as "innocent",[11] "imaginative",[7] introspective,[7] generally well-mannered,[2][9] critical of authority figures,[2] and clever.[11]
+  - > Carroll described her as "loving and gentle", "courteous to all", "trustful", and "wildly curious, and with the eager enjoyment of Life" [...]
+  - > Commentators characterise her as [...] imaginative introspective, generally well-mannered, and clever.
 - https://github.com/w3c-ccg/did.actor/tree/3fe99eec616b71d7fc36c5603235eeac81c91652/alice
 - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
   - "The Scary Part"
+    - Human-level play in the game of Diplomacy by combining language models with strategic reasoning
+      - https://www.science.org/doi/10.1126/science.ade9097
+    - We must ensure machine do not minipulate us in ways we do not understand.
+    - We must harden train of thought security infrastructure and integrate throught the stack.
