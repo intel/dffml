@@ -53,8 +53,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [An Image](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
 - Internet of Alice
   - ESP32
-- [Traveler of the Edge](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_traveler_of_the_edge.md)
-  - EDEN v0.0.2 draft: [2022-11-06 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
+- [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
 - Operational Architecture
   - We define the abstract distributed compute architecture.
 
