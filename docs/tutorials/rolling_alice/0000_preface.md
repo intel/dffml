@@ -54,8 +54,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - Internet of Alice
   - ESP32
 - [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
-- Operational Architecture
-  - We define the abstract distributed compute architecture.
+- [Operational Architecture](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
 
 #### Volume 1: Coach Alice
 
