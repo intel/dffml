@@ -176,3 +176,7 @@ References:
       - https://www.science.org/doi/10.1126/science.ade9097
     - We must ensure machine do not minipulate us in ways we do not understand.
     - We must harden train of thought security infrastructure and integrate throught the stack.
+    - We must ensure we understand risk involved when cross domain conceputal mapping is applied
+      by AI implementations. We hope analysis via aligned methodologies (Open Architecture) will
+      assit in hardening efforts within the train of thought security landscape.
+      - Architecting Alice: Volume 0: Context: Part 14: Cross Domain Conceptual Mapping to Reach Equilibrium: https://www.youtube.com/watch?v=A-S9Z684o4Y&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
