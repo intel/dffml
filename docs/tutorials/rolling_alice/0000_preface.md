@@ -39,22 +39,16 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 - [Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/)
 - [Peace at Last](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
-- [She's arriving when?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
+- [She's Arriving When?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
 - [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
 - [Writing the Wave](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
 - [Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
-- [The System Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-  - **TODO** Bring The System Context into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
-- [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-  - **TODO** Bring Peer DIDs into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 - [OS DecentrAlice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
-  - We roll the base conatiner image
-  - **TODO** Move from draft location: https://github.com/intel/dffml/discussions/1406#discussioncomment-3720703
 - [An Image](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
 - Internet of Alice
-  - ESP32
+  - ESP32, TockOS?
 - [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
-- [Transport](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
+- [Transport Acquisition](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
   - Operational Architecture
 - [Party Planning](https://github.com/intel/dffml/pull/1207)
   - The inventory is the "party" which the data (or code as data) is the entity attending the party
