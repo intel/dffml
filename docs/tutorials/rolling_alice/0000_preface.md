@@ -54,7 +54,12 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - Internet of Alice
   - ESP32
 - [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
-- [Operational Architecture](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
+- [Transport](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
+  - Operational Architecture
+- [Party Planning](https://github.com/intel/dffml/pull/1207)
+  - The inventory is the "party" which the data (or code as data) is the entity attending the party
+- [Entering Wonderland](https://github.com/intel/dffml/pull/1207#discussion_r725492192)
+  - Document the thought process (ops suggest or reward alignment, gatekeeper/umbrella , prioritozer.
 
 #### Volume 1: Coach Alice
 
