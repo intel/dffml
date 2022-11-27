@@ -91,7 +91,8 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 > DFFML plugin ecosystem, 2nd and 3rd party helper maintainer, etc. think about scale up
 
--
+- No More Painting the Roses Red
+  - Value stream mapping
 
 #### Volume 5: Alice's Adventures In Wonderland
 
