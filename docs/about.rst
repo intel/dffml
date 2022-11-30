@@ -249,7 +249,7 @@ to switch from one underlying framework to another.
 Conceptually, DFFML is not just the Python implementation it is today. It’s a
 programming language agnostic architecture centered around the concept of
 DataFlows and the decoupling of definition from implementation. One goal of the
-project closely associated with this is to have an orchestrator capable of
+project closely associated with this is to have an orchestrator (`Alice <https://github.com/intel/dffml/tree/alice/entities/alice/>`_) capable of
 deploying and knitting together new or existing services without the need for
 those services to know anything about each other. This could be thought of as a
 level of abstraction beyond serverless architecture, which is where we're hoping
