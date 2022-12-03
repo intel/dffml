@@ -1,5 +1,6 @@
 # Volume 0: Chapter 3: A Shell for a Ghost
 
+- [ ] The entity is the message, not the messager or the shell!
 - [ ] We make existing bash shell save minimal system context
       chain via `$CONTEXT` specific herstory files, map to
       current working directory / tmux panes and any other
