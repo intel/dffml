@@ -92,7 +92,8 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 > DFFML plugin ecosystem, 2nd and 3rd party helper maintainer, etc. think about scale up
 
 - No More Painting the Roses Red
-  - Value stream mapping
+  - Values stream mapping
+    - Strategic principles and plans as overlays agreed upon contract negotiation (Thought Communication Protocol)
 
 #### Volume 5: Alice's Adventures In Wonderland
 
