@@ -1,7 +1,7 @@
 0.4.0 Alpha Release
 ===================
 
-Friends, Romans, countrymen, lend me ``pip install -U dffml`` commands.
+Friends, Romans, lend me ``pip install -U dffml`` commands.
 
 It's been a long 10 months since our last release. A lot has changed in the
 world of DFFML. Looking back it's clear how much progress we've made. The work
