@@ -23,6 +23,8 @@ We are writing a tutorial for an open source project on how we build an AI to wo
 
 Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server), provenance and attestation, and automl with feature engineering for a distributed data, analysis, control loop. We'll grow contributors into mentors, and mentors into maintainers, and Alice will grow along with us.
 
+The tutorial is how you use the open architecture entity analysis trinity problem solving model within any context, and we’re producing a buddy for you who at the end of the series can follow the methodology in any context or teach anyone how to.
+
 ## Alice is Here and Ready for Contribution! Gitter Announcement
 
 - [Alice code](https://github.com/intel/dffml/tree/alice/entities/alice)
