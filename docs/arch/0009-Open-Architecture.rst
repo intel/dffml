@@ -15,6 +15,9 @@ Description
 The Open Architecture is a methodology for interpreting directed graphs as
 any system architecture.
 
+The Open Architecture is fully nocode compatible. It is a process for problem
+description and solving which can be implemented via arbitrary execution primitives.
+
 Context
 *******
 
