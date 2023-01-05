@@ -82,6 +82,7 @@ graph BT
 
         sandbox_policy_generator --> policy --> Open_Architecture
         cve_bin_tool --> SBOM --> Open_Architecture
+        cve_bin_tool --> VEX -->|Trigger validation run of mitigation suggestion| orchestartor
     end
 ```
 
