@@ -227,3 +227,15 @@ def badge_maintained() -> str:
 )
 def badge_unmaintained() -> str:
     return "https://img.shields.io/badge/Maintainance-Inactive-red"
+
+
+RepoDirectory = NewType("RepoDirectory", str)
+
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": RepoDirectory},
+)
+def repo_directory(self, repo: git_repository_checked_out.spec) -> RepoDirectory:
+    # How did this not exist? I think it does somwhere else, another branch
+    return {"result": repo.directory}
