@@ -94,7 +94,7 @@ COLLECTOR_DATAFLOW = dffml.DataFlow(
             cache_dir=pathlib.Path(
                 ".tools", "open-architecture", "innersource", ".cache", "tokei",
             )
-        )
+        ),
     },
 )
 COLLECTOR_DATAFLOW.seed = [
