@@ -98,7 +98,7 @@ COLLECTOR_DATAFLOW = dffml.DataFlow(
     },
 )
 COLLECTOR_DATAFLOW.seed = [
-    dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
+    dffml.Input(value=1, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
     dffml.Input(
         value=True, definition=COLLECTOR_DATAFLOW.definitions["no_git_branch_given"],
     ),
