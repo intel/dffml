@@ -5,7 +5,7 @@ import pathlib
 import email.message
 import urllib.request
 from functools import partial
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 
 from .file import validate_file_hash
 from .log import LOGGER, create_download_logger
@@ -146,9 +146,11 @@ def sync_urlretrieve_and_validate(
     url: Union[str, urllib.request.Request],
     target_path: Union[str, pathlib.Path],
     *,
+    chmod: Optional[int] = None,
     expected_sha384_hash=None,
     protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
 ):
+    fresh = False
     target_path = pathlib.Path(target_path)
     if not target_path.is_file() or not validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash, error=False,
@@ -156,7 +158,7 @@ def sync_urlretrieve_and_validate(
         with create_download_logger(LOGGER) as download_logger:
             if not target_path.parent.is_dir():
                 target_path.parent.mkdir(parents=True)
-            path, _ = sync_urlretrieve(
+            target_path, _ = sync_urlretrieve(
                 url,
                 filename=str(target_path),
                 protocol_allowlist=protocol_allowlist,
@@ -164,10 +166,12 @@ def sync_urlretrieve_and_validate(
                     progress_reporthook, logger=download_logger
                 ),
             )
-            return path
+            fresh = True
     validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash,
     )
+    if chmod is not None and fresh:
+        target_path.chmod(chmod)
     return target_path.absolute()
 
 
@@ -176,6 +180,7 @@ async def cached_download(
     target_path: Union[str, pathlib.Path],
     expected_hash: str,
     protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+    chmod: Optional[int] = None,
 ):
     """
     Download a file and verify the hash of the downloaded file. If the file
@@ -228,6 +233,7 @@ async def cached_download(
         target_path,
         expected_sha384_hash=expected_hash,
         protocol_allowlist=protocol_allowlist,
+        chmod=chmod,
     )
 
 
