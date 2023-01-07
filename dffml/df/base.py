@@ -2,6 +2,7 @@ import abc
 import sys
 import types
 import inspect
+import logging
 import collections
 import collections.abc
 import pkg_resources
@@ -354,6 +355,17 @@ def op(
             )
 
         sig = inspect.signature(func)
+        # Check if the function uses the logger (skip passing self)
+        uses_logger = "logger" if bool(
+            (sig.parameters and list(sig.parameters.keys())[0] == "logger")
+            or (
+                [
+                    name
+                    for name, param in sig.parameters.items()
+                    if param.annotation is logging.Logger
+                ]
+            )
+        ) else None
         # Check if the function uses the operation implementation context
         uses_self = bool(
             (sig.parameters and list(sig.parameters.keys())[0] == "self")
@@ -385,7 +397,7 @@ def op(
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
             for name, param in sig.parameters.items():
-                if name == "self":
+                if name in ("self", "logger"):
                     continue
                 name_list = [kwargs["name"], "inputs", name]
 
@@ -532,6 +544,9 @@ def op(
                 ) -> Union[bool, Dict[str, Any]]:
                     # Comes from top level op scope
                     nonlocal multi_output
+                    # Add logger to inputs if it's used by the function
+                    if uses_logger:
+                        inputs["logger"] = self.logger
                     # Add config to inputs if it's used by the function
                     if uses_config is not None:
                         inputs[uses_config] = self.parent.config
