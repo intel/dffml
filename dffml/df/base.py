@@ -355,6 +355,10 @@ def op(
             )
 
         sig = inspect.signature(func)
+        # Check if the function uses the env (skip passing self)
+        uses_env = "env" if bool(
+            sig.parameters and "env" in list(sig.parameters.keys())
+        ) else None
         # Check if the function uses the logger (skip passing self)
         uses_logger = "logger" if bool(
             (sig.parameters and list(sig.parameters.keys())[0] == "logger")
@@ -397,7 +401,7 @@ def op(
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
             for name, param in sig.parameters.items():
-                if name in ("self", "logger"):
+                if name in ("self", "env", "logger"):
                     continue
                 name_list = [kwargs["name"], "inputs", name]
 
@@ -547,6 +551,9 @@ def op(
                     # Add logger to inputs if it's used by the function
                     if uses_logger:
                         inputs["logger"] = self.logger
+                    # Add env to inputs if it's used by the function
+                    if uses_env:
+                        inputs["env"] = self.env
                     # Add config to inputs if it's used by the function
                     if uses_config is not None:
                         inputs[uses_config] = self.parent.config
