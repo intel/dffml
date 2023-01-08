@@ -21,14 +21,21 @@ def chdir(new_path):
 
 
 @contextlib.contextmanager
-def prepend_to_path(*args: str):
+def prepend_to_path(*args: str, env = None):
     """
     Prepend all given directories to the ``PATH`` environment variable.
+    TODO Should we be modifying in place? Probably need to abstract out to the
+    delta on the opimpctx.run() for input network context transfer as optional
+    trigger only if not default?
     """
-    old_path = os.environ.get("PATH", "")
+    if env is None:
+        # TODO Deprecation warning for non explicit setting of env context.
+        env = os.environ
+    old_path = env.get("PATH", "")
     # TODO Will this work on Windows?
-    os.environ["PATH"] = ":".join(list(map(str, args)) + old_path.split(":"))
+    env["PATH"] = ":".join(list(map(str, args)) + old_path.split(":"))
     try:
         yield
     finally:
-        os.environ["PATH"] = old_path
+        env["PATH"] = old_path
+
