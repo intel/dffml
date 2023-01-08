@@ -2,6 +2,7 @@
 Base classes for DFFML. All classes in DFFML should inherit from these so that
 they follow a similar API for instantiation and usage.
 """
+import os
 import abc
 import copy
 import inspect
@@ -100,6 +101,16 @@ class LoggingLogger(object):
             logger = LOGGER.getChild(self.__class__.__qualname__)
             setattr(self, prop_name, logger)
         return logger
+
+    @property
+    def env(self):
+        prop_name = "__%s_env" % (self.__class__.__qualname__,)
+        env = getattr(self, prop_name, False)
+        if env is False:
+            env = os.environ.copy()
+            self.logger.debug("Created copy of os.environ")
+            setattr(self, prop_name, env)
+        return env
 
 
 def mkarg(field, *, dataclass=None):
