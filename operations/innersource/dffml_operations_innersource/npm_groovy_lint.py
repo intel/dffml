@@ -13,7 +13,7 @@ from dffml_operations_innersource.operations import (
 )
 
 
-NPMGroovyLintBinary = NewType("NPMGroovyLintBinary", str)
+NPMGroovyLintCMD = NewType("NPMGroovyLintCMD", str)
 NPMGroovyLintResult = NewType("NPMGroovyLintResult", str)
 JavaBinary = NewType("JavaBinary", str)
 CodeNarcServerProc = NewType("CodeNarcServerProc", object)
@@ -27,13 +27,13 @@ class CodeNarcServerUnknownFailure(Exception):
 @contextlib.asynccontextmanager
 async def code_narc_server(
     java_binary: JavaBinary,
-    npm_groovy_lint_binary: NPMGroovyLintBinary,
+    npm_groovy_lint_cmd: NPMGroovyLintCMD,
     *,
     env: dict = None,
     logger: logging.Logger = None,
 ) -> CodeNarcServerProc:
     # Path to compiled CodeNarcServer within released package
-    java_lib_path = npm_groovy_lint_binary.resolve().parents[1].joinpath(
+    java_lib_path = npm_groovy_lint_cmd[1].resolve().parents[1].joinpath(
         "lib", "java",
     )
     # Run the server
@@ -81,14 +81,14 @@ async def code_narc_server(
 @dffml.op
 async def start_code_narc_server(
     java_binary: JavaBinary,
-    npm_groovy_lint_binary: NPMGroovyLintBinary,
+    npm_groovy_lint_cmd: NPMGroovyLintCMD,
     *,
     env: dict = None,
     logger: logging.Logger = None,
 ) -> CodeNarcServerProc:
     proc_context_manager = code_narc_server(
         java_binary,
-        npm_groovy_lint_binary,
+        npm_groovy_lint_cmd,
         env=env,
         logger=logger,
     )
@@ -112,17 +112,21 @@ async def stop_code_narc_server(
 @dffml.op
 async def npm_groovy_lint(
     repo_directory: RepoDirectory,
+    java_binary: JavaBinary,
     # TODO Port for code narc is currently hardcoded, upstream fix and use here.
     _code_narc_proc: CodeNarcServerProc,
-    npm_groovy_lint_binary: NPMGroovyLintBinary,
+    npm_groovy_lint_cmd: NPMGroovyLintCMD,
     *,
     env: dict = None,
     logger: logging.Logger = None,
 ) -> NPMGroovyLintResult:
     async for event, result in dffml.run_command_events(
         [
-            npm_groovy_lint_binary,
+            *npm_groovy_lint_cmd,
             "--noserver",
+            # It will try to install java unless we give it one
+            "--javaexecutable",
+            java_binary,
             "--output",
             "json",
             ".",

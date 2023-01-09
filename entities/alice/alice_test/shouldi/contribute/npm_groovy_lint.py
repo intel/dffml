@@ -4,7 +4,7 @@ import platform
 from typing import NewType
 
 import dffml
-from dffml_operations_innersource.npm_groovy_lint import NPMGroovyLintBinary
+from dffml_operations_innersource.npm_groovy_lint import NPMGroovyLintCMD
 
 
 class _NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS:
@@ -40,7 +40,7 @@ async def ensure_npm_groovy_lint(
     *,
     env: dict = None,
     logger: logging.Logger = None,
-) -> NPMGroovyLintBinary:
+) -> NPMGroovyLintCMD:
     # TODO Take node as arg from ensure_node
     # The location we'll assume the binary is at, its basename, resolved on exec
     # to determine correct path.
@@ -49,9 +49,12 @@ async def ensure_npm_groovy_lint(
     # aka that subprocess -> fork + exec will succeed.
     if (
         npm_groovy_lint_binary_path.exists()
-        or dffml.inpath(npm_groovy_lint_binary_path)
+        or (
+            dffml.inpath(npm_groovy_lint_binary_path)
+            and dffml.inpath("node")
+        )
     ):
-        return npm_groovy_lint_binary_path
+        return ["node", npm_groovy_lint_binary_path]
     # Download via given platform to download mapping or use default
     if platform_urls is NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS:
         platform_urls = NPM_GROOVY_LINT_DEFAULT_PLATFORM_URLS
@@ -69,17 +72,25 @@ async def ensure_npm_groovy_lint(
     )
     # Find the binary for nodejs
     node_bin_path = [
-        path.parent
+        path
         for path in node_install_path.rglob("node")
         if path.parent.name == "bin"
     ][0]
-    with dffml.prepend_to_path(*node_bin_path.resolve().parts, env):
+    # Find the binary for npm
+    npm_bin_path = [
+        path
+        for path in node_install_path.rglob("npm")
+        if path.parent.name == "bin"
+    ][0]
+    # Ensure node binary is in path before calling npm to install
+    with dffml.prepend_to_path(*node_bin_path.parent.resolve().parts, env):
         # Run npm to install the package with the binary we are wrapping.
         # Install to the cache dir.
         # In this case npm-groovy-lint
         async for event, result in dffml.run_command_events(
             [
-                "npm",
+                node_bin_path,
+                npm_bin_path,
                 "i",
                 "npm-groovy-lint",
             ],
@@ -95,4 +106,4 @@ async def ensure_npm_groovy_lint(
         # Add it to the path. Do not resolve because it might be an exec symlink
         with dffml.prepend_to_path(*node_modules_bin_path.parts, env):
             pass
-        return node_modules_bin_path.joinpath("npm-groovy-lint")
+        return [node_bin_path, node_modules_bin_path.joinpath("npm-groovy-lint")]
