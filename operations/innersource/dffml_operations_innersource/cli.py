@@ -186,6 +186,11 @@ COLLECTOR_DATAFLOW.seed = [
                 "by": "quarter",
                 "nostrict": True,
             },
+            operations.groovy_lint.op.outputs["result"].name: {
+                "group": operations.groovy_lint.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
         },
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
     ),
