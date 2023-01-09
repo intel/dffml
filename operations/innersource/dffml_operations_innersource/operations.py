@@ -86,7 +86,8 @@ def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
             relative_paths(
                 repo.directory,
                 [
-                    *pathlib.Path(repo.directory).rglob("*.groovy"),
+                    *pathlib.Path(repo.directory).rglob("vars/*.groovy"),
+                    *pathlib.Path(repo.directory).rglob("src/**/*.groovy"),
                 ],
             ),
         ),
