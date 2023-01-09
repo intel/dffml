@@ -186,14 +186,26 @@ def get_current_datetime_as_git_date():
     }
 
 
+@dffml.config
+class MaintainedConfig:
+    commits: int = dffml.field(
+        "Equal or greater to this number of commits in the last quarter results in a return value of True",
+        default=1,
+    )
+
+
 @dffml.op(
     inputs={
         "results": dffml.GroupBy.op.outputs["output"],
     },
+    config_cls=MaintainedConfig,
     stage=dffml.Stage.OUTPUT,
 )
 def maintained(results: dict) -> bool:
-    return True
+    # As an example, if there is one commit in the last period (quarter), return
+    # maintained (True for the maintained opreation for this input data).
+    if results["commits"][-1] >= self.config_cls.commits:
+        return True
 
 
 @dffml.config
