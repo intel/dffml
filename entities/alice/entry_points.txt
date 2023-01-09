@@ -28,7 +28,7 @@ OverlayGitHub                                  = alice.please.contribute.recomme
 OverlayCICDLibrary                             = alice.shouldi.contribute.cicd
 OverlayEnsureJava                              = alice_test.shouldi.contribute.java:ensure_java
 OverlayEnsureNPMGroovyLint                     = dffml_operations_innersource.operations:ensure_npm_groovy_lint
-OverlayEnsureActionsValidator                  = dffml_operations_innersource.operations:ensure_actions_validator
+OverlayEnsureActionsValidator                  = alice_test.shouldi.contribute.actions_validator:ensure_actions_validator
 
 [dffml.overlays.alice.please.log.todos]
 OverlayCLI                                     = alice.please.log.todos.todos:OverlayCLI
