@@ -4,7 +4,7 @@ import platform
 from typing import NewType
 
 import dffml
-from dffml_operations_innersource.operations import JavaBinary
+from dffml_operations_innersource.npm_groovy_lint import JavaBinary
 
 
 class _JAVA_USE_DEFAULT_PLATFORM_URLS:
