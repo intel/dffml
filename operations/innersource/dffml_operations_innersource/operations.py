@@ -382,12 +382,17 @@ async def actions_validator(
             return bool(result == 0)
 
 
+class _NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS:
+    pass
+
+
 class _NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR:
     pass
 
 
 NPMGroovyLintBinary = NewType("NPMGroovyLintBinary", str)
 NPMGroovyLintCacheDir = NewType("NPMGroovyLintCacheDir", str)
+NPMGroovyLintPlatformURLs = NewType("NPMGroovyLintPlatformURLs", str)
 NPMGroovyLintResult = NewType("NPMGroovyLintResult", str)
 
 
@@ -396,11 +401,20 @@ NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR = _NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR()
 NPM_GROOVY_LINT_DEFAULT_CACHE_DIR_PARTS = (
     ".tools", "open-architecture", "innersource", ".cache", "npm-groovy-lint",
 )
+NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS = _NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS()
+# TODO Load all these from a json file using importlib.resources within test bom
+NPM_GROOVY_LINT_DEFAULT_PLATFORM_URLS = {
+    "Linux": {
+        "url": "https://nodejs.org/dist/v14.2.0/node-v14.2.0-linux-x64.tar.xz",
+        "expected_hash": "fa2a9dfa4d0f99a0cc3ee6691518c026887677a0d565b12ebdcf9d78341db2066427c9970c41cbf72776a370bbb42729",
+    },
+}
 
 
 @dffml.op
 async def ensure_npm_groovy_lint(
     cache_dir: NPMGroovyLintCacheDir = NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR,
+    platform_urls: NPMGroovyLintPlatformURLs = NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS,
     *,
     env: dict = None,
     logger: logging.Logger = None,
@@ -416,15 +430,20 @@ async def ensure_npm_groovy_lint(
         or dffml.inpath(npm_groovy_lint_binary_path)
     ):
         return npm_groovy_lint_binary_path
+    # Download via given platform to download mapping or use default
+    if platform_urls is NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS:
+        platform_urls = NPM_GROOVY_LINT_DEFAULT_PLATFORM_URLS
     # Store in given cache directory or create default relative to cwd
     if cache_dir is NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR:
         cache_dir = pathlib.Path(*NPM_GROOVY_LINT_DEFAULT_CACHE_DIR_PARTS)
     # Download node
     node_install_path = await dffml.cached_download_unpack_archive(
-        "https://nodejs.org/dist/v14.2.0/node-v14.2.0-linux-x64.tar.xz",
-        cache_dir.joinpath("node.tar.gz"),
-        cache_dir.joinpath("node-download"),
-        "fa2a9dfa4d0f99a0cc3ee6691518c026887677a0d565b12ebdcf9d78341db2066427c9970c41cbf72776a370bbb42729",
+        **{
+            "file_path": cache_dir.joinpath("node.tar.gz"),
+            "directory_path": cache_dir.joinpath("node-download"),
+            # Use whatever values are appropriate for the system we are on
+            **platform_urls[platform.system()],
+        }
     )
     # Find the binary for nodejs
     node_bin_path = [
