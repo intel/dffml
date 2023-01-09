@@ -272,7 +272,6 @@ ACTIONS_VALIDATOR_DEFAULT_PLATFORM_URLS = {
 }
 
 
-@dffml.op
 async def ensure_actions_validator(
     cache_dir: ActionsValidatorCacheDir = ACTIONS_VALIDATOR_USE_DEFAULT_CACHE_DIR,
     platform_urls: ActionsValidatorPlatformURLs = ACTIONS_VALIDATOR_USE_DEFAULT_PLATFORM_URLS,
@@ -411,7 +410,6 @@ NPM_GROOVY_LINT_DEFAULT_PLATFORM_URLS = {
 }
 
 
-@dffml.op
 async def ensure_npm_groovy_lint(
     cache_dir: NPMGroovyLintCacheDir = NPM_GROOVY_LINT_USE_DEFAULT_CACHE_DIR,
     platform_urls: NPMGroovyLintPlatformURLs = NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS,
@@ -513,7 +511,9 @@ JAVA_DEFAULT_PLATFORM_URLS = {
 # credentials where the crendential manifest had a SCITT receipt which itself
 # appears in a SCITT thread, where the root is the root of trust for that SCITT
 # instance.
-@dffml.op
+# IN PROGRESS XXX We are now going to try enabling this as an overlay.
+# If this works we'll create a seperate package to enable these for the install.
+# Or maybe we'll do a service dev command to create the package ad-hoc.
 async def ensure_java(
     cache_dir: JavaCacheDir = JAVA_USE_DEFAULT_CACHE_DIR,
     platform_urls: JavaPlatformURLs = JAVA_USE_DEFAULT_PLATFORM_URLS,
