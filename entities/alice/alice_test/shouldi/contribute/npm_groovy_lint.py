@@ -4,7 +4,7 @@ import platform
 from typing import NewType
 
 import dffml
-from dffml_operations_innersource.operations import NPMGroovyLintBinary
+from dffml_operations_innersource.npm_groovy_lint import NPMGroovyLintBinary
 
 
 class _NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS:
