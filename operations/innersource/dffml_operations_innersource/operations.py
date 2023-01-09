@@ -650,9 +650,6 @@ async def groovy_lint(
     env: dict = None,
     logger: logging.Logger = None,
 ) -> NPMGroovyLintResult:
-    # Run the linter
-    stdout = None
-    stderr = ""
     async for event, result in dffml.run_command_events(
         [
             npm_groovy_lint_binary,
