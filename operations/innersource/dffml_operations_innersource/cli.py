@@ -103,95 +103,21 @@ COLLECTOR_DATAFLOW.seed = [
         value=True, definition=COLLECTOR_DATAFLOW.definitions["no_git_branch_given"],
     ),
     dffml.Input(
-        value={
-            COLLECTOR_DATAFLOW.operations["git_repo_release"]
-            .outputs["present"]
-            .name: {
-                "group": COLLECTOR_DATAFLOW.operations["git_repo_release"]
-                .outputs["present"]
-                .name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            COLLECTOR_DATAFLOW.operations["git_repo_author_lines_for_dates"]
-            .outputs["author_lines"]
-            .name: {
-                "group": COLLECTOR_DATAFLOW.operations[
-                    "git_repo_author_lines_for_dates"
+        value=dict(
+            itertools.chain(
+                *[
+                    [
+                        (output.name, {
+                            "group": output.name,
+                            "by": "quarter",
+                            "nostrict": True,
+                        })
+                        for output in operation.outputs.values()
+                    ]
+                    for operation in COLLECTOR_DATAFLOW.operations.values()
                 ]
-                .outputs["author_lines"]
-                .name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            "commit_shas": {
-                "group": COLLECTOR_DATAFLOW.operations["git_repo_commit_from_date"]
-                .outputs["commit"]
-                .name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.contributing_present.op.outputs["result"].name: {
-                "group": operations.contributing_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.action_yml_files.op.outputs["result"].name: {
-                "group": operations.action_yml_files.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.groovy_files.op.outputs["result"].name: {
-                "group": operations.groovy_files.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.jenkinsfiles.op.outputs["result"].name: {
-                "group": operations.jenkinsfiles.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.github_workflows.op.outputs["result"].name: {
-                "group": operations.github_workflows.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.readme_present.op.outputs["result"].name: {
-                "group": operations.readme_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.security_present.op.outputs["result"].name: {
-                "group": operations.security_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.support_present.op.outputs["result"].name: {
-                "group": operations.support_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.code_of_conduct_present.op.outputs["result"].name: {
-                "group": operations.code_of_conduct_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.contributing_present.op.outputs["result"].name: {
-                "group": operations.contributing_present.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.actions_validator.op.outputs["result"].name: {
-                "group": operations.actions_validator.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-            operations.groovy_lint.op.outputs["result"].name: {
-                "group": operations.groovy_lint.op.outputs["result"].name,
-                "by": "quarter",
-                "nostrict": True,
-            },
-        },
+            )
+        ),
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
     ),
 ]
