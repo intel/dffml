@@ -3,7 +3,7 @@ import platform
 from typing import NewType
 
 import dffml
-from dffml_operations_innersource.operations import ActionsValidatorBinary
+from dffml_operations_innersource.actions_validator import ActionsValidatorBinary
 
 
 class _ACTIONS_VALIDATOR_USE_DEFAULT_PLATFORM_URLS:
