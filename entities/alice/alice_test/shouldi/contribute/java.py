@@ -32,20 +32,11 @@ JAVA_DEFAULT_PLATFORM_URLS = {
 }
 
 
-# TODO Move these ensure_ functions into which can then be overlayed as desired
-# via CLI or via install of ad-hoc blank package with only entry_points.txt to
-# enable them as desired.
-# alice_test.shouldi.contribute.bom_v0_0_0
-# This is our reference flow, which knows how to understand, analyize, work in,
-# and rebuild itself from anywhere. This allows us to get developers developing
-# on alice, or any overlays to alice (being anything else you need to work on or
-# analyze). We communicate via ATProto threads to post replys with verifiable
-# credentials where the crendential manifest had a SCITT receipt which itself
-# appears in a SCITT thread, where the root is the root of trust for that SCITT
-# instance.
 # IN PROGRESS XXX We are now going to try enabling this as an overlay.
 # If this works we'll create a seperate package to enable these for the install.
 # Or maybe we'll do a service dev command to create the package ad-hoc.
+# Could also do ad-hoc package creation for seed inputs via flow which loads
+# from importlib.resources a JSON seed value (or any format).
 async def ensure_java(
     cache_dir: JavaCacheDir = JAVA_USE_DEFAULT_CACHE_DIR,
     platform_urls: JavaPlatformURLs = JAVA_USE_DEFAULT_PLATFORM_URLS,
