@@ -1,5 +1,6 @@
 import json
 import signal
+import asyncio
 import pathlib
 import logging
 import contextlib
@@ -120,32 +121,32 @@ async def npm_groovy_lint(
     env: dict = None,
     logger: logging.Logger = None,
 ) -> NPMGroovyLintResult:
-    async for event, result in dffml.run_command_events(
-        [
-            *npm_groovy_lint_cmd,
-            "--noserver",
-            # It will try to install java unless we give it one
-            "--javaexecutable",
-            java_binary,
-            "--output",
-            "json",
-            ".",
-        ],
+    proc = await asyncio.create_subprocess_exec(
+        *npm_groovy_lint_cmd,
+        "--noserver",
+        # It will try to install java unless we give it one
+        "--javaexecutable",
+        java_binary,
+        "--output",
+        "json",
+        ".",
         cwd=repo_directory,
         env=env,
-        logger=logger,
-        events=[
-            dffml.Subprocess.STDOUT,
-        ],
-        raise_on_failure=False,
-    ):
-        parsed_result = json.loads(result)
-        return {
-            **parsed_result,
-            **{
-                "files": {
-                    str(pathlib.Path(path).relative_to(repo_directory)): value
-                    for path, value in parsed_result.get("files", {}).items()
+        stdout=asyncio.subprocess.PIPE,
+    )
+    work = {
+        asyncio.create_task(proc.wait()): "wait",
+        asyncio.create_task(proc.communicate()): "communicate",
+    }
+    async for event, result in dffml.concurrently(work):
+        if event == "communicate":
+            parsed_result = json.loads(result[0])
+            return {
+                **parsed_result,
+                **{
+                    "files": {
+                        str(pathlib.Path(path).relative_to(repo_directory)): value
+                        for path, value in parsed_result.get("files", {}).items()
+                    }
                 }
             }
-        }
