@@ -1,5 +1,7 @@
 import pathlib
+import logging
 import datetime
+import itertools
 from typing import List, NewType
 
 import dffml
@@ -249,3 +251,30 @@ RepoDirectory = NewType("RepoDirectory", str)
 def repo_directory(self, repo: git_repository_checked_out.spec) -> RepoDirectory:
     # How did this not exist? I think it does somwhere else, another branch
     return {"result": repo.directory}
+
+
+HasDocs = NewType("HasDocs", dict)
+
+
+@dffml.op
+def has_docs(
+    repo_directory: RepoDirectory,
+    readme_present: FileReadmePresent,
+    *,
+    logger: logging.Logger = None,
+) -> HasDocs:
+    # TODO Refactor this, ideally support regex and or open policy agent
+    return dict(zip(
+        ("readme_present", "support", "usage", "example", "known issues"),
+        [
+            readme_present,
+            *itertools.chain(*[
+                [
+                    check in path.read_text().lower()
+                    for check in ("support", "usage", "example", "known issues")
+                ]
+                for path in pathlib.Path(repo_directory).iterdir()
+                if "readme" == path.stem.lower()
+            ])
+        ],
+    ))
