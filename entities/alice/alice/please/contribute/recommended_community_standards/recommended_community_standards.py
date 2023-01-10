@@ -6,6 +6,7 @@ from typing import NamedTuple, NewType, Optional, Type
 
 import dffml
 import dffml_feature_git.feature.definitions
+import dffml_feature_git.feature.operations
 
 
 class AliceGitRepo(NamedTuple):
