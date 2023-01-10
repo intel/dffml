@@ -22,7 +22,7 @@ source which we developed for the InnerSource collector example.
 $ alice please contribute report on innersource health
 ```
 - References
-  - [Rolling Alice: Coach Alice: Down the Dependency Rabbit Hole Again](../0000_architecting_alice/0001_down_the_dependency_rabbit_hole_again.md)
+  - [Rolling Alice: Coach Alice: Down the Dependency Rabbit Hole Again](../0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
   - [intel/dffml#1287: docs: examples: innersource: Org health and issue prioritization](https://github.com/intel/dffml/issues/1287)
   - [intel/dffml#1315: service: sw: src: change: notify: Service to facilitate poly repo pull model dev tooling](https://github.com/intel/dffml/issues/1315#issuecomment-1066814280)
     - [Rolling Alice: Architecting Alice: Stream of Consciousness](../0000_architecting_alice/0005_stream_of_consciousness.md)
