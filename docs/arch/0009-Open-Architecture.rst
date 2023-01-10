@@ -111,6 +111,10 @@ References
   
   - https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/A_DID_for_everything.pdf
 
+- IPVM
+
+  - https://github.com/ipvm-wg/spec/pull/8#issuecomment-1307658697
+
 - TODO
 
   - Add content from discussion thread
