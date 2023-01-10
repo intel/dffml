@@ -15,6 +15,11 @@ source which we developed for the InnerSource collector example.
 $ alice please contribute report on innersource health
 ```
 
+- References
+  - [intel/dffml#1287: docs: examples: innersource: Org health and issue prioritization](https://github.com/intel/dffml/issues/1287)
+  - [intel/dffml#1315: service: sw: src: change: notify: Service to facilitate poly repo pull model dev tooling #1315](https://github.com/intel/dffml/issues/1315#issuecomment-1066814280)
+    - [Rolling Alice: Architecting Alice: Stream of Consciousness](../../0000_architecting_alice/0005_stream_of_consciousness.md)
+
 The following is an example report
 
 ---
