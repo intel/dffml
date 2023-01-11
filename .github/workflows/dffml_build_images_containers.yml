@@ -49,41 +49,42 @@ jobs:
               if env_var in os.environ and os.environ[env_var].strip():
                   # Set if present and not blank
                   base = os.environ[env_var]
+          manifest = []
           if base is None:
-              raise Exception(f"None of {env_vars!r} found in os.environ")
-          compare_url = os.environ["COMPARE_URL"]
-          compare_url = compare_url.replace("{base}", base)
-          compare_url = compare_url.replace("{head}", os.environ["HEAD"])
-          with urllib.request.urlopen(
-              urllib.request.Request(
-                  compare_url,
-                  headers={
-                      "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
-                  },
-              )
-          ) as response:
-              response_json = json.load(response)
-          # Build the most recent commit
-          commit = response_json["commits"][-1]["sha"]
-          # Path to root of repo
-          root_path = pathlib.Path(os.environ["ROOT_PATH"])
-          # Must be a valid directory with .Dockerfiles in it
-          prefix_path = pathlib.Path(os.environ["PREFIX"])
-          manifest = list([
-              {
-                  "image_name": pathlib.Path(compare_file["filename"]).stem,
-                  "dockerfile": compare_file["filename"],
-                  "owner": owner,
-                  "repository": repository,
-                  "branch": os.environ["BRANCH"],
-                  "commit": commit,
-              }
-              for compare_file in response_json["files"]
-              if (
-                  compare_file["filename"].startswith(os.environ["PREFIX"])
-                  and compare_file["filename"].endswith("Dockerfile")
-              )
-          ])
+              print(f"::notice file=dffml_build_images_containers,line=1,endLine=1,title=nobase::None of {env_vars!r} found in os.environ"
+              compare_url = os.environ["COMPARE_URL"]
+              compare_url = compare_url.replace("{base}", base)
+              compare_url = compare_url.replace("{head}", os.environ["HEAD"])
+              with urllib.request.urlopen(
+                  urllib.request.Request(
+                      compare_url,
+                      headers={
+                          "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
+                      },
+                  )
+              ) as response:
+                  response_json = json.load(response)
+              # Build the most recent commit
+              commit = response_json["commits"][-1]["sha"]
+              # Path to root of repo
+              root_path = pathlib.Path(os.environ["ROOT_PATH"])
+              # Must be a valid directory with .Dockerfiles in it
+              prefix_path = pathlib.Path(os.environ["PREFIX"])
+              manifest = list([
+                  {
+                      "image_name": pathlib.Path(compare_file["filename"]).stem,
+                      "dockerfile": compare_file["filename"],
+                      "owner": owner,
+                      "repository": repository,
+                      "branch": os.environ["BRANCH"],
+                      "commit": commit,
+                  }
+                  for compare_file in response_json["files"]
+                  if (
+                      compare_file["filename"].startswith(os.environ["PREFIX"])
+                      and compare_file["filename"].endswith("Dockerfile")
+                  )
+              ])
           # Build everything if we aren't sure why we got here (alice changes or
           # workflow re-run)
           if not manifest:
