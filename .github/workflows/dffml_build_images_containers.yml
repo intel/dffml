@@ -6,10 +6,19 @@ name: "DFFML: Build: Images: Containers"
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build_images_containers.yml"
+      - ".github/workflows/dffml_build_images_containers.yml"
+      - "Dockerfile"
   push:
     branches:
       - main
     paths:
+      - ".github/workflows/build_images_containers.yml"
+      - ".github/workflows/dffml_build_images_containers.yml"
       - "Dockerfile"
 
 jobs:
