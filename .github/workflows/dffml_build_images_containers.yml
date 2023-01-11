@@ -58,9 +58,20 @@ jobs:
               if env_var in os.environ and os.environ[env_var].strip():
                   # Set if present and not blank
                   base = os.environ[env_var]
+          # Empty manifest (list of manifests for each build file) in case not triggered
+          # from on file change (workflow changed or dispatched).
           manifest = []
+          # Path to root of repo
+          root_path = pathlib.Path(os.environ["ROOT_PATH"])
+          # Must be a valid directory with .Dockerfiles in it
+          prefix_path = pathlib.Path(os.environ["PREFIX"])
+          # Grab most recent commit to use by default
+          commit = pathlib.Path(
+              ".git", pathlib.Path(".git", "HEAD").read_text().split()[-1],
+          ).read_text()
           if base is None:
               print(f"::notice file=dffml_build_images_containers.yml,line=1,endLine=1,title=nobase::None of {env_vars!r} found in os.environ")
+          else:
               compare_url = os.environ["COMPARE_URL"]
               compare_url = compare_url.replace("{base}", base)
               compare_url = compare_url.replace("{head}", os.environ["HEAD"])
@@ -75,10 +86,6 @@ jobs:
                   response_json = json.load(response)
               # Build the most recent commit
               commit = response_json["commits"][-1]["sha"]
-              # Path to root of repo
-              root_path = pathlib.Path(os.environ["ROOT_PATH"])
-              # Must be a valid directory with .Dockerfiles in it
-              prefix_path = pathlib.Path(os.environ["PREFIX"])
               manifest = list([
                   {
                       "image_name": pathlib.Path(compare_file["filename"]).stem,
