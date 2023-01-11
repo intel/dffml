@@ -106,5 +106,3 @@ jobs:
     uses: "./.github/workflows/build_images_containers.yml"
     with:
       manifests: "${{ needs.manifest.outputs.manifest }}"
-    secrets:
-      GH_ACCESS_TOKEN: ${{ github.token }}
