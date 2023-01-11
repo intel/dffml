@@ -51,7 +51,7 @@ jobs:
                   base = os.environ[env_var]
           manifest = []
           if base is None:
-              print(f"::notice file=dffml_build_images_containers,line=1,endLine=1,title=nobase::None of {env_vars!r} found in os.environ"
+              print(f"::notice file=dffml_build_images_containers.yml,line=1,endLine=1,title=nobase::None of {env_vars!r} found in os.environ")
               compare_url = os.environ["COMPARE_URL"]
               compare_url = compare_url.replace("{base}", base)
               compare_url = compare_url.replace("{head}", os.environ["HEAD"])
