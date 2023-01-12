@@ -106,7 +106,7 @@ jobs:
           if not manifest:
               manifest = list([
                   {
-                      "image_name": path.stem,
+                      "image_name": path.stem if path.stem != path.name else (repository if str(path.relative_to(root_path)) == path.stem else path.resolve().parent.stem),
                       "dockerfile": str(path.relative_to(root_path)),
                       "owner": owner,
                       "repository": repository,
