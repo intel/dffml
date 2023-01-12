@@ -58,19 +58,29 @@ jobs:
   build:
     name: Build container images
     runs-on: ubuntu-latest
-    container: gcr.io/kaniko-project/executor:latest
     strategy:
       fail-fast: false
       max-parallel: 40
       matrix: ${{ fromJSON(inputs.manifests) }}
     steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: '${{ github.repository }}'
+          ref: '${{ matrix.commit }}'
+          persist-credentials: false
+          fetch-depth: 1
+          lfs: true
+          submodules: true
+      - name: Install dependencies
+        run: |
+          set -x
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
       - name: Build image
         env:
-          OWNER: "${{ github.owner }}"
-          REPOSITORY: "${{ github.repository }}"
-          BRANCH: "${{ matrix.branch }}"
-          COMMIT: "${{ matrix.commit }}"
           IMAGE_NAME: "${{ matrix.image_name }}"
           DOCKERFILE: "${{ matrix.dockerfile }}"
         run: |
-          /kaniko/executor --dockerfile "${DOCKERFILE}" --context "git://github.com/${OWNER}/${REPOSITORY}.git#refs/heads/${BRANCH}#${COMMIT}"
+          docker build --build-arg DFFML_RELEASE=main -t "${IMAGE_NAME}" -f "${DOCKERFILE}" .
+          # TODO Communicate built container hash for SLSA3 cosign send to transparency log
