@@ -22,7 +22,7 @@ class EnsureTokeiConfig:
         default_factory=lambda: {
             "Linux": {
                 "url": "https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz",
-                "expected_hash": "22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a",
+                "expected_hash": "b54fa0959e7a3a8935bd5cd86795b92e14d0a7b2cb6fb8f362b7b48198ce83e6dedc35a87e7c8fa405328f19d0ea6c47",
             },
             "Darwin": {
                 "url": "https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz",
