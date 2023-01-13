@@ -142,9 +142,14 @@ todos
 Same as please contribute recommended community standards to the repo,
 only don't create PR.
 
+.. note::
+
+    We have an open issue with subflows? Or some reason duplicate issues are
+    sometimes being created.
+
 .. code-block:: console
 
-    $ alice please log todos https://github.com/$USER/my-new-python-project
+    $ alice please log todos -keys https://github.com/$USER/my-new-python-project
 
 shouldi
 *******
