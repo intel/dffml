@@ -20,6 +20,8 @@ the agenda.
 - `Meeting Minutes <https://docs.google.com/document/d/16u9Tev3O0CcUDe2nfikHmrO3Xnd4ASJ45myFgQLpvzM/>`_
 - `Recordings <https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA>`_
 
+  - `Transcripts <https://mtngs.io/dffml/weekly-sync/>`_
+
 To join the meeting, click on the Google calendar below for the day you are
 trying to join, then click "more details" which will open your Google calendar,
 then click "Join Hangouts".
