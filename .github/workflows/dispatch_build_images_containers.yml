@@ -6,13 +6,39 @@ name: "Dispatch: Build: Images: Containers"
 on:
   workflow_dispatch:
     inputs:
-      manifests:
+      manifest:
         required: true
         type: string
         description: "https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.json"
 
 jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    outputs:
+      manifest: ${{ steps.create-manifest-instance.outputs.manifest }}
+    steps:
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Build manifest
+        id: create-manifest-instance
+        env:
+          MANIFEST: '${{ toJSON(github.event.inputs.manifest) }}'
+        shell: python -u {0}
+        run: |
+          import os
+          import json
+
+          try:
+              manifest = json.loads(os.environ["MANIFEST"])
+          except json.decoder.JSONDecodeError:
+              manifest = json.loads(os.environ["MANIFEST"].replace(r"\n", "\n"))
+          print(manifest)
+          print("::set-output name=manifest::" + json.dumps({"include": manifest}))
+
   build:
+    needs: manifest
     uses: "./.github/workflows/build_images_containers.yml"
     with:
-      manifests: "${{ github.event.inputs.manifests }}"
+      manifests: '${{ needs.manifest.outputs.manifest }}'
