@@ -75,7 +75,7 @@ async def code_narc_server(
                     proc.send_signal(signal.SIGINT)
         elif event is dffml.Subprocess.COMPLETED:
             # Clean exit triggered by Ctrl-C will have a return code as follows
-            if result != 130:
+            if result not in (130, -2):
                 raise CodeNarcServerUnknownFailure(f"Exit code: {result}")
 
 

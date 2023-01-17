@@ -64,10 +64,17 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 - [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
 - [In the Lab](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_in_the_lab.md)
-  - Using what we learned from "A Shell for a Ghost", we put Alice in JypterLite as a followon to Intuitive and Accessable Documenation Editing GSOC 2022 Project by Claire.
-  - Extend to VS Code via a mechanism similar to their language server interface
+  - We execute the dataflows we've thought up from Entering Wonderland.
+  - These flows are hypothesized CI/CD flows (GitHub Actions, Jenkins, etc.)
+     - We execute them and submit them as PRs if they make sense
+     - This way we could go around offering people cve-bin-tools services on each PR they run for C using Python projects.
 - [An Open Book](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0005_ask_alice.md)
-
+  - Alice uses what she learned in Writing the Wave to train models which understand how she was built, this will work for any video series
+    we can extract text from. This helps us aggregate data into the knowledge graph for training / query.
+- [Cartographer Extraordinaire](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0005_cartography.md)
+  - We teach Alice to detect threats in our `THREATS.md`. We'll be looking to analyize for weakpoints in our skycastles which apear *over time*.
+    https://xkcd.com/2347/ is what we're looking to turn into a riskyness feedback here. If your project's architectural skycastle is dependent
+    on a small unmaintained project with a high likelyhood of having CVEs then your project's "map" will show a weakpoint there.
 
 #### Volume 2: Alice and the Art of Strategy
 
@@ -75,6 +82,8 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 - Collage
 - Selecting visualization options (volume 0)
+- Cartography
+  - We render 2D real time strategy style maps with weakpoints on different security fronts (Confidentiality, Integrity, Availablity).
 
 #### Volume 3: Alice and the Strategy of Art (on Mind Control)
 

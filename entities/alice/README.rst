@@ -124,7 +124,7 @@ Ask Alice: please contribute recommended community standards to the repo
 
 .. code-block:: console
 
-    $ alice please contribute -repos https://github.com/$USER/my-new-python-project -log debug -- recommended community standards
+    $ alice please log todos -keys https://github.com/$USER/my-new-python-project -log debug -- recommended community standards
 
 Visit
 https://github.com/$USER/my-new-python-project/issues
@@ -132,6 +132,24 @@ https://github.com/$USER/my-new-python-project/issues
 Merge pull request with README. Now the new project has a README!
 
 **TODO** Link to docs on how to extend for org specific custom README templates.
+
+please log
+**********
+
+todos
+-----
+
+Same as please contribute recommended community standards to the repo,
+only don't create PR.
+
+.. note::
+
+    We have an open issue with subflows? Or some reason duplicate issues are
+    sometimes being created.
+
+.. code-block:: console
+
+    $ alice please log todos -keys https://github.com/$USER/my-new-python-project
 
 shouldi
 *******
