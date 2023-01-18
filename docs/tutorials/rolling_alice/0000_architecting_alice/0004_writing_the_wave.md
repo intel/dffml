@@ -3,8 +3,8 @@
 We want Alice to be as easy to communicate with as possible so
 that she can be the most helpful possible.
 
-We'll be using text to a speech to text model from OpenAI known
-as Whisper provide Alice with additional context / input data.
+We'll be using text to a speech to text model known as Whisper
+to provide Alice with additional context / input data.
 In future tutorials we'll leverage what we teach Alice here.
 
 - Context
@@ -94,9 +94,9 @@ Thanks again John!
 
 ## Not With a Bang, but With a Whisper
 
-OpenAI does some cool stuff! They released a model we'll be wrapping
-as an operation, first we'll do some basic setup and usage of their
-text to speech code / model called Whisper.
+We'll be wrapping a model called Whisper as an operation, first
+we'll do some basic setup and usage of their text to speech
+code / model called Whisper.
 
 - References
   - https://github.com/openai/whisper
