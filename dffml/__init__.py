@@ -93,7 +93,7 @@ for import_name, module in modules(root, package_name, skip=skip):
                 # Do not expore any modules (they are probably just imported)
                 continue
             if name in DUPLICATE_PREFER:
-                if cls_func_all[name][0] == DUPLICATE_PREFER[name]:
+                if cls_func_all[name][0] != DUPLICATE_PREFER[name]:
                     continue
             elif cls_func_all[name][2] is obj:
                 pass
