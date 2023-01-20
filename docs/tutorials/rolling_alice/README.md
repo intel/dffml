@@ -51,6 +51,10 @@ Roll Alice with us, for humanity, enter the machine.
 - [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
 - [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
 
+## Further Reading
+
+- https://decentralgabe.xyz/on-decentralized-trust/
+
 ## Roadmap
 
 > Haven't done this before with the gantt chart, needs more work.
