@@ -51,9 +51,11 @@ Roll Alice with us, for humanity, enter the machine.
 - [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
 - [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
 
-## Further Reading
+## Context
 
-- https://decentralgabe.xyz/on-decentralized-trust/
+- [Gabe Cohen - On Decentralized Trust](https://decentralgabe.xyz/on-decentralized-trust/)
+- [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
+- [Robin Berjon - The Internet Transition](https://berjon.com/internet-transition/)
 
 ## Roadmap
 
