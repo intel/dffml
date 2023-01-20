@@ -9,6 +9,8 @@
 > until she is merged into the `main` branch. At which point
 > communications will branch off in a decentralized fashion reflective
 > of her overlay (plugin) ecosystem.
+> 
+> [Rolling Alice Progress Reports](https://gist.github.com/pdxjohnny/07b8c7b4a9e05579921aa3cc8aed4866)
 
 The following seven sets of tutorials describe the adventures of Alice as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
@@ -54,6 +56,7 @@ Roll Alice with us, for humanity, enter the machine.
 ## Context
 
 - [Gabe Cohen - On Decentralized Trust](https://decentralgabe.xyz/on-decentralized-trust/)
+- [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma? - Extraction et Gestion des Connaissances (EGC 2023) Lyon](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
 - [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
 - [Robin Berjon - The Internet Transition](https://berjon.com/internet-transition/)
 
