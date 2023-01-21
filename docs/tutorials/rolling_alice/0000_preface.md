@@ -63,6 +63,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
 - [Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 - [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
+- [You are what you EAT](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_you_are_what_you_EAT.md)
 - [In the Lab](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_in_the_lab.md)
   - We execute the dataflows we've thought up from Entering Wonderland.
   - These flows are hypothesized CI/CD flows (GitHub Actions, Jenkins, etc.)
