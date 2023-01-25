@@ -57,7 +57,7 @@ At a high level the process is
 
 - Given an `OperationImplementation` output of target manifest data model type
 
-  - On dataflow operation input dependency tree changes (before: Down the Dependency Rabbit Hold Again, before: Cartographer Extraordinaire) update `/schema/*` via `datamodel-code-gen.py`
+  - On dataflow operation input dependency tree changes (before: Down the Dependency Rabbit Hole Again, before: Cartographer Extraordinaire) update `/schema/*` via `datamodel-code-gen.py`
 
     - If code or tree changes, bump minor
 
