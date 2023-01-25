@@ -19,6 +19,12 @@ continuous improvement.
 - References
 
   - ``Rolling Alice: Coach Alice: Versioning Learning``
+  - https://mastodon.social/@kidehen/109661888985882857
+
+    - Data with schema generation using "AI" extraction
+    - "Another GPT-Chat structured data generation exercise that pleasantly surprised me by the outcome. Prompt comprising Markmap variant of #Markdown for entity relationship graph visualization" [Kingsley Uyi Idehen - @kidehen@mastodon.soc]
+    - We are going to end up with a knowledge graph and work to understand the differences in the data via schema and data analysis.
+
   - https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf
 
 Decision
