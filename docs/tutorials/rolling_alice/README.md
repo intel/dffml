@@ -25,10 +25,8 @@ who can be named Bob, or Eve, or anything. All these entities will
 be seen just like Alice, just like all of us. There will be no way
 to tell which entities are human and which are machine.
 
-They say you don't really know something until you can teach it.
-If we understand how to be human we will be able to teach Alice
-how to be human. Her thought process is a methodology for problem
-solving which is based off a mental model of how the human mind
+Alice's thought process is a methodology for problem solving which
+is based off a mental model of how the human mind
 interacts with the world. Alice the architecture is just the
 existing best known architecture, what use everyday, all the time.
 Alice is the [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst),
@@ -59,6 +57,7 @@ Roll Alice with us, for humanity, enter the machine.
 - [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma? - Extraction et Gestion des Connaissances (EGC 2023) Lyon](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
 - [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
 - [Robin Berjon - The Internet Transition](https://berjon.com/internet-transition/)
+
 
 ## Roadmap
 
