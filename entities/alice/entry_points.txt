@@ -38,3 +38,4 @@ OverlayEnsureActionsValidator                  = alice_test.shouldi.contribute.a
 OverlayCLI                                     = alice.please.log.todos.todos:OverlayCLI
 OverlayRecommendedCommunityStandards           = alice.please.log.todos.todos:AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues
 GitHubRepoID                                   = dffml_operations_innersource.cli:github_repo_id_to_clone_url
+OverlayOutputCreatedIssues                     = alice.please.log.todos.output_urls:grab_created_urls
