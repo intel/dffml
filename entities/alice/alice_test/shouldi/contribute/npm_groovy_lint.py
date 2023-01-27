@@ -28,8 +28,8 @@ NPM_GROOVY_LINT_USE_DEFAULT_PLATFORM_URLS = _NPM_GROOVY_LINT_USE_DEFAULT_PLATFOR
 # TODO Load all these from a json file using importlib.resources within test bom
 NPM_GROOVY_LINT_DEFAULT_PLATFORM_URLS = {
     "Linux": {
-        "url": "https://nodejs.org/dist/v14.2.0/node-v14.2.0-linux-x64.tar.xz",
-        "expected_hash": "fa2a9dfa4d0f99a0cc3ee6691518c026887677a0d565b12ebdcf9d78341db2066427c9970c41cbf72776a370bbb42729",
+        "url": "https://nodejs.org/dist/v18.13.0/node-v18.13.0-linux-x64.tar.xz",
+        "expected_hash": "e90a56e93846d38404a79fd1f023524dbc3e9528f6b14d14a558c7c4499157b54e05c4bc5b2ed8ee0baaba310938502d",
     },
 }
 
