@@ -30,8 +30,6 @@ OverlayActionsValidator                        = dffml_operations_innersource.ac
 OverlayNPMGroovyLint                           = dffml_operations_innersource.npm_groovy_lint:npm_groovy_lint
 OverlayNPMGroovyLintStartCodeNarcServer        = dffml_operations_innersource.npm_groovy_lint:start_code_narc_server
 OverlayNPMGroovyLintStopCodeNarcServer         = dffml_operations_innersource.npm_groovy_lint:stop_code_narc_server
-OverlayEnsureJava                              = alice_test.shouldi.contribute.java:ensure_java
-OverlayEnsureNPMGroovyLint                     = alice_test.shouldi.contribute.npm_groovy_lint:ensure_npm_groovy_lint
 
 [dffml.overlays.alice.please.log.todos]
 OverlayCLI                                     = alice.please.log.todos.todos:OverlayCLI
