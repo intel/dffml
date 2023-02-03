@@ -78,6 +78,7 @@ themselves with the listener to receive change events for any of their
 dependencies. Registration involves plugin based configurable callbacks.
 
 - References
+  - https://github.com/pdxjohnny/activitypubsecuritytxt
   - [intel/dffml#1315: service: sw: src: change: notify: Service to facilitate poly repo pull model dev tooling](https://github.com/intel/dffml/issues/1315#issuecomment-1066814280)
     - Completion of this tutorial is a great first step towards closing this issue
   - [intel/dffml#1016: docs: arch: 2nd and 3rd party plugins](https://github.com/intel/dffml/pull/1061#discussion_r819930461)
