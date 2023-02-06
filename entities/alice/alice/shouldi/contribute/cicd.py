@@ -2,11 +2,13 @@ from typing import NewType
 
 import dffml
 import dffml_operations_innersource.operations
+import pathlib
 
 
 IsCICDJenkinsLibrary = NewType("IsCICDJenkinsLibrary", bool)
 IsCICDGitHubActionsLibrary = NewType("IsCICDGitHubActionsLibrary", bool)
 CICDLibrary = NewType("CICDLibrary", dict)
+GroovyFunctions = NewType("GroovyFunctions",list[str])
 
 
 @dffml.op(
@@ -41,3 +43,43 @@ def cicd_action_library(
     action_file_paths: dffml_operations_innersource.operations.ActionYAMLFileWorkflowUnixStylePath,
 ) -> IsCICDGitHubActionsLibrary:
     return bool(action_file_paths)
+
+@dffml.op
+def groovy_functions(
+    groovy_file_path: dffml_operations_innersource.operations.GroovyFileWorkflowUnixStylePath,
+) -> GroovyFunctions:
+    from pathlib import Path
+    txt = Path(groovy_file_path).read_text().splitlines()
+    new_list = []
+    idx = 0
+    text = "void"
+    for line in txt:
+
+            # if line have the input string, get the index
+            # of that line and put the
+            # line into newly created list
+            if line.lstrip()[:4] == "void":
+                line = line.split('(',1)[0]
+                line = line.split('void',1)[1]
+                new_list.insert(idx, line)
+                idx += 1
+
+        # closing file after reading
+        #file_read.close()
+
+        # if length of new list is 0 that means
+        # the input string doesn't
+        # found in the text file
+    if len(new_list)==0:
+        print("\n\"" +text+ "\" is not found in file\"" "\"!")
+    else:
+
+        # displaying the lines
+        # containing given string
+        lineLen = len(new_list)
+
+        print("\n**** Lines containing \"" +text+ "\" ****\n")
+        for i in range(lineLen):
+            print(end=new_list[i])
+            print("\n")
+        return new_list
