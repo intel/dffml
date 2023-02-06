@@ -46,10 +46,11 @@ def cicd_action_library(
 
 @dffml.op
 def groovy_functions(
+    repo_directory: dffml_operations_innersource.operations.RepoDirectory,
     groovy_file_path: dffml_operations_innersource.operations.GroovyFileWorkflowUnixStylePath,
 ) -> GroovyFunctions:
     from pathlib import Path
-    txt = Path(groovy_file_path).read_text().splitlines()
+    txt = Path(repo_directory,groovy_file_path).read_text().splitlines()
     new_list = []
     idx = 0
     text = "void"
@@ -60,7 +61,7 @@ def groovy_functions(
             # line into newly created list
             if line.lstrip()[:4] == "void":
                 line = line.split('(',1)[0]
-                line = line.split('void',1)[1]
+                line = line.split('void',1)[1].strip()
                 new_list.insert(idx, line)
                 idx += 1
 
