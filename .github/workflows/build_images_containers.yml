@@ -81,6 +81,8 @@ jobs:
         env:
           IMAGE_NAME: "${{ matrix.image_name }}"
           DOCKERFILE: "${{ matrix.dockerfile }}"
+          BUILD_ARGS: "${{ matrix.build_args }}"
         run: |
-          docker build --build-arg DFFML_RELEASE=main -t "${IMAGE_NAME}" -f "${DOCKERFILE}" .
+          export BUILD_ARGS=$(jq -r <<<"${BUILD_ARGS}" | jq -r '.[] | ("--build-arg " + .[0] + "=" + .[1])')
+          docker build --build-arg DFFML_RELEASE=main $BUILD_ARGS -t "${IMAGE_NAME}" -f "${DOCKERFILE}" .
           # TODO Communicate built container hash for SLSA3 cosign send to transparency log
