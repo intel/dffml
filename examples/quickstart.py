@@ -25,7 +25,7 @@ train(
 # Assess accuracy
 scorer = MeanSquaredErrorAccuracy()
 print(
-    "Accuracy:",
+    "Mean Squared Error:",
     score(
         model,
         scorer,

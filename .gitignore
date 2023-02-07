@@ -35,3 +35,5 @@ docs/contributing/consoletest.md
 /consoletest/
 tests/service/logs/
 tests/notebooks/data/
+.venv39/
+.venv37/
