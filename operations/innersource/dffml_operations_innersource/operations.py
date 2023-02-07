@@ -16,21 +16,6 @@ JenkinsfileWorkflowUnixStylePath = NewType("JenkinsfileWorkflowUnixStylePath", s
 GroovyFileWorkflowUnixStylePath = NewType("GroovyFileWorkflowUnixStylePath", str)
 ActionYAMLFileWorkflowUnixStylePath = NewType("ActionYAMLFileWorkflowUnixStylePath", str)
 
-# Check for
-#   "usage", "example(s)", "Known issues" (text or link to issue tracker) in docs
-#   Support / contact information in docs (issue tracker link)
-#   Linting (goovy linter, YAML linting), score it needs to meet
-#   CI/CD on library itself (Actions workflows or webhooks configured)
-#   We want to check for branch protection
-#   We want to make sure that the issues are being addressed (hyptothetical SLA estimates)
-#   Libraries should not have any hardcoded settings
-#   Credentials must be managed securly and with minimal scope needed
-#   Dependencies
-#   - Must be explictly documented somewhere (SBOM okay)
-#   - All dependnecies should be created by github or github verified createors or within dffml org
-#   We should seperate seperate functionality into seperate libraries
-#   We should be using symver
-
 
 def relative_paths(
     directory: str,
