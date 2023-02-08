@@ -29,7 +29,7 @@ Output:
 
 .. code-block::
 
-    Accuracy: 1.0
+    Mean Squared Error: 0.0
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
 
