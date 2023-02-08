@@ -54,6 +54,7 @@ async def code_narc_server(
             ),
             "com.nvuillam.CodeNarcServer",
             "--server",
+            r"includes='{}/.groovy'",
         ],
         env=env,
         logger=logger,
