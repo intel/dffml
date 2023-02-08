@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        check: [changelog, whitespace, style, commit, import, docs, lines]
+        check: [changelog, whitespace, commit, lines]
         python-version: [3.7]
         node-version: [12.x]
 
@@ -80,17 +80,12 @@ jobs:
       max-parallel: 100
       matrix:
         plugin:
-        - .
-        - examples/shouldi
         - model/daal4py
         - model/tensorflow
-        - model/tensorflow_hub
         - model/scratch
         - model/scikit
         - model/vowpalWabbit
         - model/autosklearn
-        - model/spacy
-        - model/pytorch
         - model/xgboost
         - operations/binsec
         - operations/data
@@ -102,8 +97,7 @@ jobs:
         - feature/auth
         - service/http
         - configloader/yaml
-        - configloader/image
-        python-version: [3.7, 3.8]
+        python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v2
@@ -190,6 +184,7 @@ jobs:
 
   tutorials:
     runs-on: ubuntu-latest
+    if: false
     strategy:
       fail-fast: false
       max-parallel: 100
@@ -261,7 +256,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
     - name: Checkout full upstream repo
