@@ -53,6 +53,7 @@ Roll Alice with us, for humanity, enter the machine.
 
 ## Context
 
+- [Katherine Druckman - Threat Modeling Down the Rabbit Hole - OpenAtIntel](https://openatintel.podbean.com/e/threat-modeling-down-the-rabbit-hole/)
 - [Gabe Cohen - On Decentralized Trust](https://decentralgabe.xyz/on-decentralized-trust/)
 - [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma? - Extraction et Gestion des Connaissances (EGC 2023) Lyon](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
 - [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
