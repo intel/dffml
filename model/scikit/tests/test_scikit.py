@@ -11,7 +11,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 import dffml_model_scikit.scikit_models
 from sklearn.datasets import make_blobs
-from model.scikit.dffml_model_scikit import (
+from dffml_model_scikit import (
     SklearnModelAccuracy,
     ScorerWillNotWork,
 )
