@@ -11,7 +11,7 @@ from dffml.accuracy import (
     AccuracyContext,
 )
 
-from model.scratch.dffml_model_scratch.anomalydetection import (
+from dffml_model_scratch.anomalydetection import (
     getF1,
     multivariateGaussian,
     findIndices,
