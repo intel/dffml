@@ -17,6 +17,7 @@ wheelhouse/
 .mypy_cache/
 *.egg-info/
 htmlcov/
+*.DS_Store
 .venv/
 html/
 pages/
