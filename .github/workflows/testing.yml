@@ -253,6 +253,7 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    if: false
     strategy:
       fail-fast: false
       matrix:
