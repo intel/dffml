@@ -11,4 +11,7 @@ For our THREATS.md, whats holding our project up? XKCD skycastles (associated vo
 
 Add in forcasted posture with issue analysis from data flow chached streams of concisousness aggregation.
 
-https://imgs.xkcd.com/comics/dependency_2x.png
+![skycastle-showing-all-of-modern-digital-infra-with-one-tiny-coloumn-representing-the-lifecycle-posture-due-to-single-maintainer-of-critical-path-project-aka-non-swapable-dep](https://imgs.xkcd.com/comics/dependency_2x.png)
+
+- References
+  - https://github.com/ietf-scitt/use-cases/blob/de2b016b37d6762fba9f5b1bcde96324c67ce25e/openssf_metrics.md#activitypub-extensions-for-securitytxt
