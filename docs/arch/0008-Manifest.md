@@ -21,7 +21,8 @@ implementation and it's prototype if you were in the C langague).
     level for that data structure).
 
 Data blobs can be refered to as a "manifest instance" or "instance of
-a manifest".
+a manifest". A JSONLD document is a manifest with multiple schema given
+via `@context`.
 
 By making the manifest a concept we adopt, we can classify anything which
 provides the minimally needed information to facilitate cross domain
@@ -36,6 +37,10 @@ requires the inputs, which we would label conceptually as an instance of a
 manifest.
 
 References:
+
+- JSON LD
+
+  - https://json-ld.org/
 
 - JSON Schema
 
