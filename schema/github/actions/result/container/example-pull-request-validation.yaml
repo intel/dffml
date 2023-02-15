@@ -1,4 +1,4 @@
 $schema: "https://github.com/intel/dffml/raw/dffml/schema/github/actions/result/container/0.0.0.schema.json"
 commit_url: "https://github.com/intel/dffml/commit/1f347bc7f63f65041a571d9e3c174d8b9ead24aa"
-pipline_id: "https://github.com/intel/dffml/actions/runs/4185582030/jobs/7252852590"
+job_url: "https://github.com/intel/dffml/actions/runs/4185582030/jobs/7252852590"
 result: "docker.io/intelotc/dffml@sha256:ae636f72f96f499ff5206150ebcaafbd64ce30affa7560ce0a41f54e871da2"
