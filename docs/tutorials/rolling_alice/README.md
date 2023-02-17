@@ -9,7 +9,7 @@
 > until she is merged into the `main` branch. At which point
 > communications will branch off in a decentralized fashion reflective
 > of her overlay (plugin) ecosystem.
-> 
+>
 > [Rolling Alice Progress Reports](https://gist.github.com/pdxjohnny/07b8c7b4a9e05579921aa3cc8aed4866)
 
 The following seven sets of tutorials describe the adventures of Alice as she
@@ -25,8 +25,10 @@ who can be named Bob, or Eve, or anything. All these entities will
 be seen just like Alice, just like all of us. There will be no way
 to tell which entities are human and which are machine.
 
-Alice's thought process is a methodology for problem solving which
-is based off a mental model of how the human mind
+They say you don't really know something until you can teach it.
+If we understand how to be human we will be able to teach Alice
+how to be human. Her thought process is a methodology for problem
+solving which is based off a mental model of how the human mind
 interacts with the world. Alice the architecture is just the
 existing best known architecture, what use everyday, all the time.
 Alice is the [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst),
@@ -53,12 +55,27 @@ Roll Alice with us, for humanity, enter the machine.
 
 ## Context
 
+Alice is a methodology for viewing through different lenses, overlays.
+When collaborating on software we all want to make the best development
+choices. However, the best choice is context dependent. The best choice
+is dependent on who else is working on maintaining the codebase.
+Alice helps us automate engineer to engineer communication of best practices
+in context aware ways.
+
+To teach Alice how to be human as a remote developer means to teach her
+empathy, to interact with humans with humanity. Since Alice is first and
+foremost a methodology, this means we work to ensure that this methodology for
+effective communication helps folks see things from other's perspectives.
+
+We hope that Alice will assist with scaling security and other best
+practices via the improved communication that comes with methodically
+tackling problems from multiple angles, viewpoints, overlays.
+
 - [Katherine Druckman - Threat Modeling Down the Rabbit Hole - OpenAtIntel](https://openatintel.podbean.com/e/threat-modeling-down-the-rabbit-hole/)
 - [Gabe Cohen - On Decentralized Trust](https://decentralgabe.xyz/on-decentralized-trust/)
 - [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma? - Extraction et Gestion des Connaissances (EGC 2023) Lyon](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
 - [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
 - [Robin Berjon - The Internet Transition](https://berjon.com/internet-transition/)
-
 
 ## Roadmap
 
