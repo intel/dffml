@@ -5,7 +5,7 @@ For understanding our security lifestyle holistic posture we need to map how our
 - References
   - I am not a supplier, Thomas Depierre
     - https://www.softwaremaxims.com/blog/not-a-supplier
-    - Software projects as racoons digging through OSS trash, Alice helps us know whats okay fornour project to WAT (Entity Analysis Trinity)
+    - Software projects as racoons digging through OSS trash, Alice helps us know whats okay for our project to EAT (Entity Analysis Trinity)
 
 For our THREATS.md, whats holding our project up? XKCD skycastles (associated vol 2: Cartography)
 
