@@ -102,6 +102,7 @@ async def gh_issue_create_or_update_by_title(
         # TODO Data model from data model generation from schema
         if issue["title"] == title and issue["state"] == "OPEN":
             found_issue_to_update = issue
+            break
     # If we don't find it, create it
     if not found_issue_to_update:
         return await gh_issue_create(
