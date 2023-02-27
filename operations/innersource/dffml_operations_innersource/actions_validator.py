@@ -11,7 +11,7 @@ from dffml_operations_innersource.operations import (
 
 
 ActionsValidatorBinary = NewType("ActionsValidatorBinary", str)
-ActionsValidatorResult = NewType("ActionsValidatorResult", str)
+ActionsValidatorResult = NewType("ActionsValidatorResult", dict)
 
 
 @dffml.op
@@ -53,6 +53,9 @@ async def actions_validator(
     >>> print(asyncio.run(main()))
     True
     """
+    pass_fail = False
+    stderr = ""
+    items = None
     async for event, result in dffml.run_command_events(
         [
             str(actions_validator_binary),
@@ -70,7 +73,13 @@ async def actions_validator(
         if event is dffml.Subprocess.STDOUT and logger:
             logger.debug("Passed validation: %s", result.decode())
         elif event is dffml.Subprocess.STDERR and logger:
-            logger.debug("Failed validation: %s", result.decode())
+            stderr = result.decode()
+            logger.debug("Failed validation: %s", stderr)
+            # TODO Parse output into dict or data model
+            items = stderr
         elif event is dffml.Subprocess.COMPLETED:
-            # TODO Multi output return of stdout / stderr
-            return bool(result == 0)
+            pass_fail = bool(result == 0)
+        return {
+            "pass": pass_fail,
+            "items": items,
+        }
