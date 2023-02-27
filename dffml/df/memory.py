@@ -1975,7 +1975,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             output = {}
             async for operation, results in self.run_stage(ctx, Stage.OUTPUT):
                 output.setdefault(operation.instance_name, {})
-                output[operation.instance_name].update(results)
+                if results is not None:
+                    output[operation.instance_name].update(results)
         except:
             if strict:
                 raise
