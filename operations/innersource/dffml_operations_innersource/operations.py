@@ -238,6 +238,23 @@ def repo_directory(self, repo: git_repository_checked_out.spec) -> RepoDirectory
     return {"result": repo.directory}
 
 
+RepoURL = NewType("RepoURL", str)
+
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": RepoURL},
+)
+def repo_url(self, repo: git_repository_checked_out.spec) -> RepoURL:
+    """
+    Helper opertion to expose repo URL of checked out repo object.
+
+    TODO Remove this in favor of some kind of mapping extract style on objects
+    ref engineering logs for more notes on @op.mapping.extract style decorator.
+    """
+    return {"result": repo.URL}
+
+
 HasDocs = NewType("HasDocs", dict)
 
 
