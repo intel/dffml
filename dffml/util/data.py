@@ -249,6 +249,9 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
+    elif hasattr(value, "dict"):
+        # https://docs.pydantic.dev/usage/exporting_models/#model
+        obj[key] = value.dict()
     elif "numpy" in typename_lower:
         if isinstance(value, collections.abc.Iterable) and isinstance(
             getattr(value, "tolist", None), collections.abc.Callable
