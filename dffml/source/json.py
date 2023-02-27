@@ -10,6 +10,7 @@ from ..record import Record
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..util.entrypoint import entrypoint
+from ..util.data import export_dict
 
 from .log import LOGGER
 
@@ -86,6 +87,6 @@ class JSONSource(FileSource, MemorySource):
             self.logger.debug(f"{self.config.filename} updated")
             if await self.OPEN_JSON_FILES[self.config.filename].dec():
                 del self.OPEN_JSON_FILES[self.config.filename]
-                json.dump(records, fd)
+                json.dump(export_dict(result=records)["result"], fd)
                 self.logger.debug(f"{self.config.filename} written")
         LOGGER.debug("%r saved %d records", self, len(self.mem))
