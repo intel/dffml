@@ -53,7 +53,7 @@ async def actions_validator(
     >>> print(asyncio.run(main()))
     True
     """
-    pass_fail = False
+    exit_code = -1
     stderr = ""
     items = None
     async for event, result in dffml.run_command_events(
@@ -78,8 +78,9 @@ async def actions_validator(
             # TODO Parse output into dict or data model
             items = stderr
         elif event is dffml.Subprocess.COMPLETED:
-            pass_fail = bool(result == 0)
-        return {
-            "pass": pass_fail,
-            "items": items,
-        }
+            exit_code = result
+    return {
+        "pass": bool(exit_code == 0),
+        "exit_code": exit_code,
+        "items": items,
+    }
