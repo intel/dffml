@@ -1,5 +1,7 @@
 import json
+import pathlib
 import logging
+import tempfile
 from typing import Optional
 
 import dffml
@@ -11,24 +13,28 @@ async def gh_issue_create(
     body: str,
     logger: Optional[logging.Logger] = None,
 ) -> str:
-    async for event, result in dffml.run_command_events(
-        [
-            "gh",
-            "issue",
-            "create",
-            "-R",
-            repo_url,
-            "--title",
-            title,
-            "--body",
-            body,
-        ],
-        logger=logger,
-        events=[dffml.Subprocess.STDOUT],
-    ):
-        if event is dffml.Subprocess.STDOUT:
-            # The URL of the issue created
-            return result.strip().decode()
+    # Create tempdir to avoid issue body to long
+    with tempfile.TemporaryDirectory() as tempdir:
+        body_path = pathlib.Path(tempdir, "issue_body.txt")
+        body_path.write_text(body)
+        async for event, result in dffml.run_command_events(
+            [
+                "gh",
+                "issue",
+                "create",
+                "-R",
+                repo_url,
+                "--title",
+                title,
+                "--body-file",
+                str(body_path),
+            ],
+            logger=logger,
+            events=[dffml.Subprocess.STDOUT],
+        ):
+            if event is dffml.Subprocess.STDOUT:
+                # The URL of the issue created
+                return result.strip().decode()
 
 
 async def gh_issue_update(
@@ -38,23 +44,27 @@ async def gh_issue_update(
     *,
     logger: Optional[logging.Logger] = None,
 ) -> str:
-    async for event, result in dffml.run_command_events(
-        [
-            "gh",
-            "issue",
-            "edit",
-            issue_url,
-            "--title",
-            title,
-            "--body",
-            body,
-        ],
-        logger=logger,
-        events=[dffml.Subprocess.STDOUT],
-    ):
-        if event is dffml.Subprocess.STDOUT:
-            # The URL of the issue created
-            return result.strip().decode()
+    # Create tempdir to avoid issue body to long
+    with tempfile.TemporaryDirectory() as tempdir:
+        body_path = pathlib.Path(tempdir, "issue_body.txt")
+        body_path.write_text(body)
+        async for event, result in dffml.run_command_events(
+            [
+                "gh",
+                "issue",
+                "edit",
+                issue_url,
+                "--title",
+                title,
+                "--body-file",
+                str(body_path),
+            ],
+            logger=logger,
+            events=[dffml.Subprocess.STDOUT],
+        ):
+            if event is dffml.Subprocess.STDOUT:
+                # The URL of the issue created
+                return result.strip().decode()
 
 
 async def gh_issue_search_by_title(
