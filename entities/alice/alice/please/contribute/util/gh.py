@@ -67,6 +67,32 @@ async def gh_issue_update(
                 return result.strip().decode()
 
 
+async def gh_issue_close(
+    issue_url: str,
+    *,
+    comment_body: Optional[str] = None,
+    logger: Optional[logging.Logger] = None,
+) -> str:
+    async for event, result in dffml.run_command_events(
+        [
+            "gh",
+            "issue",
+            "close",
+            issue_url,
+        ] + (
+            [
+                "--comment",
+                str(comment_body),
+            ] if comment_body is not None else []
+        ),
+        logger=logger,
+        events=[dffml.Subprocess.STDOUT],
+    ):
+        if event is dffml.Subprocess.STDOUT:
+            # The URL of the issue created
+            return result.strip().decode()
+
+
 async def gh_issue_search_by_title(
     repo_url: str,
     title: str,
@@ -81,6 +107,8 @@ async def gh_issue_search_by_title(
             "list",
             "-R",
             repo_url,
+            "--state",
+            "all",
             "--search",
             title,
             "--json",
@@ -104,23 +132,31 @@ async def gh_issue_create_or_update_by_title(
 ) -> str:
     # Try to find an exsiting issue with the same title
     found_issue_to_update = None
+    found_issue_to_update_closed = None
     async for issue in gh_issue_search_by_title(
         repo_url,
         title,
         logger=logger,
     ):
         # TODO Data model from data model generation from schema
-        if issue["title"] == title and issue["state"] == "OPEN":
-            found_issue_to_update = issue
-            break
+        if issue["title"] == title:
+            if issue["state"] == "OPEN":
+                found_issue_to_update = issue
+            else:
+                found_issue_to_update_closed = issue
     # If we don't find it, create it
-    if not found_issue_to_update:
+    if found_issue_to_update is None and found_issue_to_update_closed is None:
         return await gh_issue_create(
             repo_url,
             title,
             body,
             logger=logger,
         )
+    issue = (
+        found_issue_to_update
+        if found_issue_to_update
+        else found_issue_to_update_closed
+    )
     # Otherwise update the body of the existing issue
     return await gh_issue_update(
         issue["url"],
