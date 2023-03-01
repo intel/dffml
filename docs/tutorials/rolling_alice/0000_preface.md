@@ -190,6 +190,9 @@ Failure to achieve ubiquitous adoption of an open architecture with meticulously
 
 We are aligned with the OpenSSF on the collection of Meritcs, SBOM, and VEX data targetting SCITT as our building block for communication of data provenance. Our goals are to contine exploration of [Living Threat Models](https://github.com/johnlwhiteman/living-threat-models) and their potential to help increase visability into the the software supply chain. We are looking at SBOM, SPDX cannonicalization, and Web5 as common backing formats facilitate exchange of information (SCITT). We will build our thought communication protocol on top of well established existing protocols. Alice will leverage the Open Architecture, the thougt transport protocol, to breath life into threat models. We hope Alice will proactivly assist with scaling adoption of security and other best practices in the community at large.
 
+- References
+  - [Artificial Intelligence: Last Week Tonight with John Oliver (HBO)](https://youtu.be/Sqa8Zo2XWc4?t=1400)
+
 ## Notes
 
 Much of this discussions thread are notes and scratch work around the purpose and future of the project. Everything here will be converted to ADRs, issues, code, etc. as appropriate. We as a community (open to everyone) will work together to map our our activities to achieve these goals. We will document our process along the way and write these series of tutorials to show others how they can understand and extend the open architecture (Alice).
