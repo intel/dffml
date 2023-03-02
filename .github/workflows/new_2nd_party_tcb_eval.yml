@@ -3,7 +3,7 @@
 # - Upstream: https://github.com/stefanbuck/github-issue-parser/blob/145e4dc5ee373ffe0129d3a3d9fc44dce64f7491/README.md#license=MIT
 name: 'IssueOps: Alice: ShouldI: Contribute'
 on:
-  issue_comment:
+  issues:
     types: [created]
 
 permissions:
@@ -20,6 +20,11 @@ jobs:
       id: issue-parser
       with:
         template-path: .github/ISSUE_TEMPLATE/new_plugin.yml
+    - name: Add comment
+      uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        body: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}"
 
   contribute:
     needs: issue-parser
