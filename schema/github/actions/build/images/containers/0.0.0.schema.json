@@ -1,0 +1,49 @@
+{
+    "$id": "https://github.com/intel/dffml/raw/main/schema/github/actions/build/images/containers/0.0.0.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "@context": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "include": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/container_manifest_instance"
+            }
+        }
+    },
+    "definitions": {
+        "container_manifest_instance": {
+            "type": "object",
+            "properties": {
+                "branch": {
+                    "type": "string"
+                },
+                "build_args": {
+                    "type": "string"
+                },
+                "commit": {
+                    "type": "string"
+                },
+                "dockerfile": {
+                    "type": "string"
+                },
+                "image_name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "repository": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
