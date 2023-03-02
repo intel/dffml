@@ -1,0 +1,36 @@
+
+# 
+# Upstream: https://github.com/actions/importer-issue-ops/blob/f5fc2781a33d92f232f415c62d021dcf6dae1e06/.github/workflows/issue_ops.yml#license=MIT
+# Overlays:
+# - Upstream: https://github.com/stefanbuck/github-issue-parser/blob/145e4dc5ee373ffe0129d3a3d9fc44dce64f7491/README.md#license=MIT
+name: 'IssueOps: Alice: ShouldI: Contribute'
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  issue-parser:
+    outputs:
+      repo_name: ${{ steps.issue-parser.outputs.issueparser_repo_name }}
+    runs-on: ubuntu-latest
+    outputs:
+      command: ${{ steps.prepare.outputs.command }}
+      log-filename: ${{ steps.logs.outputs.filename }}
+    steps:
+    - uses: stefanbuck/github-issue-parser@v3
+      id: issue-parser
+      with:
+        template-path: .github/ISSUE_TEMPLATE/new_plugin.yml
+
+  contribute:
+    needs: issue-parser
+    uses: "./.github/workflows/alice_shouldi_contribute.yml"
+    with:
+      repo_url: "${{ needs.issue-parser.outputs.repo_url }}"
+    secrets:
+      GH_USER: "aliceoa"
+      GH_ACCESS_TOKEN: ${{ secrets.ALICE_SHOULDI_CONTRIBUTE_ISSUE_OPS }}
