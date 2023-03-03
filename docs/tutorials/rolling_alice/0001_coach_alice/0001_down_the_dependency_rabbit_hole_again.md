@@ -36,6 +36,8 @@ Our first step is to know what we're looking at, Python projects to start.
 What are all their dependencies?
 
 - https://github.com/intel/dffml/issues/596
+  - https://github.com/anthonyharrison/sbom4python !!!
+  - https://github.com/anthonyharrison/lib4sbom
   - https://www.youtube.com/watch?v=D9puJiKKKS8&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=871s
 
 ## Notes
