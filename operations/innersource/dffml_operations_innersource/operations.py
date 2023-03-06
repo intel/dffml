@@ -271,12 +271,15 @@ def has_docs(
         [
             readme_present,
             *itertools.chain(*[
-                [
-                    check in path.read_text().lower()
-                    for check in ("support", "usage", "example", "known issues")
-                ]
+                (
+                    [
+                        check in path.read_text().lower()
+                        for check in ("support", "usage", "example", "known issues")
+                    ]
+                    if "readme" == path.stem.lower()
+                    else ([False] * 4)
+                )
                 for path in pathlib.Path(repo_directory).iterdir()
-                if "readme" == path.stem.lower()
             ])
         ],
     ))
