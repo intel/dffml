@@ -44,7 +44,7 @@ async def convert(document):
 
 class TestCLIDataFlowConvert(AsyncTestCase):
     @requires_module("yaml")
-    async def test_convert_yaml_server_platform_validation(self):
+    async def test_convert_yaml_manifest(self):
         """
         Background
         ----------
@@ -112,9 +112,7 @@ class TestCLIDataFlowConvert(AsyncTestCase):
                     """\
                     $document_format: my.document.format
                     $document_version: 0.0.0
-                    bkc: bkcX
-                    platform: platformX
-                    testplan:
+                    exec:
                     - git:
                         repo: https://example.com/my-repo.git
                         branch: main
