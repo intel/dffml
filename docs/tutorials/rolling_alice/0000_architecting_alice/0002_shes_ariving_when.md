@@ -9,7 +9,21 @@ This should be about the pattern, the system context, the Upstream,
 the Overlay, and the Orchestrator. A pattern that has always existed.
 The pattern of the open architecture has been something we could
 have done at any time. It's just the way you think about traversing
-the process graph.
+the process graph
+([RFCv3.1: IETF SCITT: Use Case: OpenSSF Metrics: activitypub extensions for security.txt](https://github.com/ietf-scitt/use-cases/blob/dc4bab3e1f80882140016d276698b7024f4a6fa2/openssf_metrics.md#openssf-metrics)).
+
+We will delve into the ever deepening rabbit hole of maintenance tasks
+we as developers end up doing to keep our software projects as healthy
+as possible. We'll start with an idea, the original sin if you will,
+following our train of thought until we have a little application we
+can kick the tires on. As our project's releases start rolling we'll
+begin building and refining policies and actions. Alice rolls with us
+as we overlay context aware responses to lifecycle events such as CVEs.
+We'll see how Alice helps us understand and strengthen our software's
+security posture and overall health as our software evolves over time.
+When all's said and done we'll have a secure rolling release in
+alignment with the project's strategic principles and values,
+measurable, auditable, actionable. Data, Analysis, Control (DAC).
 
 ## Data Flow Programming
 
