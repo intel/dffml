@@ -381,6 +381,9 @@ $ ./scitt-emulator.sh client verify-receipt --claim claim.cose --receipt claim.r
 > **TODO** The should be moved to Volume 6: Chapter 1: Time Travel with Us
 >
 > Time being relative to the sum of knowledge in aligned chains of
-> thought / system contexts. See discussion dump for details: 2022-05-02 https://github.com/intel/dffml/discussions/1369#discussioncomment-2677810
+> thought / system contexts. See discussion dump for details:
+>
+> - 2022-05-02 https://github.com/intel/dffml/discussions/1369#discussioncomment-2677810
+> - 2023-03-07 https://github.com/intel/dffml/discussions/1406#discussioncomment-5229574
 >
 > > The trick is tick to tock is different across different conscious and subconscious states. 
