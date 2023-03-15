@@ -37,6 +37,9 @@ What are all their dependencies?
 
 - https://github.com/intel/dffml/issues/596
   - https://github.com/anthonyharrison/sbom4python !!!
+    - We should attempt to build a mermaid diagram via constructing a dataflow from the sbom of a project and then rendering it using the `dffml dataflow diagram` command or similar. We should start with known packages like `flask`, and classify using mappings of known packages to their function (HTTP server). Later we can do automated discovery of mappings based on deeper analysis.
+    - https://www.youtube.com/watch?v=TMlC_iAK3Rg&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=2494s
+      - https://github.com/johnlwhiteman/living-threat-models/blob/main/demo/ALICE.rst
   - https://github.com/anthonyharrison/lib4sbom
   - https://www.youtube.com/watch?v=D9puJiKKKS8&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=871s
 
