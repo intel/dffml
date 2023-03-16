@@ -80,3 +80,47 @@ Save the file and click on the ``Run`` at the menu bar, and then click on
 when the program launches or you can use break point to stop at any arbitrary
 point in the code. Read more about debugging a Python code in
 VSCode `here <https://code.visualstudio.com/docs/python/debugging>`_.
+
+Virtual Environment
+===================
+
+Virtual environments give you a little more isolation than installing to your
+home directory. The disadvantage is you have to ``activate`` them every time you
+want to use the packages you've installed in them.
+
+Python 3 should have ``virtualenv`` built in as ``venv`` if not you can just
+install ``virtualenv`` and use that.
+
+For more information on Using Python environments in VSCode `here <https://code.visualstudio.com/docs/python/environments>`_.
+
+Create the virtual environment.
+
+.. code-block:: console
+
+    $ python3 -m venv .venv
+
+Activate it (on Linux / OSX / UNIX variants)
+
+.. code-block:: console
+
+    $ . .venv/bin/activate
+
+Activate it (on Widows)
+
+.. code-block:: console
+
+    $ .\.venv\Scripts\activate
+
+Install the packages in development mode.
+
+.. code-block:: console
+
+    $ pip install -U pip setuptools wheel
+    $ pip install -e .[dev]
+    $ dffml service dev install
+
+Install pre-commit hooks.
+
+.. code-block:: console
+
+    $ pre-commit install

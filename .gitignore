@@ -38,3 +38,4 @@ tests/service/logs/
 tests/notebooks/data/
 .venv39/
 .venv37/
+.DS_Store
