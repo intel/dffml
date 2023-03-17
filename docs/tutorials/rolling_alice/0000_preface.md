@@ -2,6 +2,8 @@
 
 > Planning for our tutorial series, Volumes 1 through 6, which will run from June 2022 through June 2029. Planned completion date for Volume 6 ends then (added a year for buffer). We will write volumes in parallel and target completion of one each year. Volume 0 will be updated frequently throughout. This effort also include ADRs and plans (vol 0) and should be considered living documents. Contributions from all are welcome. Alice will be a maintainer who works across 2nd/3rd party plugins (extensable to any mono or poly repo setup). She’ll act as a coach to other developers and do work herself (think dependabot PRs). She’ll act like an intelligent context aware set of CI jobs that learns with you and your orgs.
 
+- [Video: The plan in 15 minutes and high level overview of volumes and how to contribute](https://www.youtube.com/watch?v=UIT5Bl3sepk&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw)
+
 ### Table Of Contents
 
 - [Upstream](https://github.com/intel/dffml/tree/alice/entities/alice)
