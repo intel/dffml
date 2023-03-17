@@ -175,12 +175,13 @@ References:
   - > Alice is a 27 year old woman living in New York City. Alice works at Fancy Tech Co, an AI and Blockchain consultancy serving fortune 500 companies in the tri state area. Alice mostly works from home, using Zoom and WebEx for meetings with clients. Alice loves roller skating, and making Lasagna.
 - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
   - "The Scary Part"
+    - https://www.iflscience.com/gpt-4-hires-and-manipulates-human-into-passing-captcha-test-68016
     - [https://www.nytimes.com/2023/02/16/technology/bing-chatbot-transcript.html](https://gist.github.com/pdxjohnny/6093a7ae681bf4f5be26211dd83227f6)
       - > In a two-hour conversation with our columnist, Microsoft’s new chatbot
         > said it would like to be human, had a desire to be destructive [...]
     - Human-level play in the game of Diplomacy by combining language models with strategic reasoning
       - https://www.science.org/doi/10.1126/science.ade9097
-    - We must ensure machine do not minipulate us in ways we do not understand.
+    - We must ensure machines do not minipulate us in ways we do not understand.
     - We must harden train of thought security infrastructure and integrate throught the stack.
     - We must ensure we understand risk involved when cross domain conceputal mapping is applied
       by AI implementations. We hope analysis via aligned methodologies (Open Architecture) will
