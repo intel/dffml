@@ -17,6 +17,14 @@
 - [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
 - [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
 
+## What's She Doing?
+
+Alice is our reference maintainer who secures rolling releases.
+
+## One Sentence
+
+Alice is a methodology for secureing rolling releases.
+
 ## Elevator Pitch
 
 We are writing a tutorial for an open source project on how we build an AI to work on the open source project as if she were a remote developer. Bit of a self fulfilling prophecy, but who doesn't love an infinite loop now and again. These are the draft plans: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/ ~~first draft: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280~~
