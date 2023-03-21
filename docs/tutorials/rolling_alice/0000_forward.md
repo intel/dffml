@@ -99,6 +99,10 @@ Leveraging the Open Architecture methodology we decouple the description of the 
 
 See https://github.com/pdxjohnny/use-cases/blob/openssf_metrics/openssf_metrics.md **TODO** vendor
 
+## Distro Soup
+
+When one runs code there is a deployment context within that code runs. That deployment context has an associated threat model (`THREATS.md`). That threat model may or may not be the same as the threat model of the upstream from which one sourced the code. That deployment context's threat model is dependent on all the other software running within that system context. End user config (enabling or disabling of secure boot for example) affects the security guarentees declared within the threat model. Even if you changed nocode, and just modifed config, you may introduce vulnerabilities. We can think of the end user config as a dynamic context aware fork which has been overlayed on the upstream. Thinking of everything as a fork makes it clear that one must be able to receive lifecycle events from published pacakges, as well as those non-published (in package registries) forks. This is the same setup one is forced into fundamentally when working across multiple pull requests in a poly repo environment (example: host kernel, host userspace (+VMM), guest kernel, guest userspace. related to dimond pattern [PR validation from 2nd and 3rd party plugin ADR](https://github.com/intel/dffml/pull/1061/files#diff-c7d7828822f15922ed830bb6f3148edc97c291c809836b1a1808165d36bd8c9dR227)).
+
 ## RFCv1 Announcement
 
 Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
