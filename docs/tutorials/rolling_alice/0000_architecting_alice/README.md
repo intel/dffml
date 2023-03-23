@@ -172,7 +172,7 @@ References:
   - > Carroll described her as "loving and gentle", "courteous to all", "trustful", and "wildly curious, and with the eager enjoyment of Life" [...]
   - > Commentators characterise her as [...] imaginative introspective, generally well-mannered, and clever.
 - https://github.com/w3c-ccg/did.actor/tree/3fe99eec616b71d7fc36c5603235eeac81c91652/alice
-  - > Alice is a 27 year old woman living in New York City. Alice works at Fancy Tech Co, an AI and Blockchain consultancy serving fortune 500 companies in the tri state area. Alice mostly works from home, using Zoom and WebEx for meetings with clients. Alice loves roller skating, and making Lasagna.
+  - > Alice is a 27 year old woman living in New York City. Alice works at Fancy Tech Co, an AI and Blockchain consultancy serving fortune 500 companies in the tri state area. Alice mostly works from home, using Zoom and WebEx for meetings with clients. Alice loves [roller skating](https://www.imdb.com/video/vi2636367129/), and making Lasagna.
 - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
   - "The Scary Part"
     - https://www.iflscience.com/gpt-4-hires-and-manipulates-human-into-passing-captcha-test-68016
