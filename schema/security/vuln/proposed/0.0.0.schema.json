@@ -8,6 +8,9 @@
                 "type": "string"
             }
         },
+        "@id": {
+            "type": "string"
+        },
         "include": {
             "type": "array",
             "items": {
