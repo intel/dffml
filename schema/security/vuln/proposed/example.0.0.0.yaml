@@ -1,0 +1,23 @@
+"@context": "https://github.com/intel/dffml/raw/39ffed21f78e3987ba235f7c82c0a29e902fef00/schema/security/vuln/proposed/0.0.0.schema.json"
+include:
+- affected_versions:
+  - 0.0.0
+  credits:
+  - name: Alice
+  description: "Some kind of caterpillar"
+  exploitation_techniques:
+  - remote
+  - local
+  mitigation: "Wake up!"
+  poc: |
+    print("🐛")
+  timeline:
+  - date: "2022-04-17"
+    description: "Here"
+    parties:
+    - Alice
+  - date: "2023-03-23"
+    description: "Reported"
+    parties:
+    - name: Alice
+    - name: Bob
