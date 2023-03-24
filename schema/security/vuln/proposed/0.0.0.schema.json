@@ -50,66 +50,63 @@
                         "$ref": "#/definitions/entity"
                     }
                 }
-            },
-            "exploitation_technique": {
-                "type": "string",
-                "description": "How can did you break it?",
-                "enum": [
-                    "local",
-                    "remote"
-                ]
-            },
-            "poc": {
-                "type": "string",
-                "description": "POC Code and/or steps to reproduce (can attach a file, base64 encode a zip or tar for now if a repo or more than one file)"
-            },
-            "mitigation": {
-                "type": "string",
-                "description": "Any suggestions on how to fix it?"
-            },
-            "affected_versions": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/definitions/proposed_vuln"
+            }
+        },
+        "exploitation_technique": {
+            "type": "string",
+            "description": "How can did you break it?",
+            "enum": [
+                "local",
+                "remote"
+            ]
+        },
+        "poc": {
+            "type": "string",
+            "description": "POC Code and/or steps to reproduce (can attach a file, base64 encode a zip or tar for now if a repo or more than one file)"
+        },
+        "mitigation": {
+            "type": "string",
+            "description": "Any suggestions on how to fix it?"
+        },
+        "affected_version": {
+            "type": "string",
+            "description": "What Product, OS, stack and versions have you tested against? TODO regex for PURLs"
+        },
+        "timeline": {
+            "type": "array",
+            "description": "What are we thinking the order of events related to responsible discloure is?",
+            "items": {
+                "$ref": "#/definitions/timeline_item"
+            }
+        },
+        "timeline_item": {
+            "type": "object",
+            "description": "Something is happneing!",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "What's happening at this point in time?"
                 },
-                "description": "What Product, OS, stack and versions have you tested against? TODO regex for PURLs"
-            },
-            "timeline": {
-                "type": "array",
-                "description": "What are we thinking the order of events related to responsible discloure is?",
-                "items": {
-                    "$ref": "#/definitions/timeline_item"
+                "date": {
+                    "type": "string",
+                    "description": "When is this timeline itme happening. TODO date regex. TODO non-linear time conversion helpers"
+                },
+                "parties": {
+                    "type": "array",
+                    "description": "Who's involved in this timeline item?",
+                    "items": {
+                        "$ref": "#/definitions/entity"
+        }
                 }
-            },
-            "timeline_item": {
-                "type": "object",
-                "description": "Something is happneing!",
-                "properties": {
-                    "description": {
-                        "type": "string",
-                        "description": "What's happening at this point in time?"
-                    },
-                    "date": {
-                        "type": "string",
-                        "description": "When is this timeline itme happening. TODO date regex. TODO non-linear time conversion helpers"
-                    },
-                    "parties": {
-                        "type": "array",
-                        "description": "Who's involved in this timeline item?",
-                        "items": {
-                            "$ref": "#/definitions/entity"
-			}
-                    }
-                }
-            },
-            "entity": {
-                "type": "object",
-                "description": "Who done it",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Whooooo areeeeee youuuuuu?"
-                    }
+            }
+        },
+        "entity": {
+            "type": "object",
+            "description": "Who done it",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Whooooo areeeeee youuuuuu?"
                 }
             }
         }
