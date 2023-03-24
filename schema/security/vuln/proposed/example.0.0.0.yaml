@@ -1,5 +1,6 @@
 "@context":
 - "https://github.com/intel/dffml/raw/39ffed21f78e3987ba235f7c82c0a29e902fef00/schema/security/vuln/proposed/0.0.0.schema.json"
+"@id": "https://github.com/intel/dffml/blob/7034b17e9ab0a5f112e99f27baebd2fffa3199d6/schema/security/vuln/proposed/example.0.0.0.yaml"
 include:
 - affected_versions:
   - 0.0.0
