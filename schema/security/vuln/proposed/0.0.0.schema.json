@@ -1,0 +1,104 @@
+{
+    "$id": "https://github.com/intel/dffml/raw/main/schema/security/vuln/proposed/0.0.0.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "include": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/proposed_vuln"
+            }
+        }
+    },
+    "definitions": {
+        "proposed_vuln": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Short, yet descriptive overview of what you’ve found"
+                },
+                "exploitation_techniques": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/exploitation_technique"
+                    }
+                },
+                "poc": {
+                    "$ref": "#/definitions/poc"
+                },
+                "mitigation": {
+                    "$ref": "#/definitions/mitigation"
+                },
+                "affected_versions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/affected_version"
+                    }
+                },
+                "timeline": {
+                    "$ref": "#/definitions/timeline"
+                },
+                "credits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity"
+                    }
+                }
+            },
+            "exploitation_technique": {
+                "type": "string",
+                "description": "How can did you break it?",
+                "enum": [
+                    "local",
+                    "remote"
+                ]
+            },
+            "poc": {
+                "type": "string",
+                "description": "POC Code and/or steps to reproduce (can attach a file, base64 encode a zip or tar for now if a repo or more than one file)"
+            },
+            "mitigation": {
+                "type": "string",
+                "description": "Any suggestions on how to fix it?"
+            },
+            "affected_versions": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/proposed_vuln"
+                },
+                "description": "What Product, OS, stack and versions have you tested against? TODO regex for PURLs"
+            },
+            "timeline": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/timeline"
+                },
+                "description": "What Product, OS, stack and versions have you tested against? TODO regex for PURLs"
+            },
+            "timeline_item": {
+                "type": "object",
+                "description": "Something is happneing!",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "What's happening at this point in time?"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "When is this timeline itme happening. TODO date regex. TODO non-linear time conversion helpers"
+                    },
+                    "parties": {
+                        "$ref": "#/definitions/entity",
+                        "description": "Who's involved in this timeline item?"
+                    }
+                }
+            }
+        }
+    }
+}
