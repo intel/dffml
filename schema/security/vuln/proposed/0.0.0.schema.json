@@ -98,6 +98,16 @@
                         "description": "Who's involved in this timeline item?"
                     }
                 }
+            },
+            "entity": {
+                "type": "object",
+                "description": "Who done it",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Whooooo areeeeee youuuuuu?"
+                    }
+                }
             }
         }
     }
