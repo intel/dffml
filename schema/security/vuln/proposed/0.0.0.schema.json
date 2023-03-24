@@ -94,8 +94,11 @@
                         "description": "When is this timeline itme happening. TODO date regex. TODO non-linear time conversion helpers"
                     },
                     "parties": {
-                        "$ref": "#/definitions/entity",
-                        "description": "Who's involved in this timeline item?"
+                        "type": "array",
+                        "description": "Who's involved in this timeline item?",
+                        "items": {
+                            "$ref": "#/definitions/entity"
+			}
                     }
                 }
             },
