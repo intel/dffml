@@ -76,10 +76,10 @@
             },
             "timeline": {
                 "type": "array",
+                "description": "What are we thinking the order of events related to responsible discloure is?",
                 "items": {
-                    "$ref": "#/definitions/timeline"
-                },
-                "description": "What Product, OS, stack and versions have you tested against? TODO regex for PURLs"
+                    "$ref": "#/definitions/timeline_item"
+                }
             },
             "timeline_item": {
                 "type": "object",
