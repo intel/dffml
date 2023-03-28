@@ -1,24 +1,80 @@
 version: "3"
 
 networks:
-  gitea:
+  alice_forgejo_network:
+    external: false
+  bob_forgejo_network:
     external: false
 
 services:
-  server:
-    image: gitea/gitea:1.19.0
-    container_name: gitea
+  alice_forgejo_server:
+    image: codeberg.org/forgejo/forgejo:1.19.0-2-rootless
+    container_name: alice_forgejo
     environment:
       - USER_UID=1000
       - USER_GID=1000
+      - FORGEJO__database__DB_TYPE=postgres
+      - FORGEJO__database__HOST=alice_forgejo_db:5432
+      - FORGEJO__database__NAME=alice_forgejo
+      - FORGEJO__database__USER=alice_forgejo
+      - FORGEJO__database__PASSWD=alice_forgejo
     restart: always
     networks:
-      - gitea
+      - alice_forgejo_network
     volumes:
-      - ./gitea:/data
+      - ./alice_forgejo:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "2000:3000"
+      - "2022:22"
+    depends_on:
+      - alice_forgejo_db
+
+  alice_forgejo_db:
+    image: docker.io/library/postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=alice_forgejo
+      - POSTGRES_PASSWORD=alice_forgejo
+      - POSTGRES_DB=alice_forgejo
+    networks:
+      - alice_forgejo_network
+    volumes:
+      - ./alice_forgejo_postgres:/var/lib/postgresql/data
+
+  bob_forgejo_server:
+    image: codeberg.org/forgejo/forgejo:1.19.0-2-rootless
+    container_name: bob_forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__database__DB_TYPE=postgres
+      - FORGEJO__database__HOST=bob_forgejo_db:5432
+      - FORGEJO__database__NAME=bob_forgejo
+      - FORGEJO__database__USER=bob_forgejo
+      - FORGEJO__database__PASSWD=bob_forgejo
+    restart: always
+    networks:
+      - bob_forgejo_network
+    volumes:
+      - ./bob_forgejo:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
-      - "222:22"
+      - "3022:22"
+    depends_on:
+      - bob_forgejo_db
 
+  bob_forgejo_db:
+    image: docker.io/library/postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=bob_forgejo
+      - POSTGRES_PASSWORD=bob_forgejo
+      - POSTGRES_DB=bob_forgejo
+    networks:
+      - bob_forgejo_network
+    volumes:
+      - ./bob_forgejo_postgres:/var/lib/postgresql/data
