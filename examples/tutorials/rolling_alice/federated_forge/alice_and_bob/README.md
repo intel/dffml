@@ -1,4 +1,6 @@
-# Federated Forge Automated Deduplicated Analysis Cross Trust Boundry CD
+# Federated Forge Automated Deduplicated Analysis Cross Trust Boundary CD
+
+**WARNING: THIS IS A WORK IN PROGRESS AND PROVIDES NO SECURITY GUARANTEES**
 
 To bring up
 
