@@ -40,3 +40,21 @@ services:
     ports:
       - "3000:3000"
       - "3022:2222"
+
+  alice_forgejo_scitt:
+    # image: ghcr.io/scitt-community/scitt-api-emulator:main
+    image: ghcr.io/pdxjohnny/scitt-api-emulator:ci_cd_container_image
+    restart: always
+    networks:
+      - alice_forgejo_network
+    ports:
+      - "2090:8000"
+
+  bob_forgejo_scitt:
+    # image: ghcr.io/scitt-community/scitt-api-emulator:main
+    image: ghcr.io/pdxjohnny/scitt-api-emulator:ci_cd_container_image
+    restart: always
+    networks:
+      - bob_forgejo_network
+    ports:
+      - "3090:8000"
