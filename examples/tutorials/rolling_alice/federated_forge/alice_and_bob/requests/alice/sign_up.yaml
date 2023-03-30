@@ -1,0 +1,5 @@
+_csrf: CSRF_TOKEN
+email: alice@chadig.com
+password: maryisgod
+retype: maryisgod
+user_name: alice

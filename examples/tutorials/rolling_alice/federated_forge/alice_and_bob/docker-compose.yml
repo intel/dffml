@@ -24,6 +24,22 @@ services:
       - "2000:3000"
       - "2022:2222"
 
+  alice-forgejo-init-1:
+    image: ghcr.io/pdxjohnny/healthcheck:activitypub
+    stdin_open: true
+    tty: true
+    environment:
+      FORGEJO_SERVICE_ROOT: http://alice_forgejo_server:3000
+    command:
+      - /bin/bash
+      - -x
+      - /usr/src/forgejo-init/scripts/forgejo-first-time-init.sh
+    networks:
+      - alice_forgejo_network
+    volumes:
+      - ./requests/alice:/usr/src/forgejo-init/requests:ro
+      - ./requests/scripts:/usr/src/forgejo-init/scripts:ro
+
   bob_forgejo_server:
     image: codeberg.org/forgejo/forgejo:1.19.0-2-rootless
     container_name: bob_forgejo
