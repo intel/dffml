@@ -73,15 +73,10 @@ services:
   alice_activitypub_starter_kit:
     # image: ghcr.io/jakelazaroff/activitypub-starter-kit:main
     image: ghcr.io/pdxjohnny/activitypub-starter-kit:alternate_port
-    command: "--config /config/nats/js.conf -m 8222"
     networks:
       - alice_forgejo_network
     ports:
-      - "4222:4222"
-      # monitoring port
-      - "8222:8222"
-    volumes:
-      - ./alice_guac/nats:/config/nats
+      - "2777:8000"
     restart: on-failure
 
   # Due to the following issues, we have another container to perform the healthcheck
@@ -93,7 +88,7 @@ services:
   # it doesn't have utilities within it to perform the check from the container
   # itself.
   alice-service-health-1:
-    image: "local-healthcheck"
+    image: ghcr.io/pdxjohnny/healthcheck:activitypub
     stdin_open: true
     tty: true
     command:
@@ -101,8 +96,8 @@ services:
       - -c
       - |
         echo "checking-for-services";
-        until curl -I http://nats:8222 > /dev/null 2>&1; do sleep 5; done;
-        echo "nats-up";
+        until curl -I http://alice_activitypub_starter_kit:8000 > /dev/null 2>&1; do sleep 5; done;
+        echo "activitypub-start-kit-up";
         # Neo4j is turned down for now since we are currently only using the in memory backend
         # until curl -I http://neo4j:7474> /dev/null 2>&1; do sleep 5; done;
         # echo "neo4j-up";
@@ -111,7 +106,7 @@ services:
 
   alice-guac-collectsub:
     # image: "local-organic-guac"
-    image: ghcr.io/pdxjohnny/guac:activitypub
+    image: ghcr.io/pdxjohnny/guac-cont:activitypub
     command: "/opt/guac/guacone csub-server"
     networks:
       - alice_forgejo_network
@@ -127,7 +122,7 @@ services:
 
   alice-guac-graphql:
     # image: "local-organic-guac"
-    image: ghcr.io/pdxjohnny/guac:activitypub
+    image: ghcr.io/pdxjohnny/guac-cont:activitypub
     command: "/opt/guac/guacone gql-server"
     networks:
       - alice_forgejo_network
@@ -137,13 +132,13 @@ services:
       alice-service-health-1:
         condition: service_completed_successfully
     ports:
-      - "8080:8080"
+      - "2088:8080"
     volumes:
       - ./alice_guac/guac:/guac
 
   # GUAC ingestor and oci collector are dependent on the collectsub service to be up
   alice-service-health-2:
-    image: "local-healthcheck"
+    image: ghcr.io/pdxjohnny/healthcheck:activitypub
     stdin_open: true
     networks:
       - alice_forgejo_network
@@ -163,7 +158,7 @@ services:
 
   alice-guac-ingestor:
     # image: "local-organic-guac"
-    image: ghcr.io/pdxjohnny/guac:activitypub
+    image: ghcr.io/pdxjohnny/guac-cont:activitypub
     command: "/opt/guac/ingest ingest"
     networks:
       - alice_forgejo_network
@@ -178,7 +173,7 @@ services:
 
   alice-oci-collector:
     # image: "local-organic-guac"
-    image: ghcr.io/pdxjohnny/guac:activitypub
+    image: ghcr.io/pdxjohnny/guac-cont:activitypub
     command: "/opt/guac/collector image --use-csub"
     networks:
       - alice_forgejo_network
