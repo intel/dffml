@@ -15,6 +15,7 @@ $ sudo git clean -xdf .
 
 ## Sketch Notes
 
+- Allowlists as dynamic context aware policy as code over provenance of message content
 - ActivityPub (future: TransparencyInterop) protos for grpc service / openapi definition
   - On webfinger resolved endpoint for `/inbox`
     - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via [CycloneDX DataFlows](https://github.com/CycloneDX/specification/pull/194)
@@ -44,7 +45,19 @@ $ sudo git clean -xdf .
       - Require sync before queries to streams, raft?
 - Data transforms
   - heartwood --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
-
+- Use the SBOM of the cypher query to build the re-trigger flows
+  - On query we build and publish SBOM of query, if downstream listeners to they query stream see new system context stream (schema `inReplyTo` or `replies` is query, cache busting inputs if applicable) come in, and similar to a `FROM` rebuild chain that SBOM has not been built, we transform into the manifest which triggers the build, recursively fulfill any dependencies (creating repos with workflows with issue ops or dispatch flows based on upstream and overlays: distro-esq patch-a-package)
+    - On complete, federate re-trigger event for original SBOM, publish the same SBOM again
+- Hook the write to a given node field to publish schema (can be done in via policy local neo in GraalVM)
+  - `SET output.streams.by_schema_shortname.vcs_push = output.streams.by_schema_shortname.vcs_push + {key: n.value}`
+- `alice threats listen activitypub -stdin`
+  - For now execute with grep and xargs unbuffered for each note from websocket/websocat
+  - Alias for dataflow which has ActivityPub based listener (later encapsulate that in dataflow, for now follow self with startkit and others, follow as code)
+  - Output via operation which just does `print()` to stdout
+    - Publish workflow run federated forge events for each operation / dataflow executed in response
+      - Check out their webfinger and inspect the event stream to publish the same way
+      - If we still need to use `content` POST to admin endpoint to create new `Note`s
+      
 ## References
 
 - [CI/CD Event Federation codeberg.org/forgejo/discussions#12](https://codeberg.org/forgejo/discussions/issues/12)
