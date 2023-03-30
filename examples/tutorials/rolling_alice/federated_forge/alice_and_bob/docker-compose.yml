@@ -59,24 +59,3 @@ services:
     ports:
       - "3090:8000"
 
-  alice_forgejo_neo4j:
-    image: docker.io/library/neo4j
-    restart: always
-    networks:
-      - alice_forgejo_network
-    volumes:
-      - ./alice_forgejo_neo4j:/data
-    ports:
-      - "2070:7474"
-      - "2080:7687"
-
-  bob_forgejo_neo4j:
-    image: docker.io/library/neo4j
-    restart: always
-    networks:
-      - bob_forgejo_network
-    volumes:
-      - ./bob_forgejo_neo4j:/data
-    ports:
-      - "3070:7474"
-      - "3080:7687"
