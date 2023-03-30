@@ -59,3 +59,133 @@ services:
     ports:
       - "3090:8000"
 
+  # Upstream: https://github.com/guacsec/guac/blob/main/docker-compose.yml#license=Apache License 2.0
+  # nats:
+  #   image: "nats:2.9.14"
+  #   command: "--config /config/nats/js.conf -m 8222"
+  #   ports:
+  #     - "4222:4222"
+  #     # monitoring port
+  #     - "8222:8222"
+  #   volumes:
+  #     - ./alice_guac/nats:/config/nats
+  #   restart: on-failure
+  alice_activitypub_starter_kit:
+    # image: ghcr.io/jakelazaroff/activitypub-starter-kit:main
+    image: ghcr.io/pdxjohnny/activitypub-starter-kit:alternate_port
+    command: "--config /config/nats/js.conf -m 8222"
+    networks:
+      - alice_forgejo_network
+    ports:
+      - "4222:4222"
+      # monitoring port
+      - "8222:8222"
+    volumes:
+      - ./alice_guac/nats:/config/nats
+    restart: on-failure
+
+  # Due to the following issues, we have another container to perform the healthcheck
+  #
+  # TODO(lumjjb): I attempted to do health check for neo4j as well, but
+  # the service running via neo4j status is not a good indication of if
+  # the service is ready for incoming requests.
+  # TODO(lumjjb): no good way right now to do a healtcheck for nats-server since
+  # it doesn't have utilities within it to perform the check from the container
+  # itself.
+  alice-service-health-1:
+    image: "local-healthcheck"
+    stdin_open: true
+    tty: true
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo "checking-for-services";
+        until curl -I http://nats:8222 > /dev/null 2>&1; do sleep 5; done;
+        echo "nats-up";
+        # Neo4j is turned down for now since we are currently only using the in memory backend
+        # until curl -I http://neo4j:7474> /dev/null 2>&1; do sleep 5; done;
+        # echo "neo4j-up";
+    networks:
+      - alice_forgejo_network
+
+  alice-guac-collectsub:
+    # image: "local-organic-guac"
+    image: ghcr.io/pdxjohnny/guac:activitypub
+    command: "/opt/guac/guacone csub-server"
+    networks:
+      - alice_forgejo_network
+    working_dir: /guac
+    restart: on-failure
+    ports:
+      - "2782:2782"
+    depends_on:
+      alice-service-health-1:
+        condition: service_completed_successfully
+    volumes:
+      - ./alice_guac/guac:/guac
+
+  alice-guac-graphql:
+    # image: "local-organic-guac"
+    image: ghcr.io/pdxjohnny/guac:activitypub
+    command: "/opt/guac/guacone gql-server"
+    networks:
+      - alice_forgejo_network
+    working_dir: /guac
+    restart: on-failure
+    depends_on:
+      alice-service-health-1:
+        condition: service_completed_successfully
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./alice_guac/guac:/guac
+
+  # GUAC ingestor and oci collector are dependent on the collectsub service to be up
+  alice-service-health-2:
+    image: "local-healthcheck"
+    stdin_open: true
+    networks:
+      - alice_forgejo_network
+    tty: true
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo "checking-for-services";
+        until nc -z guac-collectsub 2782 > /dev/null 2>&1; do sleep 5; done;
+        echo "guac collectsub up";
+        until curl -I http://guac-graphql:8080/query > /dev/null 2>&1; do sleep 5; done;
+        echo "graphql up";
+    depends_on:
+      alice-service-health-1:
+        condition: service_completed_successfully
+
+  alice-guac-ingestor:
+    # image: "local-organic-guac"
+    image: ghcr.io/pdxjohnny/guac:activitypub
+    command: "/opt/guac/ingest ingest"
+    networks:
+      - alice_forgejo_network
+    working_dir: /guac
+    restart: on-failure
+    depends_on:
+      alice-service-health-2:
+        condition: service_completed_successfully
+    volumes:
+      - ./alice_guac/guac:/guac
+
+
+  alice-oci-collector:
+    # image: "local-organic-guac"
+    image: ghcr.io/pdxjohnny/guac:activitypub
+    command: "/opt/guac/collector image --use-csub"
+    networks:
+      - alice_forgejo_network
+    working_dir: /guac
+    restart: on-failure
+    depends_on:
+      alice-service-health-2:
+        condition: service_completed_successfully
+    volumes:
+      - ./alice_guac/guac:/guac
