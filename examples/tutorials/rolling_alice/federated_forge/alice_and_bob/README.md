@@ -1,7 +1,16 @@
 # Federated Forge Automated Deduplicated Analysis Cross Trust Boundry CD
 
+To bring up
+
 ```console
 $ docker-compose up
+```
+
+To cleanup
+
+```console
+$ docker-compose rm -f
+$ sudo git clean -xdf .
 ```
 
 ## Sketch Notes
