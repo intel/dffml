@@ -22,7 +22,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2000:3000"
-      - "2022:2222"
+      - "2022:2022"
 
   alice-forgejo-init-1:
     image: ghcr.io/pdxjohnny/healthcheck:activitypub
@@ -55,7 +55,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
-      - "3022:2222"
+      - "3022:2022"
 
   alice_forgejo_scitt:
     # image: ghcr.io/scitt-community/scitt-api-emulator:main
