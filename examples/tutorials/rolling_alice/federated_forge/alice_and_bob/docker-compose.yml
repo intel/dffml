@@ -21,7 +21,7 @@ services:
       - alice_bob_federation_bridge_network
     volumes:
       - ./alice_forgejo:/data
-      - ./requests/alice/app.ini:/etc/gitea/app.ini:ro
+      - ./requests/alice/app.ini:/etc/gitea/app.ini:rw
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -56,7 +56,7 @@ services:
       - bob_forgejo_network
     volumes:
       - ./bob_forgejo:/data
-      - ./requests/bob/app.ini:/etc/gitea/app.ini:ro
+      - ./requests/bob/app.ini:/etc/gitea/app.ini:rw
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
