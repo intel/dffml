@@ -42,6 +42,8 @@ $ sudo git clean -xdf .
     - Comms over SSI Service/DWN with KERI backed keys ideally rooted to [TEE enclave keys](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html)
     - Watch SCITT stream of peers with ephemeral resync when online KERI watcher
       - Require sync before queries to streams, raft?
+- Data transforms
+  - heartwood --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
 
 ## References
 
