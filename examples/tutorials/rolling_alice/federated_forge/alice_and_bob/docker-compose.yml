@@ -123,6 +123,7 @@ services:
     image: ghcr.io/pdxjohnny/activitypub-starter-kit:alternate_port
     networks:
       - alice_forgejo_network
+      - alice_bob_federation_bridge_network
     ports:
       - "2777:8000"
     restart: on-failure
