@@ -50,6 +50,7 @@ $ sudo git clean -xdf .
 
 ## TODO
 
+- [x] Forges intialized for Alice and Bob
 - [ ] Federated Forge events
 - [ ] Policy engine leveraging CycloneDX dataflow format and IPVM execution
 - [ ] GAUC emmiter for ActivityPub federated event space
