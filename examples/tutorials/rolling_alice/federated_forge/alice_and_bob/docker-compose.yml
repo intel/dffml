@@ -1,6 +1,8 @@
 version: "3"
 
 networks:
+  alice_bob_federation_bridge_network:
+    external: false
   alice_forgejo_network:
     external: false
   bob_forgejo_network:
@@ -16,12 +18,13 @@ services:
     restart: always
     networks:
       - alice_forgejo_network
+      - alice_bob_federation_bridge_network
     volumes:
       - ./alice_forgejo:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "2000:3000"
+      - "2000:2000"
       - "2022:2022"
 
   alice-forgejo-init-1:
@@ -36,6 +39,7 @@ services:
       - /usr/src/forgejo-init/scripts/forgejo-first-time-init.sh
     networks:
       - alice_forgejo_network
+      - alice_bob_federation_bridge_network
     volumes:
       - ./requests/alice:/usr/src/forgejo-init/requests:ro
       - ./requests/scripts:/usr/src/forgejo-init/scripts:ro
