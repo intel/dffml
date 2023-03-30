@@ -32,7 +32,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      FORGEJO_SERVICE_ROOT: http://alice_forgejo_server:3000
+      FORGEJO_SERVICE_ROOT: http://alice_forgejo_server:2000
     command:
       - /bin/bash
       - -x
