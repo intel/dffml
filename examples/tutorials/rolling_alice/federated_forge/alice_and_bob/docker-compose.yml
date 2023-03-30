@@ -57,6 +57,22 @@ services:
       - "3000:3000"
       - "3022:2022"
 
+  bob-forgejo-init-1:
+    image: ghcr.io/pdxjohnny/healthcheck:activitypub
+    stdin_open: true
+    tty: true
+    environment:
+      FORGEJO_SERVICE_ROOT: http://bob_forgejo_server:3000
+    command:
+      - /bin/bash
+      - -x
+      - /usr/src/forgejo-init/scripts/forgejo-first-time-init.sh
+    networks:
+      - bob_forgejo_network
+    volumes:
+      - ./requests/bob:/usr/src/forgejo-init/requests:ro
+      - ./requests/scripts:/usr/src/forgejo-init/scripts:ro
+
   alice_forgejo_scitt:
     # image: ghcr.io/scitt-community/scitt-api-emulator:main
     image: ghcr.io/pdxjohnny/scitt-api-emulator:ci_cd_container_image

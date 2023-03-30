@@ -1,0 +1,5 @@
+_csrf: CSRF_TOKEN
+email: bob@chadig.com
+password: maryisgod
+retype: maryisgod
+user_name: bob
