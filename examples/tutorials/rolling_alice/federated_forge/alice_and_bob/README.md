@@ -17,7 +17,7 @@ $ sudo git clean -xdf .
 
 - ActivityPub (future: TransparencyInterop) protos for grpc service / openapi definition
   - On webfinger resolved endpoint for `/inbox`
-    - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via CycloneDX DataFlows
+    - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via [CycloneDX DataFlows](https://github.com/CycloneDX/specification/pull/194)
       - Upstream
         - GUAC + Cypher queries
       - Overlay
