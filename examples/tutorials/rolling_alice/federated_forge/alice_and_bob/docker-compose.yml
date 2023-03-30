@@ -9,6 +9,7 @@ networks:
     external: false
 
 services:
+  # === BEGIN ALICE FORGEJO ====
   alice_forgejo_server:
     image: codeberg.org/forgejo/forgejo:1.19.0-2-rootless
     container_name: alice_forgejo
@@ -44,7 +45,9 @@ services:
     volumes:
       - ./requests/alice:/usr/src/forgejo-init/requests:ro
       - ./requests/scripts:/usr/src/forgejo-init/scripts:ro
+  # === END ALICE FORGEJO ====
 
+  # === BEGIN BOB FORGEJO ====
   bob_forgejo_server:
     image: codeberg.org/forgejo/forgejo:1.19.0-2-rootless
     container_name: bob_forgejo
@@ -78,7 +81,9 @@ services:
     volumes:
       - ./requests/bob:/usr/src/forgejo-init/requests:ro
       - ./requests/scripts:/usr/src/forgejo-init/scripts:ro
+  # === END BOB FORGEJO ====
 
+  # === BEGIN ALICE SCITT ====
   alice_forgejo_scitt:
     # image: ghcr.io/scitt-community/scitt-api-emulator:main
     image: ghcr.io/pdxjohnny/scitt-api-emulator:ci_cd_container_image
@@ -87,7 +92,9 @@ services:
       - alice_forgejo_network
     ports:
       - "2090:8000"
+  # === END ALICE SCITT ====
 
+  # === BEGIN BOB SCITT ====
   bob_forgejo_scitt:
     # image: ghcr.io/scitt-community/scitt-api-emulator:main
     image: ghcr.io/pdxjohnny/scitt-api-emulator:ci_cd_container_image
@@ -96,8 +103,11 @@ services:
       - bob_forgejo_network
     ports:
       - "3090:8000"
+  # === END BOB SCITT ====
 
   # Upstream: https://github.com/guacsec/guac/blob/main/docker-compose.yml#license=Apache License 2.0
+  #
+  # === BEGIN ALICE GUAC ====
   # nats:
   #   image: "nats:2.9.14"
   #   command: "--config /config/nats/js.conf -m 8222"
@@ -222,6 +232,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - ./alice_guac/guac:/guac
+  # === END ALICE GUAC ====
 
   # === BEGIN BOB GUAC ====
   bob_activitypub_starter_kit:
