@@ -10,7 +10,7 @@ $ docker-compose up
   - On webfinger resolved endpoint for `/inbox`
     - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via CycloneDX DataFlows
       - Upstream
-        - Cypher queries
+        - GUAC + Cypher queries
       - Overlay
         - https://github.com/intel/cve-bin-tool/issues/2639
         - https://github.com/seedwing-io/seedwing-policy/
