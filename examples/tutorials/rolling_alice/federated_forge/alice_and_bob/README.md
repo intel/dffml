@@ -36,7 +36,7 @@ $ docker-compose up
 
 ## References
 
-- [https://codeberg.org/forgejo/discussions/issues/12](CI/CD Event Federation codeberg.org/forgejo/discussions#12)
+- [CI/CD Event Federation codeberg.org/forgejo/discussions#12](https://codeberg.org/forgejo/discussions/issues/12)
 - [RFCv4.1: IETF SCITT: Use Case: OpenSSF Metrics: activitypub extensions for security.txt](https://github.com/ietf-scitt/use-cases/blob/748597b37401bd59512bfedc80158b109eadda9b/openssf_metrics.md#openssf-metrics)
 
 ## TODO
