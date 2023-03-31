@@ -36,7 +36,7 @@ graph TD
       alice_guac_triaged[vuln/bug triaged]
 
       alice_online_clone_hook_scitt_changes -->|content or content address of untriaged vuln/bug| alice_guac_incoming_to_triage
-      alice_guac_incoming_to_triage|apply policy as code| --> alice_guac_triaged
+      alice_guac_incoming_to_triage -->|apply policy as code based on dataflow/workflow execution, sandboxed via overlays and overlays on overlays^N| alice_guac_triaged
 
       alice_guac_triaged -->|upload context local attestation for transformed data as request output type| alice_scitt
 
