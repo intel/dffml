@@ -29,6 +29,9 @@ print the message "Alice Online" and "Bob Online" to each side.
 - References
   - This tutorial is covered in `Stream of Consciousness: Collective Thought` **TODO** Update with link to recording once made.
   - The resulting commit from completion of this tutorial was: **TODO** Update with link to operations added.
+    - Referenced example files:
+      - [`docker-compose.yml`](https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob)
+        - Our basic trust evalution of incoming thoughts setup
 - Feedback
   - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1415
 
