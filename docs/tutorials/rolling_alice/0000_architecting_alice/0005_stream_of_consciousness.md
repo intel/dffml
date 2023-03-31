@@ -74,6 +74,7 @@ graph TD
       bob_scitt[Bob: SCITT]
       bob_forgejo[Bob: Forgejo]
       bob_forgejo_runner[Bob: Forgejo Runner]
+      bob_cool_software_sbom_releaseasset_v1_0_0[Bob: Cool Software v1.0.0 SBOM releaseasset.json]
 
       bob_forgejo -->|F3 events| bob_activitypub
       bob_scitt -->|convert to Endor| bob_activitypub
@@ -83,9 +84,9 @@ graph TD
 
       bob_cool_software -->|git push| bob_forgejo
       bob_forgejo -->|execute CI/CD for on push event| bob_forgejo_runner
-      bob_forgejo_runner -->|build package| bob_cool_software_releaseasset_v1_0_0
-      bob_cool_software_releaseasset_v1_0_0 -->|F3 releaseasset.json event| bob_forgejo
-      bob_cool_software_releaseasset_v1_0_0 -->|submit releaseasset.json to SCITT| bob_scitt
+      bob_forgejo_runner -->|build package| bob_cool_software_sbom_releaseasset_v1_0_0
+      bob_cool_software_sbom_releaseasset_v1_0_0 -->|F3 releaseasset.json event| bob_forgejo
+      bob_cool_software_sbom_releaseasset_v1_0_0 -->|submit releaseasset.json to SCITT| bob_scitt
     end
 
     subgraph alice_forge
