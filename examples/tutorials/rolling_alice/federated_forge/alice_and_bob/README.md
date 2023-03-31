@@ -1,14 +1,66 @@
 # Federated Forge Automated Deduplicated Analysis Cross Trust Boundary CD
 
-**WARNING: THIS IS A WORK IN PROGRESS AND PROVIDES NO SECURITY GUARANTEES**
+- Allowlists as dynamic context aware policy as code over provenance of message content
+  - Federate the SCITT API emulator by converting the dumped format to endor,
+    then using rad to federate the git repo containing the dump.
+  - GUAC collector for SCITT API emulator
+    - Post ``releaseasset.json`` to SCITT
 
-To bring up
+
+```mermaid
+graph TD
+    subgraph bob_forge
+      bob_scitt[Bob: SCITT]
+      bob_activitypub[Bob: ActivityPub or Heartwood]
+      bob_scitt -->|convert to endor| bob_activitypub
+      bob_activitypub --> bob_online_clone_hook_scitt_changes
+
+      bob_cool_software
+      bob_cool_software --> bob_cool_software_releaseasset_v1_0_0
+      bob_cool_software_releaseasset_v1_0_0 --> bob_scitt
+    end
+
+    subgraph alice_forge
+      alice_forge[Alice: Forgejo]
+      alice_scitt[Alice: SCITT]
+      alice_activitypub[Alice: ActivityPub or Heartwood]
+      alice_scitt -->|convert to endor| alice_activitypub
+      alice_activitypub --> alice_online_clone_hook_scitt_changes
+
+      alice_online_clone_hook_scitt_changes[New receipt from SCITT event stream]
+      alice_guac_incoming_to_triage[vuln/bug form auto-generated and submitted - aka ticket for new pinning request]
+      alice_guac_triaged[vuln/bug triaged]
+
+      alice_online_clone_hook_scitt_changes -->|content or content address of untriaged vuln/bug| alice_guac_incoming_to_triage
+      alice_guac_incoming_to_triage|apply policy as code| --> alice_guac_triaged
+
+      alice_guac_triaged -->|upload context local attestation for transformed data as request output type| alice_scitt
+
+      alice_online_clone_hook_scitt_changes -->|creation of manifest instance and attestation for pull request to update<br>context local attestation (pinning) on new receipt containing releaseasseet.json| alice_scitt
+      alice_online_clone_hook_scitt_changes -->|execution of running of CI/CD job via issue ops as manifest| alice_forge
+    end
+
+    bob_activitypub-->|federate to alice| alice_activitypub
+    alice_activitypub -->|federate to bob| bob_activitypub
+```
+
+- Everything you want to federate you just create a receit for. Since we listen
+  for federated transparency log events we tie our running system context to a
+  context local instance, this will be all in one address space eventually for a
+  given system context execution, aka packaged down to WASM and or freestanding.
+
+## [Battle Control, Online](https://preview.redd.it/bjyn9dzbet851.jpg?width=1080&crop=smart&auto=webp&v=enabled&s=ec10820dba2f7fac0a8bbe05607f6ae309a54138)
+
+**WARNING: THIS IS A WORK IN PROGRESS AND PROVIDES NO SECURITY GUARANTEES**
 
 ```console
 $ docker-compose up
 ```
 
-To cleanup
+- Alice's Forgejo: http://127.0.0.0:2000
+- Bob's Forgejo: http://127.0.0.0:3000
+
+Cleanup
 
 ```console
 $ docker-compose rm -f
@@ -17,7 +69,6 @@ $ sudo git clean -xdf .
 
 ## Sketch Notes
 
-- Allowlists as dynamic context aware policy as code over provenance of message content
 - ActivityPub (future: TransparencyInterop) protos for grpc service / openapi definition
   - On webfinger resolved endpoint for `/inbox`
     - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via [CycloneDX DataFlows](https://github.com/CycloneDX/specification/pull/194)
@@ -59,7 +110,7 @@ $ sudo git clean -xdf .
     - Publish workflow run federated forge events for each operation / dataflow executed in response
       - Check out their webfinger and inspect the event stream to publish the same way
       - If we still need to use `content` POST to admin endpoint to create new `Note`s
-      
+
 ## References
 
 - [CI/CD Event Federation codeberg.org/forgejo/discussions#12](https://codeberg.org/forgejo/discussions/issues/12)
@@ -68,7 +119,7 @@ $ sudo git clean -xdf .
 ## TODO
 
 - [x] Forges intialized for Alice and Bob
-- [ ] Federated Forge events
+- [ ] Heartwood events (then using `did:keri:`, then Federated Forge translation).
 - [ ] Policy engine leveraging CycloneDX dataflow format and IPVM execution
-- [ ] GAUC emmiter for ActivityPub federated event space
+- [ ] GAUC emmiter for Heartwood/ActivityPub federated event space
 - [ ] Feed build server (melange) on SBOM / Dockerfile `FROM` retrigger events
