@@ -73,6 +73,7 @@ graph TD
     subgraph bob_forge
       bob_scitt[Bob: SCITT]
       bob_forgejo[Bob: Forgejo]
+      bob_forgejo_runner[Bob: Forgejo Runner]
 
       bob_forgejo -->|F3 events| bob_activitypub
       bob_scitt -->|convert to Endor| bob_activitypub
@@ -80,9 +81,10 @@ graph TD
       bob_activitypub -->|F3 events| bob_forgejo
       bob_activitypub -->|convert from Endor| bob_scitt
 
-      bob_cool_software
-      bob_cool_software --> bob_cool_software_releaseasset_v1_0_0
-      bob_cool_software_releaseasset_v1_0_0 --> bob_scitt
+      bob_cool_software -->|git push| bob_forgejo
+      bob_forgejo -->|execute CI/CD for on push event| bob_forgejo_runner
+      bob_forgejo_runner -->|build package| bob_cool_software_releaseasset_v1_0_0
+      bob_cool_software_releaseasset_v1_0_0 -->|Upload content address to SCITT| bob_scitt
     end
 
     subgraph alice_forge
