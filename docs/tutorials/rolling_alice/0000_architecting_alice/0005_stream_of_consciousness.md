@@ -34,9 +34,6 @@ plans analyzed across Entity Analysis Trinity).
 - References
   - This tutorial is covered in `Stream of Consciousness: Collective Thought` **TODO** Update with link to recording once made.
   - The resulting commit from completion of this tutorial was: **TODO** Update with link to operations added.
-    - Referenced example files:
-      - [`docker-compose.yml`](https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob)
-        - Our basic trust evalution of incoming thoughts setup
 - Feedback
   - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1415
 
@@ -61,13 +58,20 @@ plans analyzed across Entity Analysis Trinity).
   context local instance, this will be all in one address space eventually for a
   given system context execution, aka packaged down to WASM and or freestanding.
 
+> In the following diagram we see Alice's policy engine for dependency analysis.
+
 ```mermaid
 graph TD
     subgraph bob_forge
       bob_scitt[Bob: SCITT]
+      bob_forgejo [Bob: Forgejo]
       bob_activitypub[Bob: ActivityPub or Heartwood]
-      bob_scitt -->|convert to endor| bob_activitypub
-      bob_activitypub --> bob_online_clone_hook_scitt_changes
+
+      bob_forgejo -->|F3 events| bob_activitypub
+      bob_scitt -->|convert to Endor| bob_activitypub
+
+      bob_activitypub -->|F3 events| bob_forgejo
+      bob_activitypub -->|convert from Endor| bob_scitt
 
       bob_cool_software
       bob_cool_software --> bob_cool_software_releaseasset_v1_0_0
@@ -80,7 +84,10 @@ graph TD
       alice_forgejo_runner[Alice: Forgejo Runner]
       alice_scitt[Alice: SCITT]
       alice_activitypub[Alice: ActivityPub or Heartwood]
-      alice_scitt -->|convert to endor| alice_activitypub
+
+      alice_forgejo -->|F3 events| alice_activitypub
+      alice_scitt -->|convert to Endor| alice_activitypub
+
       alice_activitypub --> alice_online_clone_hook_scitt_changes
 
       alice_online_clone_hook_scitt_changes[New receipt from SCITT event stream]
@@ -98,15 +105,20 @@ graph TD
       alice_forgejo_runner -->|upload content adderess to forgejo oras.land registry| alice_scitt
     end
 
-    bob_activitypub-->|federate to alice| alice_activitypub
-    alice_activitypub -->|federate to bob| bob_activitypub
+    bob_activitypub-->|federate to Alice| alice_activitypub
+    alice_activitypub -->|federate to Bob| bob_activitypub
 ```
 
-## [Battle Control, Online](https://preview.redd.it/bjyn9dzbet851.jpg?width=1080&crop=smart&auto=webp&v=enabled&s=ec10820dba2f7fac0a8bbe05607f6ae309a54138)
+## Setup
 
 **WARNING: THIS IS A WORK IN PROGRESS AND PROVIDES NO SECURITY GUARANTEES**
 
+- References
+  - [`docker-compose.yml`](https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob)
+
 ```console
+$ git clone https://github.com/intel/dffml -b alice
+$ cd examples/tutorials/rolling_alice/federated_forge/alice_and_bob/
 $ docker-compose up
 ```
 
