@@ -98,7 +98,7 @@ graph TD
       alice_guac_incoming_to_triage -->|apply policy as code based on dataflow/workflow execution, sandboxed via overlays and overlays on overlays^N| alice_guac_triaged
       alice_guac_triaged -->|upload context local attestation for transformed data as receipt output type| alice_scitt
 
-      alice_online_clone_hook_scitt_changes -->|creation of manifest instance and attestation for pull request to update<br>context local attestation (pinning) on new receipt containing releaseasseet.json| alice_scitt
+      alice_online_clone_hook_scitt_changes -->|creation of manifest instance and attestation for pull request to update<br>context local attestation, pinning, on new receipt containing releaseasseet.json| alice_scitt
       alice_online_clone_hook_scitt_changes -->|git push to context local forge| alice_forgejo_scitt
       alice_forgejo_scitt -->|execution of running of CI/CD job via push to system context local forge Endor, mirrored from Heartwood until F3 ActivityPub OCAP/BearCap federation working| alice_forgejo_runner
       alice_forgejo_runner -->|execute OpenSSF Scorecard probes DAG from CycloneDX DAG upload output metrics and assets to oras.land registry| alice_forgejo
