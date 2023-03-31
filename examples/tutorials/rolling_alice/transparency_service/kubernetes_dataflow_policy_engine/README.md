@@ -8,22 +8,21 @@ $ echo "Clone DFFML/Alice at pinned state of art" \
   && set -x \
   && export TARGET_DIR=dffml \
   && export TARGET_REPO_URL=https://github.com/intel/dffml \
-  && export TARGET_COMMIT=$(curl -sfL https://github.com/intel/dffml/raw/alice/entities/alice/README.rst | grep 'ALICE_STATE_OF_ART_COMMIT=' | sed -e 's/.*=//') \
+  && export TARGET_COMMIT=$(curl -sfL https://github.com/intel/dffml/raw/alice/entities/alice/README.rst | grep 'ALICE_STATE_OF_ART=' | sed -e 's/.*=//') \
   && mkdir -p "${TARGET_DIR}" \
   && cd "${TARGET_DIR}" \
   && git init \
   && git remote add origin "${TARGET_REPO_URL}" \
   && git fetch origin "${TARGET_COMMIT}" --depth 1 \
   && git reset --hard "${TARGET_COMMIT}" \
-  && cd "${TARGET_DIR}/entities/alice" \
   && python -m pip install \
     --no-cache \
-    -e .[dev] \
-    -e ../../ \
-    -e ../../examples/shouldi/ \
-    -e ../../feature/git/ \
-    -e ../../operations/innersource/ \
-    -e ../../configloader/yaml/ \
+    -e . \
+    -e entities/alice[dev] \
+    -e examples/shouldi/ \
+    -e feature/git/ \
+    -e operations/innersource/ \
+    -e configloader/yaml/ \
   && cd -
 $ echo "Clone SCITT API emulator at pinned to pdxjohnny policy_engine branch HEAD as of 2023-03-31 09:54-7:00" \
   && set -x \
@@ -36,7 +35,6 @@ $ echo "Clone SCITT API emulator at pinned to pdxjohnny policy_engine branch HEA
   && git remote add origin "${TARGET_REPO_URL}" \
   && git fetch origin "${TARGET_COMMIT}" --depth 1 \
   && git reset --hard "${TARGET_COMMIT}" \
-  && cd "${TARGET_DIR}" \
   && python -m pip install \
     --no-cache \
     -e . \
