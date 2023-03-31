@@ -47,11 +47,11 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
 - [OS DecentrAlice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
 - [An Image](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
+- [Transport Acquisition](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
+  - Operational / Abstract Compute Architecture
+- [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
 - Internet of Alice
   - ESP32, TockOS?
-- [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
-- [Transport Acquisition](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3896654)
-  - Operational Architecture
 - [Party Planning](https://github.com/intel/dffml/pull/1207)
   - The inventory is the "party" which the data (or code as data) is the entity attending the party
 - [Entering Wonderland](https://github.com/intel/dffml/pull/1207#discussion_r725492192)
