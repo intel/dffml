@@ -62,10 +62,17 @@ plans analyzed across Entity Analysis Trinity).
 
 ```mermaid
 graph TD
+    subgraph knowledge_graph[Knowledge Graph: Agora]
+      bob_activitypub[Bob: ActivityPub or Heartwood]
+      alice_activitypub[Alice: ActivityPub or Heartwood]
+
+      bob_activitypub-->|federate to Alice| alice_activitypub
+      alice_activitypub -->|federate to Bob| bob_activitypub
+    end
+
     subgraph bob_forge
       bob_scitt[Bob: SCITT]
-      bob_forgejo [Bob: Forgejo]
-      bob_activitypub[Bob: ActivityPub or Heartwood]
+      bob_forgejo[Bob: Forgejo]
 
       bob_forgejo -->|F3 events| bob_activitypub
       bob_scitt -->|convert to Endor| bob_activitypub
@@ -83,7 +90,6 @@ graph TD
       alice_forgejo_scitt[Alice: Forgejo: Endor DID/VC SCITT Repo]
       alice_forgejo_runner[Alice: Forgejo Runner]
       alice_scitt[Alice: SCITT]
-      alice_activitypub[Alice: ActivityPub or Heartwood]
 
       alice_forgejo -->|F3 events| alice_activitypub
       alice_scitt -->|convert to Endor| alice_activitypub
@@ -104,9 +110,6 @@ graph TD
       alice_forgejo_runner -->|execute OpenSSF Scorecard probes DAG from CycloneDX DAG upload output metrics and assets to oras.land registry| alice_forgejo
       alice_forgejo_runner -->|upload content adderess to forgejo oras.land registry| alice_scitt
     end
-
-    bob_activitypub-->|federate to Alice| alice_activitypub
-    alice_activitypub -->|federate to Bob| bob_activitypub
 ```
 
 ## Setup
