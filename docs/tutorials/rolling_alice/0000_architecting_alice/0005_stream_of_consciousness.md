@@ -84,7 +84,7 @@ graph TD
 
       bob_cool_software -->|git push| bob_forgejo
       bob_forgejo -->|execute CI/CD for on push event| bob_forgejo_runner
-      bob_forgejo_runner -->|build package| bob_cool_software_sbom_releaseasset_v1_0_0
+      bob_forgejo_runner -->|container image build| bob_cool_software_sbom_releaseasset_v1_0_0
       bob_cool_software_sbom_releaseasset_v1_0_0 -->|F3 releaseasset.json event| bob_forgejo
       bob_cool_software_sbom_releaseasset_v1_0_0 -->|submit releaseasset.json to SCITT| bob_scitt
     end
