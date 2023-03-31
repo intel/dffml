@@ -9,6 +9,7 @@ $ echo "Clone DFFML/Alice at pinned state of art" \
   && export TARGET_DIR=dffml \
   && export TARGET_REPO_URL=https://github.com/intel/dffml \
   && export TARGET_COMMIT=$(curl -sfL https://github.com/intel/dffml/raw/alice/entities/alice/README.rst | grep 'ALICE_STATE_OF_ART_COMMIT=' | sed -e 's/.*=//') \
+  && mkdir -p "${TARGET_DIR}" \
   && cd "${TARGET_DIR}" \
   && git init \
   && git remote add origin "${TARGET_REPO_URL}" \
@@ -29,6 +30,7 @@ $ echo "Clone SCITT API emulator at pinned to pdxjohnny policy_engine branch HEA
   && export TARGET_DIR=scitt-api-emulator \
   && export TARGET_REPO_URL=https://github.com/scitt-community/scitt-api-emulator \
   && export TARGET_COMMIT=2787820abf3fa4701bc46a9629cd98d11254fbe6 \
+  && mkdir -p "${TARGET_DIR}" \
   && cd "${TARGET_DIR}" \
   && git init \
   && git remote add origin "${TARGET_REPO_URL}" \
