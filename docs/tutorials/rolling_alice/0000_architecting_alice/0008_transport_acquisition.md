@@ -1,4 +1,4 @@
-# Volume 0: Chapter 5: Stream of Consciousness
+# [Volume 0: Chapter 8: Transport Acquisition](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
 
 ```bash
 $ (while [ ! -f stop ]; do websocat --exit-on-eof --basic-auth admin:$(cat ../password) wss://vcs.activitypub.securitytxt.dffml.chadig.com/listen/websocket | tee -a untriagged_events; done) &
