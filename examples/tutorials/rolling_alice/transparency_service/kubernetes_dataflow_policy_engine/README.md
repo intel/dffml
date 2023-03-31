@@ -6,7 +6,7 @@ $ python -m venv .venv
 $ . .venv/bin/activate
 $ echo "Clone DFFML/Alice at pinned state of art" \
   && set -x \
-  && export TARGET_DIR=/src/dffml \
+  && export TARGET_DIR=dffml \
   && export TARGET_REPO_URL=https://github.com/intel/dffml \
   && export TARGET_COMMIT=$(curl -sfL https://github.com/intel/dffml/raw/alice/entities/alice/README.rst | grep 'ALICE_STATE_OF_ART_COMMIT=' | sed -e 's/.*=//') \
   && cd "${TARGET_DIR}" \
