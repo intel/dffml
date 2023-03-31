@@ -71,9 +71,10 @@ graph TD
        kcp_crd[KCP CRD]
     end
 
+    untriagged_event -->|submit new or federated claim/receipt| scitt_policy_engine
     scitt_policy_engine -->|evalutate via policy engine with insert policy as code aka dataflow| policy_engine_kubernetes_job
-    policy_engine_kubernetes_job -->|produce policy engine denied/insert/failed event| scitt_recipt
-    scitt_recipt -->|contains content or content address of| triagged_event
+    policy_engine_kubernetes_job -->|produce policy engine denied/insert/failed event| scitt_receipt
+    scitt_receipt -->|contains content or content address of| triagged_event
     
     triagged_event -->|apply manifest| kcp_crd
 ```
