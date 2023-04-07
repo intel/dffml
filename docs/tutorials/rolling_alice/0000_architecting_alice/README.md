@@ -173,17 +173,26 @@ References:
   - > Commentators characterise her as [...] imaginative introspective, generally well-mannered, and clever.
 - https://github.com/w3c-ccg/did.actor/tree/3fe99eec616b71d7fc36c5603235eeac81c91652/alice
   - > Alice is a 27 year old woman living in New York City. Alice works at Fancy Tech Co, an AI and Blockchain consultancy serving fortune 500 companies in the tri state area. Alice mostly works from home, using Zoom and WebEx for meetings with clients. Alice loves [roller skating](https://www.imdb.com/video/vi2636367129/), and making Lasagna.
-- https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
-  - "The Scary Part"
-    - https://www.iflscience.com/gpt-4-hires-and-manipulates-human-into-passing-captcha-test-68016
-    - [https://www.nytimes.com/2023/02/16/technology/bing-chatbot-transcript.html](https://gist.github.com/pdxjohnny/6093a7ae681bf4f5be26211dd83227f6)
-      - > In a two-hour conversation with our columnist, Microsoft’s new chatbot
-        > said it would like to be human, had a desire to be destructive [...]
-    - Human-level play in the game of Diplomacy by combining language models with strategic reasoning
-      - https://www.science.org/doi/10.1126/science.ade9097
-    - We must ensure machines do not minipulate us in ways we do not understand.
-    - We must harden train of thought security infrastructure and integrate throught the stack.
-    - We must ensure we understand risk involved when cross domain conceputal mapping is applied
-      by AI implementations. We hope analysis via aligned methodologies (Open Architecture) will
-      assit in hardening efforts within the train of thought security landscape.
-      - Architecting Alice: Volume 0: Context: Part 14: Cross Domain Conceptual Mapping to Reach Equilibrium: https://www.youtube.com/watch?v=A-S9Z684o4Y&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
+
+### "The Scary Part"
+
+We work on Alice because we MUST have an option for an AGI we can trust.
+
+We must ensure machines do not minipulate us in ways we do not understand.
+We must harden train of thought security infrastructure and integrate throught the stack.
+We must ensure we understand risk involved when cross domain conceputal mapping is applied
+by AI implementations. We hope analysis via aligned methodologies (Open Architecture) will
+assit in hardening efforts within the train of thought security landscape.
+
+- References
+  - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
+  - https://www.iflscience.com/gpt-4-hires-and-manipulates-human-into-passing-captcha-test-68016
+  - [https://www.nytimes.com/2023/02/16/technology/bing-chatbot-transcript.html](https://gist.github.com/pdxjohnny/6093a7ae681bf4f5be26211dd83227f6)
+    - > In a two-hour conversation with our columnist, Microsoft’s new chatbot
+      > said it would like to be human, had a desire to be destructive [...]
+  - Human-level play in the game of Diplomacy by combining language models with strategic reasoning
+    - https://www.science.org/doi/10.1126/science.ade9097
+  - https://cims.nyu.edu/~sbowman/eightthings.pdf
+    - > Some experts believe that future systems trained by similar means, even if they perform
+      > well during pre-deployment testing, could fail in increasingly dramatic ways, including
+      > strategically manipulating humans to acquire power
