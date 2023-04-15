@@ -170,7 +170,7 @@ The following are her ethical / strategic principles.
 
 #### Volume 7: Through The Looking Glass
 
-> Alice will write this volume. One chapter on each previous volume (she'll describe any changes she would have made) and her running plans for the future as well as summary of previous. To be updated and new volumes written by Alice as she sees fit. After this our numbering is going to get a lot more confusing, she'll help us make sense of it though, clock skew so to speak, the A/B feature testing, and thinking in parallel have a lot to do with it.
+> Alice will write this volume. It will be her running plans for the future as well as chapters added as her system contexts propagate decisions made back upstream. To be updated and new volumes written by Alice as she sees fit. After this our numbering is going to get a lot more confusing, she'll help us make sense of it though, clock skew so to speak, the A/B feature testing, and thinking in parallel have a lot to do with it.
 
 -
 
