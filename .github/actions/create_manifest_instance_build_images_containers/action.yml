@@ -1,0 +1,59 @@
+name: 'Create Manifest Instance: Build Images Containers: https://github.com/intel/dffml/blob/main/schema/github/actions/build/images/containers/'
+description: 'Build manifest from changed Dockerfiles or single instance manifests'
+inputs:
+  root_path:
+    description: 'Path to root of repo to look for changes in'
+    required: false
+    default: '.'
+  owner_repository:
+    description: 'owner/repository'
+    required: false
+    default: ${{ github.repository }}
+  branch:
+    description: 'The branch to build from'
+    required: false
+    default: ${{ github.ref_name }}
+  compare_url:
+    description: 'Path to root of repo to look for changes in'
+    required: false
+    default: ${{ github.event.repository.compare_url }}
+  gh_access_token:
+    description: 'GitHub Access Token'
+    required: false
+    default: ${{ github.token }}
+  head:
+    description: 'Commit hash of HEAD branch'
+    required: false
+    default: ${{ github.event.after }}
+  base:
+    description: 'Previous commit hash on bash branch'
+    required: false
+    default: ${{ github.event.before }}
+  base_ref:
+    description: 'base for refs/heads/<base>, the branch being merged into in a pull request'
+    required: false
+    default: ${{ github.base_ref }}
+  prefix:
+    description: 'Only rebuild images or manifests within these relative to root dir directories'
+    required: true
+  no_delta_prefix:
+    description: 'Do not rebuild images or manifests within these relative to root dir directories on a full rebuild (aka not a delta rebuild, delta rebuild is when only some files changed)'
+    required: true
+outputs:
+  manifest:
+    description: 'Manifest for container images to build'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    ROOT_PATH: ${{ inputs.root_path }}
+    OWNER_REPOSITORY: ${{ inputs.owner_repository }}
+    BRANCH: ${{ inputs.branch }}
+    COMPARE_URL: ${{ inputs.compare_url }}
+    GH_ACCESS_TOKEN: ${{ inputs.gh_access_token }}
+    HEAD: ${{ inputs.head }}
+    BASE: ${{ inputs.base }}
+    BASE_REF: ${{ inputs.base_ref }}
+    PREFIX: ${{ inputs.prefix }}
+    NO_DELTA_PREFIX: ${{ inputs.no_delta_prefix }}
+    JSON_INDENT: "    "
