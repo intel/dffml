@@ -13,6 +13,8 @@ on:
       - ".github/workflows/build_images_containers.yml"
       - ".github/workflows/dffml_build_images_containers.yml"
       - "Dockerfile"
+      - "**/*Dockerfile"
+      - "**/*.manifest.json"
   push:
     branches:
       - main
@@ -20,103 +22,30 @@ on:
       - ".github/workflows/build_images_containers.yml"
       - ".github/workflows/dffml_build_images_containers.yml"
       - "Dockerfile"
+      - "**/*Dockerfile"
+      - "**/*.manifest.json"
 
 jobs:
   manifest:
     runs-on: ubuntu-latest
     outputs:
-      manifest: ${{ steps.create-manifest-instance.outputs.manifest }}
+      manifest: ${{ steps.create-manifest-instance.outputs.github_actions_manifest }}
     steps:
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
       - uses: actions/checkout@v3
       - name: Build manifest from changed dockerfiles
+        uses: "./.github/actions/create_manifest_instance_build_images_containers"
         id: create-manifest-instance
-        env:
-          # Must be a valid directory with "*Dockerfile"s in it
-          PREFIX: ""
-          ROOT_PATH: "."
-          OWNER_REPOSITORY: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
-          COMPARE_URL: ${{ github.event.repository.compare_url }}
-          GH_ACCESS_TOKEN: ${{ github.token }}
-          HEAD: ${{ github.event.after }}
-          BASE: ${{ github.event.before }}
-          BASE_REF: ${{ github.base_ref }}
-        shell: python -u {0}
-        run: |
-          import os
-          import json
-          import pathlib
-          import urllib.request
-          owner, repository = os.environ["OWNER_REPOSITORY"].split("/", maxsplit=1)
-          base = None
-          env_vars = ["BASE", "BASE_REF"]
-          for env_var in env_vars:
-              if env_var in os.environ and os.environ[env_var].strip():
-                  # Set if present and not blank
-                  base = os.environ[env_var]
-          # Empty manifest (list of manifests for each build file) in case not triggered
-          # from on file change (workflow changed or dispatched).
-          manifest = []
-          # Path to root of repo
-          root_path = pathlib.Path(os.environ["ROOT_PATH"])
-          # Must be a valid directory with .Dockerfiles in it
-          prefix_path = pathlib.Path(os.environ["PREFIX"])
-          # Grab most recent commit to use by default
-          commit = pathlib.Path(
-              ".git", pathlib.Path(".git", "HEAD").read_text().split()[-1],
-          ).read_text()
-          if base is None:
-              print(f"::notice file=dffml_build_images_containers.yml,line=1,endLine=1,title=nobase::None of {env_vars!r} found in os.environ")
-          else:
-              compare_url = os.environ["COMPARE_URL"]
-              compare_url = compare_url.replace("{base}", base)
-              compare_url = compare_url.replace("{head}", os.environ["HEAD"])
-              with urllib.request.urlopen(
-                  urllib.request.Request(
-                      compare_url,
-                      headers={
-                          "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
-                      },
-                  )
-              ) as response:
-                  response_json = json.load(response)
-              # Build the most recent commit
-              commit = response_json["commits"][-1]["sha"]
-              manifest = list([
-                  {
-                      "image_name": pathlib.Path(compare_file["filename"]).stem,
-                      "dockerfile": compare_file["filename"],
-                      "owner": owner,
-                      "repository": repository,
-                      "branch": os.environ["BRANCH"],
-                      "commit": commit,
-                  }
-                  for compare_file in response_json["files"]
-                  if (
-                      compare_file["filename"].startswith(os.environ["PREFIX"])
-                      and compare_file["filename"].endswith("Dockerfile")
-                  )
-              ])
-          # Build everything if we aren't sure why we got here (alice changes or
-          # workflow re-run)
-          if not manifest:
-              manifest = list([
-                  {
-                      "image_name": path.stem if path.stem != path.name else (repository if str(path.relative_to(root_path)) == path.stem else path.resolve().parent.stem),
-                      "dockerfile": str(path.relative_to(root_path)),
-                      "owner": owner,
-                      "repository": repository,
-                      "branch": os.environ["BRANCH"],
-                      "commit": commit,
-                  }
-                  for path in prefix_path.glob("*Dockerfile")
-              ])
-          print(json.dumps(manifest, sort_keys=True, indent=4))
-          print("::set-output name=manifest::" + json.dumps({"include": manifest}))
+        with:
+          root_path: "."
+          owner_repository: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+          compare_url: ${{ github.event.repository.compare_url }}
+          gh_access_token: ${{ github.token }}
+          head: ${{ github.event.after }}
+          base: ${{ github.event.before }}
+          base_ref: ${{ github.base_ref }}
+          prefix: '[".", "scripts", "dffml/skel/operations"]'
+          no_delta_prefix: '["."]'
 
   build:
     needs: manifest
