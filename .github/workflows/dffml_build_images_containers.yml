@@ -45,7 +45,8 @@ jobs:
           base: ${{ github.event.before }}
           base_ref: ${{ github.base_ref }}
           prefix: '[".", "scripts", "dffml/skel/operations"]'
-          no_delta_prefix: '["."]'
+          # TODO Drop non root dir once pinning rebuild chain is active
+          no_delta_prefix: '[".", "scripts", "dffml/skel/operations"]'
 
   build:
     needs: manifest
