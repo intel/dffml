@@ -20,6 +20,9 @@ def path_to_image_name(path, root_path):
     if hyphen_dir_path != "." and hyphen_dir_path != "":
         return hyphen_dir_path
     # Top level dir Dockerfile use top level dirname
+    if "GITHUB_WORKSPACE" in os.environ:
+        # Use repository name if running in workspace
+        return os.environ["OWNER_REPOSITORY"].split("/")[-1]
     return str(root_path.resolve().name)
 
 
