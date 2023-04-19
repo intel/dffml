@@ -53,4 +53,4 @@ jobs:
     uses: "./.github/workflows/build_images_containers.yml"
     if: ${{ fromJSON(needs.manifest.outputs.length) > 0 }}
     with:
-      manifests: "${{ needs.manifest.outputs.github_actions_manifest }}"
+      manifests: "${{ needs.manifest.outputs.manifest }}"
