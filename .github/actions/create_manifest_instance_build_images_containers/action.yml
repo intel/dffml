@@ -40,8 +40,14 @@ inputs:
     description: 'Do not rebuild images or manifests within these relative to root dir directories on a full rebuild (aka not a delta rebuild, delta rebuild is when only some files changed)'
     required: true
 outputs:
+  length:
+    description: 'Numnber of manifests within Manifest of Manifets (MOM)'
   manifest:
     description: 'Manifest for container images to build'
+  github_actions_manifest:
+    description: 'Manifest for container images to build wrapped in matrix include'
+  json_ld_manifest:
+    description: 'Manifest for container images to build with @context and @vocab'
 runs:
   using: 'docker'
   image: 'Dockerfile'
