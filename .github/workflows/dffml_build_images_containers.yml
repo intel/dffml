@@ -51,6 +51,6 @@ jobs:
   build:
     needs: manifest
     uses: "./.github/workflows/build_images_containers.yml"
-    if: ${{ needs.manifest.outputs.manifest.include[0] != null }}
+    if: ${{ needs.manifest.outputs.length > 0 }}
     with:
       manifests: "${{ needs.manifest.outputs.manifest }}"
