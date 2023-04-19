@@ -212,8 +212,10 @@ def main():
 
     if "GITHUB_OUTPUT" in os.environ:
         with open(os.environ["GITHUB_OUTPUT"], "a") as fileobj:
-            fileobj.write(f"manifest={json.dumps(manifest)}\n")
-            fileobj.write(f'github_actions_manifest={json.dumps(github_actions_manifest)}\n')
+            fileobj.write(f'length={len(manifest)}\n')
+            fileobj.write(f"manifest={json.dumps(manifest, sort_keys=True)}\n")
+            fileobj.write(f'github_actions_manifest={json.dumps(github_actions_manifest, sort_keys=True)}\n')
+            fileobj.write(f'json_ld_manifest={json.dumps(json_ld_manifest, sort_keys=True)}\n')
 
 if __name__ == "__main__":
     main()
