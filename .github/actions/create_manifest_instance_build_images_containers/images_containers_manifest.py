@@ -122,7 +122,7 @@ def main():
                                         pathlib.Path(compare_file["filename"]).parent.name == ""
                                         and prefix_path == "."
                                     )
-                                    or pathlib.Path(compare_file["filename"]).parent.name == prefix_path
+                                    or pathlib.Path(compare_file["filename"]).parent.relative_to(root_path) == pathlib.Path(prefix_path)
                                 )
                                 for prefix_path in prefixes
                             ]) and compare_file["filename"].endswith("Dockerfile")
@@ -142,7 +142,7 @@ def main():
                                         pathlib.Path(compare_file["filename"]).parent.name == ""
                                         and prefix_path == "."
                                     )
-                                    or pathlib.Path(compare_file["filename"]).parent.name == prefix_path
+                                    or pathlib.Path(compare_file["filename"]).parent.relative_to(root_path) == pathlib.Path(prefix_path)
                                 )
                                 for prefix_path in prefixes
                             ]) and compare_file["filename"].endswith("manifest.json")
