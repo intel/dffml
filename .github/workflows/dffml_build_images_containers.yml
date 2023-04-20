@@ -37,14 +37,6 @@ jobs:
         uses: "./.github/actions/create_manifest_instance_build_images_containers"
         id: create-manifest-instance
         with:
-          root_path: "."
-          owner_repository: ${{ github.repository }}
-          branch: ${{ github.ref_name }}
-          compare_url: ${{ github.event.repository.compare_url }}
-          gh_access_token: ${{ github.token }}
-          head: ${{ github.event.after }}
-          base: ${{ github.event.before }}
-          base_ref: ${{ github.base_ref }}
           prefix: '[".", "scripts", "dffml/skel/operations"]'
           # TODO Drop non root dir once pinning rebuild chain is active
           no_delta_prefix: '[".", "scripts", "dffml/skel/operations"]'
