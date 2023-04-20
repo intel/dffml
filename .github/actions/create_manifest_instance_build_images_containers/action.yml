@@ -24,11 +24,11 @@ inputs:
   head:
     description: 'Commit hash of HEAD branch'
     required: false
-    default: ${{ github.event.after }}
+    default: ${{ github.event.after || github.event.pull_request.head.sha }}
   base:
     description: 'Previous commit hash on bash branch'
     required: false
-    default: ${{ github.event.before }}
+    default: ${{ github.event.before || github.event.pull_request.base.sha }}
   base_ref:
     description: 'base for refs/heads/<base>, the branch being merged into in a pull request'
     required: false
