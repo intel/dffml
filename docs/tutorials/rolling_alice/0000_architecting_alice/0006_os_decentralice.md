@@ -215,6 +215,7 @@ HOME_URL="https://wolfi.dev"
     - https://fedoraproject.org/wiki/Secureboot
     - https://github.com/rhboot/pesign
     - https://github.com/rhboot/shim
+    - [Hardening the kernel for Secure Boot - Matthew Garrett, Nebula - Linux Plumbers Conference](https://www.youtube.com/watch?v=fDzAVksopYw)
   - We'll be doing a DID -> ActivityPub -> aurae grpc & kcp job execution proxy
     - https://github.com/aurae-runtime/aurae
     - [WIP: RFCv2: IETF SCITT: Use Case: OpenSSF Metrics: activitypub extensions for security.txt](https://github.com/ietf-scitt/use-cases/blob/f936e3acf4182a264382eedb755416b1130b4ff8/openssf_metrics.md#activitypub-extensions-for-securitytxt)
