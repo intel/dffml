@@ -141,7 +141,7 @@ $ sudo git clean -xdf .
 
 ## Sketch Notes
 
-- Heartwood protos for grpc service / openapi definition
+- ActivityPub protos for grpc service / openapi definition
   - Policy Engine (Prioritizer's Gatekeeper/Umbrella) - Defined via [CycloneDX DataFlows](https://github.com/CycloneDX/specification/pull/194)
     - Upstream
       - GUAC + Cypher queries
@@ -168,7 +168,7 @@ $ sudo git clean -xdf .
     - Watch SCITT stream of peers with ephemeral resync when online KERI watcher
       - Require sync before queries to streams, raft?
 - Data transforms
-  - heartwood --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
+  - ActivityPub --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
 - Use the SBOM of the cypher query to build the re-trigger flows
   - On query we build and publish SBOM of query, if downstream listeners to they query stream see new system context stream (schema `inReplyTo` or `replies` is query, cache busting inputs if applicable) come in, and similar to a `FROM` rebuild chain that SBOM has not been built, we transform into the manifest which triggers the build, recursively fulfill any dependencies (creating repos with workflows with issue ops or dispatch flows based on upstream and overlays: distro-esq patch-a-package)
     - On complete, federate re-trigger event for original SBOM, publish the same SBOM again
@@ -190,9 +190,9 @@ $ sudo git clean -xdf .
 ## TODO
 
 - [x] Forges intialized for Alice and Bob
-- [ ] Heartwood events (then using `did:keri:`, then Federated Forge translation).
+- [ ] ActivityPub events (then using `did:keri:`, then Federated Forge translation).
 - [ ] Policy engine leveraging CycloneDX dataflow format and IPVM execution
-- [ ] GAUC emmiter for Heartwood/ActivityPub federated event space
+- [ ] GAUC emmiter for ActivityPub federated event space
 - [ ] Feed build server (melange) on SBOM / Dockerfile `FROM` retrigger events
 
 ## Next Steps
