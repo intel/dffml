@@ -7,6 +7,7 @@
         "parties": {
             "2nd": [
                 {
+                    "branch": "main",
                     "package_registry": "pypi.org",
                     "package_name": "dffml-model-transformers",
                     "source_url": "https://github.com/dffml/dffml-model-transformers"
