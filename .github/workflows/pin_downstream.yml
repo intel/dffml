@@ -1,0 +1,129 @@
+name: "Pin: Downstream: 2nd party"
+
+# TODO 3rd party will be based off ActivityPub
+# - References
+#   - RFCv5.1: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays: https://github.com/ietf-scitt/use-cases/blob/a832905e3c428fd54b1c08d4851801383eac91a6/openssf_metrics.md#use-case-attestations-of-alignment-to-s2c2f-and-org-overlays
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+  # TODO
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    outputs:
+      length: ${{ steps.create-manifest-instance.outputs.length }}
+      manifest: ${{ steps.create-manifest-instance.outputs.github_actions_manifest }}
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - uses: actions/checkout@v3
+      - name: Build manifest from plugins.json
+        id: create-manifest-instance
+        env:
+          PLUGINS_JSON: "dffml/plugins.json"
+          SCHEMA: "TODO-dffml-2ndparty-pin"
+          JSON_INDENT: "    "
+        shell: python -u {0}
+        run: |
+          import os
+          import json
+
+          plugins = json.loads(pathlib.Path(os.environ["PLUGINS_JSON"]).read_text())
+          manifest = plugins["plugins"]["parties"]["2nd"]
+
+          github_actions_manifest = {
+              "include": manifest,
+          }
+          json_ld_manifest = {
+              "@context": {
+                  "@vocab": os.environ["SCHEMA"],
+              },
+              **github_actions_manifest,
+          }
+          print(json.dumps(json_ld_manifest, sort_keys=True, indent=os.environ.get("JSON_INDENT", None)))
+
+          if "GITHUB_OUTPUT" in os.environ:
+              with open(os.environ["GITHUB_OUTPUT"], "a") as fileobj:
+                  fileobj.write(f'length={len(manifest)}\n')
+                  fileobj.write(f"manifest={json.dumps(manifest, sort_keys=True)}\n")
+                  fileobj.write(f'github_actions_manifest={json.dumps(github_actions_manifest, sort_keys=True)}\n')
+                  fileobj.write(f'json_ld_manifest={json.dumps(json_ld_manifest, sort_keys=True)}\n')
+
+  
+  pin_downstream_pep_440:
+    name: "Pin downstream to latest commit"
+    runs-on: ubuntu-latest
+    env:
+      PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
+      PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
+      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN }}
+      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha }}
+      BUMP_DEP: "dffml @ https://github.com/intel/dffml/archive/"
+    needs:
+    - manifest
+    strategy:
+      fail-fast: false
+      max-parallel: 100
+      matrix: ${{ fromJSON(needs.manifest.outputs.manifest) }}
+    steps:
+      - name: Checkout
+        env:
+          # TODO Pull requests on pull requests, probably from renovate/dependabot
+          # https://github.com/intel/dffml/pull/1061#pullrequestreview-1281885921
+          TARGET_REPO_URL: ${{ matrix.source_url }}
+          TARGET_BRANCH: ${{ matrix.branch }}
+          TARGET_COMMIT: ${{ matrix.branch }}
+        run: |
+          set -x
+          git init
+          git remote add origin "${TARGET_REPO_URL}"
+          git fetch origin "${TARGET_BRANCH}" --depth 1
+          git fetch origin "${TARGET_COMMIT}" --depth 1
+          git reset --hard "${TARGET_COMMIT}"
+      - name: Find repo local dependent files
+        id: repo-local-downstream
+        run: |
+          set -x
+          get_files() {
+            git grep "${BUMP_DEP}" | sed -e 's/:.*//g' | sort | uniq
+          }
+          echo files_length=$(get_files | wc -l) >> $GITHUB_OUTPUT
+          echo files=$(get_files | jq -R | jq -s -c) >> $GITHUB_OUTPUT
+      - name: Update pinning of upstream within downstream
+        if: ${{ fromJSON(steps.repo-local-downstream.outputs.files_length) > 0 }}
+        id: create-pull-request
+        env:
+          NEW_HASH: ${{ env.PIN_TO_COMMIT }}
+          COMMIT_MESSAGE: "setup: Pin ${{ env.UPSTREAM_PACKAGE_NAME }} to ${{ env.PIN_TO_COMMIT }}\n${{ github.event.pull_request.html_url }}\n${{ github.server_url }}/${{ github.repository }}/commit/${{ env.PIN_TO_COMMIT }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          NEW_BRANCH_WITH_PIN: "pin/pep_440/${{ github.repository }}/${{ env.PIN_TO_COMMIT }}"
+          FILES: ${{ toJSON(steps.repo-local-downstream.outputs.files) }}
+          BASE: ${{ matrix.branch }}
+        run: |
+          set -x
+          # https://github.com/dffml/dffml-model-transformers/blob/898af4a51d9b5d70d58ce80ba2c508f3afa82400/setup.cfg#L6
+          sed -i -r -e "s#${BUMP_DEP}[A-Fa-f0-9]{40}#${BUMP_DEP}${NEW_HASH}#g" $(echo "${FILES}" | jq -r '.[]')
+          git checkout -b "${NEW_BRANCH_WITH_PIN}"
+          git config user.email "${PIN_PULL_REQUEST_EMAIL}"
+          git config user.name "${PIN_PULL_REQUEST_NAME}"
+          git commit -sam "${COMMIT_MESSAGE}"
+          echo "${GH_ACCESS_TOKEN}" | gh auth login --with-token
+          git push -u origin -f "${NEW_BRANCH_WITH_PIN}"
+          gh pr create --base "${BASE}" --head "${NEW_BRANCH_WITH_PIN}" --title "${COMMIT_MESSAGE}" --body "" | tee pull-request-url
+          PULL_REQUEST_URL="$(cat pull-request-url)"
+          if [[ "x${PULL_REQUEST_URL}" == "x" ]]; then
+            echo "No pull request URL" 1>&2
+            exit 1
+          fi
+          echo "url=${PULL_REQUEST_URL}" | tee -a $GITHUB_OUTPUT
