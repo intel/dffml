@@ -12,10 +12,9 @@ on:
       - reopened
     branches:
       - main
-  # TODO
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 
 jobs:
   manifest:
