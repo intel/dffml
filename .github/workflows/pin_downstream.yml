@@ -127,7 +127,14 @@ jobs:
           git config user.name "${PIN_PULL_REQUEST_NAME}"
           git commit -sam "${COMMIT_MESSAGE}"
           git log -n 1 -p
-          echo "${GH_ACCESS_TOKEN}" | gh auth login --with-token
+
+          mkdir -p ~/.config/gh/
+          echo "github.com:" > ~/.config/gh/hosts.yml
+          echo "    oauth_token: ${GH_ACCESS_TOKEN}" >> ~/.config/gh/hosts.yml
+          echo "    user: token" >> ~/.config/gh/hosts.yml
+          echo "    git_protocol: https" >> ~/.config/gh/hosts.yml
+          gh auth setup-git
+
           git push -u origin -f "${NEW_BRANCH_WITH_PIN}"
           gh pr create --base "${BASE}" --head "${NEW_BRANCH_WITH_PIN}" --title "${COMMIT_MESSAGE}" --body "" | tee pull-request-url
           PULL_REQUEST_URL="$(cat pull-request-url)"
