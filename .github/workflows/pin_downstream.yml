@@ -68,8 +68,8 @@ jobs:
     env:
       PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
       PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
-      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN || env.GITHUB_TOKEN }}
-      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha || env.TEST_PIN_TO_COMMIT }}
+      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN }}
+      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha }}
       UPSTREAM_PACKAGE_NAME: 'dffml'
       BUMP_DEP: "dffml @ https://github.com/intel/dffml/archive/"
     needs:
