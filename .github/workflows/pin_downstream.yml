@@ -5,7 +5,7 @@ name: "Pin: Downstream: 2nd party"
 #   - RFCv5.1: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays: https://github.com/ietf-scitt/use-cases/blob/a832905e3c428fd54b1c08d4851801383eac91a6/openssf_metrics.md#use-case-attestations-of-alignment-to-s2c2f-and-org-overlays
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - synchronize
@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.11"
       - uses: actions/checkout@v3
-      - name: Build manifest from plugins.json
+      - name: Build manifest from plugins.json from pull request
         id: create-manifest-instance
         env:
           PLUGINS_JSON: "dffml/plugins.json"
@@ -38,6 +38,7 @@ jobs:
         run: |
           import os
           import json
+          import pathlib
 
           plugins = json.loads(pathlib.Path(os.environ["PLUGINS_JSON"]).read_text())
           manifest = plugins["plugins"]["parties"]["2nd"]
@@ -67,7 +68,7 @@ jobs:
     env:
       PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
       PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
-      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN }}
+      GH_ACCESS_TOKEN: ${{ github.token }}
       PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha }}
       BUMP_DEP: "dffml @ https://github.com/intel/dffml/archive/"
     needs:
@@ -77,7 +78,7 @@ jobs:
       max-parallel: 100
       matrix: ${{ fromJSON(needs.manifest.outputs.manifest) }}
     steps:
-      - name: Checkout
+      - name: Checkout downstream
         env:
           # TODO Pull requests on pull requests, probably from renovate/dependabot
           # https://github.com/intel/dffml/pull/1061#pullrequestreview-1281885921
