@@ -42,6 +42,11 @@ jobs:
 
           plugins = json.loads(pathlib.Path(os.environ["PLUGINS_JSON"]).read_text())
           manifest = plugins["plugins"]["parties"]["2nd"]
+          
+          # SECURITY Allowlist of 2nd party orgs to pin
+          for downstream in manifest:
+              if not downstream["source_url"].startswith("https://github.com/dffml/"):
+                  raise ValueError(f"source_url not in allowed org: {downstream!r}")
 
           github_actions_manifest = {
               "include": manifest,
