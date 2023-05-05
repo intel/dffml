@@ -68,8 +68,9 @@ jobs:
     env:
       PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
       PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
-      GH_ACCESS_TOKEN: ${{ github.token }}
-      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha }}
+      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN || env.GITHUB_TOKEN }}
+      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha || env.TEST_PIN_TO_COMMIT }}
+      UPSTREAM_PACKAGE_NAME: 'dffml'
       BUMP_DEP: "dffml @ https://github.com/intel/dffml/archive/"
     needs:
     - manifest
@@ -91,7 +92,7 @@ jobs:
           git remote add origin "${TARGET_REPO_URL}"
           git fetch origin "${TARGET_BRANCH}" --depth 1
           git fetch origin "${TARGET_COMMIT}" --depth 1
-          git reset --hard "${TARGET_COMMIT}"
+          git reset --hard "origin/${TARGET_COMMIT}"
       - name: Find repo local dependent files
         id: repo-local-downstream
         run: |
@@ -100,7 +101,6 @@ jobs:
             git grep "${BUMP_DEP}" | sed -e 's/:.*//g' | sort | uniq
           }
           echo files_length=$(get_files | wc -l) >> $GITHUB_OUTPUT
-          echo files=$(get_files | jq -R | jq -s -c) >> $GITHUB_OUTPUT
       - name: Update pinning of upstream within downstream
         if: ${{ fromJSON(steps.repo-local-downstream.outputs.files_length) > 0 }}
         id: create-pull-request
@@ -112,12 +112,16 @@ jobs:
           BASE: ${{ matrix.branch }}
         run: |
           set -x
+          get_files() {
+            git grep "${BUMP_DEP}" | sed -e 's/:.*//g' | sort | uniq
+          }
           # https://github.com/dffml/dffml-model-transformers/blob/898af4a51d9b5d70d58ce80ba2c508f3afa82400/setup.cfg#L6
-          sed -i -r -e "s#${BUMP_DEP}[A-Fa-f0-9]{40}#${BUMP_DEP}${NEW_HASH}#g" $(echo "${FILES}" | jq -r '.[]')
+          sed -i -r -e "s#${BUMP_DEP}[A-Fa-f0-9]{40}#${BUMP_DEP}${NEW_HASH}#g" $(get_files)
           git checkout -b "${NEW_BRANCH_WITH_PIN}"
           git config user.email "${PIN_PULL_REQUEST_EMAIL}"
           git config user.name "${PIN_PULL_REQUEST_NAME}"
           git commit -sam "${COMMIT_MESSAGE}"
+          git log -n 1 -p
           echo "${GH_ACCESS_TOKEN}" | gh auth login --with-token
           git push -u origin -f "${NEW_BRANCH_WITH_PIN}"
           gh pr create --base "${BASE}" --head "${NEW_BRANCH_WITH_PIN}" --title "${COMMIT_MESSAGE}" --body "" | tee pull-request-url
