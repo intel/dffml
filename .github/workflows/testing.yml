@@ -101,7 +101,9 @@ jobs:
         - configloader/yaml
         - configloader/image
         - source/mongodb
-        python-version: [3.7, 3.8]
+        - entities/alice
+        python-version:
+        - "3.12"
 
     steps:
     - uses: actions/checkout@v2
