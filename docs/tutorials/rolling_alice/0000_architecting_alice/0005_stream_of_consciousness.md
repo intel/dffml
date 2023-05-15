@@ -62,58 +62,41 @@ plans analyzed across Entity Analysis Trinity).
 
 ```mermaid
 graph TD
-    subgraph knowledge_graph[Knowledge Graph: Agora]
-      bob_activitypub[Bob: ActivityPub or Heartwood]
-      alice_activitypub[Alice: ActivityPub or Heartwood]
+      subgraph home[DFFML Forge]
+      h_prt[pull request target PRT flow]
+      subgraph home_tee[DFFML TEE]
+      h_ts[transparency service]
+      end
+      h_guac[GUAC neo4j]
+      h_manifest[PEP 440 Manifest Change]
+      h_eval[Dependency Evaluation flow]
 
-      bob_activitypub-->|federate to Alice| alice_activitypub
-      alice_activitypub -->|federate to Bob| bob_activitypub
-    end
+      h_manifest -->|pull request submited triggers| h_prt
+      h_prt -->|source TCB protection ring admission control query<br>sync poll or waitformessage ActivityPub async| h_guac
+      h_guac -->|emit data for query not in graph| h_eval
+      h_eval -->|metric collection data<br>shouldi<br>home and new faraway| h_ts
+      h_ts -->|ActivityPub emit data added to graph<br>trigger ingest| h_guac
 
-    subgraph bob_forge
-      bob_scitt[Bob: SCITT]
-      bob_forgejo[Bob: Forgejo]
-      bob_forgejo_runner[Bob: Forgejo Runner]
-      bob_cool_software_sbom_releaseasset_v1_0_0[Bob: Cool Software v1.0.0 SBOM releaseasset.json]
+      end
 
-      bob_forgejo -->|F3 events| bob_activitypub
-      bob_scitt -->|convert to Endor| bob_activitypub
+      subgraph faraway[Alice Forge]
+      f_prt[pull request target PRT flow]
+      subgraph faraway_tee[Alice TEE]
+      f_ts[transparency service]
+      end
+      f_guac[GUAC neo4j]
+      f_manifest[PEP 440 Manifest Changed]
 
-      bob_activitypub -->|F3 events| bob_forgejo
-      bob_activitypub -->|convert from Endor| bob_scitt
+      f_manifest -->|pull request submited triggers| f_prt
+      f_prt -->|source TCB protection ring admission control query<br>sync poll or waitformessage ActivityPub async| f_guac
+      f_ts -->|ActivityPub emit data added to graph<br>trigger ingest| f_guac
 
-      bob_cool_software -->|git push| bob_forgejo
-      bob_forgejo -->|execute CI/CD for on push event| bob_forgejo_runner
-      bob_forgejo_runner -->|container image build| bob_cool_software_sbom_releaseasset_v1_0_0
-      bob_cool_software_sbom_releaseasset_v1_0_0 -->|F3 releaseasset.json event| bob_forgejo
-      bob_cool_software_sbom_releaseasset_v1_0_0 -->|submit releaseasset.json to SCITT| bob_scitt
-    end
+      end
 
-    subgraph alice_forge
-      alice_forgejo[Alice: Forgejo]
-      alice_forgejo_scitt[Alice: Forgejo: Endor DID/VC SCITT Repo]
-      alice_forgejo_runner[Alice: Forgejo Runner]
-      alice_scitt[Alice: SCITT]
+      h_prt -->|admission control allowed dep change<br>create pull request to trigger downstream valdation<br>waitformessage and status check api<br>for downstream aka faraway results| f_manifest
+      f_guac -->|emit data for query not in graph| f_ts
+      h_ts -->|federate evaluated claims| f_ts
 
-      alice_forgejo -->|F3 events| alice_activitypub
-      alice_scitt -->|convert to Endor| alice_activitypub
-
-      alice_activitypub --> alice_online_clone_hook_scitt_changes
-
-      alice_online_clone_hook_scitt_changes[New receipt from SCITT event stream]
-      alice_guac_incoming_to_triage[vuln/bug form auto-generated and submitted - aka ticket for new pinning request]
-      alice_guac_triaged[vuln/bug triaged]
-
-      alice_online_clone_hook_scitt_changes -->|content or content address of untriaged vuln/bug| alice_guac_incoming_to_triage
-      alice_guac_incoming_to_triage -->|apply policy as code based on dataflow/workflow execution, sandboxed via overlays and overlays on overlays^N| alice_guac_triaged
-      alice_guac_triaged -->|upload context local attestation for transformed data as receipt output type| alice_scitt
-
-      alice_online_clone_hook_scitt_changes -->|creation of manifest instance and attestation for pull request to update<br>context local attestation, pinning, on new SCITT receipt containing releaseasseet.json| alice_scitt
-      alice_online_clone_hook_scitt_changes -->|git push to context local forge| alice_forgejo_scitt
-      alice_forgejo_scitt -->|execution of running of CI/CD job via push to system context local forge Endor, mirrored from Heartwood until F3 ActivityPub OCAP/BearCap federation working| alice_forgejo_runner
-      alice_forgejo_runner -->|execute OpenSSF Scorecard probes DAG from CycloneDX DAG upload output metrics and assets to oras.land registry| alice_forgejo
-      alice_forgejo_runner -->|upload content adderess to forgejo oras.land registry| alice_scitt
-    end
 ```
 
 ## Setup
