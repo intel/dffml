@@ -3,6 +3,7 @@
 # Usage: JSON_INDENT="    " nodemon -e py,Dockerfile,HEAD --exec 'clear; python scripts/images_containers_manifest.py; test 1'
 import os
 import sys
+import ssl
 import json
 import pathlib
 import itertools
@@ -89,7 +90,8 @@ def main():
                     headers={
                         "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
                     },
-                )
+                ),
+                cafile=os.environ.get("REQUESTS_CA_BUNDLE", None),
             ) as response:
                 response_json = json.load(response)
         # Print for debug
