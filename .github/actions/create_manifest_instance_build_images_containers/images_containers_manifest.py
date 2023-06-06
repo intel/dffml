@@ -28,6 +28,13 @@ def path_to_image_name(path, root_path):
 
 
 def main():
+    # For weird cases when system CAs are not being respected
+    # For example on Ubuntu run with REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    ssl_context = None
+    if "REQUESTS_CA_BUNDLE" in os.environ:
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        ssl_context.load_verify_locations(os.environ["REQUESTS_CA_BUNDLE"])
+
     # For running under GitHub actions within a container
     if "GITHUB_WORKSPACE" in os.environ:
         subprocess.check_call(["git", "config", "--global", "--add", "safe.directory", os.environ["GITHUB_WORKSPACE"]])
@@ -96,7 +103,7 @@ def main():
                         "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
                     },
                 ),
-                cafile=os.environ.get("REQUESTS_CA_BUNDLE", None),
+                context=ssl_context,
             ) as response:
                 response_json = json.load(response)
         # Print for debug
