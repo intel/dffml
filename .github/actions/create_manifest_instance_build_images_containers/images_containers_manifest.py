@@ -61,7 +61,12 @@ def main():
 
     # Pull request file change delta filter using GitHub API
     prefixes = json.loads(os.environ["PREFIX"])
+    # Double JSON decode incase of weridness with GitHub Actions
+    if isinstance(prefixes, str):
+        prefixes = json.loads(prefixes)
     no_delta_prefixes = json.loads(os.environ["NO_DELTA_PREFIX"])
+    if isinstance(no_delta_prefixes, str):
+        no_delta_prefixes = json.loads(no_delta_prefixes)
     owner, repository = os.environ["OWNER_REPOSITORY"].split("/", maxsplit=1)
     base = None
     env_vars = ["BASE", "BASE_REF"]
