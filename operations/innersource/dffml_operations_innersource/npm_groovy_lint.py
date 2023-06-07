@@ -129,6 +129,8 @@ async def npm_groovy_lint(
         if logger and len(npmgroovylintrc_paths) > 1:
             logger.warning("Choosing first config file of multiple found: %r", npmgroovylintrc_paths)
         config_args = ["--config", npmgroovylintrc_paths[0]]
+    # Only scan groovy files
+    groovy_paths = list(pathlib.Path(repo_directory).rglob("*.groovy"))
     proc = await asyncio.create_subprocess_exec(
         *npm_groovy_lint_cmd,
         *config_args,
@@ -138,7 +140,7 @@ async def npm_groovy_lint(
         java_binary,
         "--output",
         "json",
-        ".",
+        *groovy_paths,
         cwd=repo_directory,
         env=env,
         stdout=asyncio.subprocess.PIPE,
