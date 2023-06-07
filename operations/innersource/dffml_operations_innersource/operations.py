@@ -266,20 +266,15 @@ def has_docs(
     logger: logging.Logger = None,
 ) -> HasDocs:
     # TODO Refactor this, ideally support regex and or open policy agent
-    return dict(zip(
-        ("readme_present", "support", "usage", "example", "known issues"),
-        [
-            readme_present,
-            *itertools.chain(*[
-                (
-                    [
-                        check in path.read_text().lower()
-                        for check in ("support", "usage", "example", "known issues")
-                    ]
-                    if "readme" == path.stem.lower()
-                    else ([False] * 4)
-                )
-                for path in pathlib.Path(repo_directory).iterdir()
-            ])
-        ],
-    ))
+    check_files_or_strings = ("support", "usage", "example", "known issues"),
+    output = dict(zip(["readme_present", *check_files_or_strings], [False] * 5))
+    for path in pathlib.Path(repo_directory).iterdir():
+        if "readme" == path.stem.lower():
+            output["readme_present"] = True
+            for check in check_files_or_strings:
+                if check in path.read_text().lower():
+                    output[check] = True
+        for check in check_files_or_strings:
+            if check.replace(" ", "_") == path.stem.lower():
+                output[check] = True
+    return output
