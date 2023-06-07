@@ -122,8 +122,16 @@ async def npm_groovy_lint(
     env: dict = None,
     logger: logging.Logger = None,
 ) -> NPMGroovyLintResult:
+    # Check for config file
+    config_args = []
+    npmgroovylintrc_paths = list(pathlib.Path(repo_directory).rglob(".groovylintrc.json"))
+    if npmgroovylintrc_paths:
+        if logger and len(npmgroovylintrc_paths) > 1:
+            logger.warning("Choosing first config file of multiple found: %r", npmgroovylintrc_paths)
+        config_args = ["--config", npmgroovylintrc_paths[0]]
     proc = await asyncio.create_subprocess_exec(
         *npm_groovy_lint_cmd,
+        *config_args,
         "--noserver",
         # It will try to install java unless we give it one
         "--javaexecutable",
