@@ -26,8 +26,8 @@ JAVA_DEFAULT_CACHE_DIR_PARTS = (
 JAVA_USE_DEFAULT_PLATFORM_URLS = _JAVA_USE_DEFAULT_PLATFORM_URLS()
 JAVA_DEFAULT_PLATFORM_URLS = {
     "Linux": {
-        "url": "https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_linux-x64_bin.tar.gz",
-        "expected_hash": "ec79c3f085c295876f96d38bfaece0c565ff89152928d71a8b6bf1baf9eda2f27ce6cd857612a4e73540e67c1c0229b5",
+        "url": "https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz",
+        "expected_hash": "2b5a966e5ea1b6cb47f5b6d3a806a176b71783896ff2f837a0a6bfe8f5e9dec12046e524f57702d34d93196636a74d19",
     },
 }
 
