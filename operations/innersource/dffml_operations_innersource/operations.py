@@ -266,7 +266,7 @@ def has_docs(
     logger: logging.Logger = None,
 ) -> HasDocs:
     # TODO Refactor this, ideally support regex and or open policy agent
-    check_files_or_strings = ("support", "usage", "example", "known issues"),
+    check_files_or_strings = ("support", "usage", "example", "known issues")
     output = dict(zip(["readme_present", *check_files_or_strings], [False] * 5))
     for path in pathlib.Path(repo_directory).iterdir():
         if "readme" == path.stem.lower():
