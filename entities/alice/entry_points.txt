@@ -9,6 +9,8 @@ CLI                                            = alice.please.contribute.recomme
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
 OverlayREADME                                  = alice.please.contribute.recommended_community_standards.readme:OverlayREADME
+OverlaySECURITY                                = alice.please.contribute.recommended_community_standards.security:OverlaySECURITY
+OverlaySUPPORT                                 = alice.please.contribute.recommended_community_standards.support:OverlaySUPPORT
 OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
 OverlayCODE_OF_CONDUCT                         = alice.please.contribute.recommended_community_standards.code_of_conduct:OverlayCODE_OF_CONDUCT
 
