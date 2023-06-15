@@ -15,6 +15,8 @@ GitHubActionsWorkflowUnixStylePath = NewType("GitHubActionsWorkflowUnixStylePath
 JenkinsfileWorkflowUnixStylePath = NewType("JenkinsfileWorkflowUnixStylePath", str)
 GroovyFileWorkflowUnixStylePath = NewType("GroovyFileWorkflowUnixStylePath", str)
 ActionYAMLFileWorkflowUnixStylePath = NewType("ActionYAMLFileWorkflowUnixStylePath", str)
+IsGitHubAction = NewType("IsGitHubAction", bool)
+IsJenkinsLibrary = NewType("IsJenkinsLibrary", bool)
 
 
 def relative_paths(
@@ -63,12 +65,12 @@ def jenkinsfiles(self, repo: git_repository_checked_out.spec) -> dict:
 
 @dffml.op(
     inputs={"repo": git_repository_checked_out,},
-    outputs={"result": GroovyFileWorkflowUnixStylePath},
+    outputs={"result": GroovyFileWorkflowUnixStylePath, "is_jenkins_library": IsJenkinsLibrary},
     expand=["result"],
 )
 def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
-    return {
-        "result": map(
+    list_of_groovy_files = list(
+        map(
             str,
             relative_paths(
                 repo.directory,
@@ -78,22 +80,30 @@ def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
                 ],
             ),
         ),
+    )
+    return {
+        "is_github_action": bool(list_of_action_yml_files),
+        "groovy_files": list_of_groovy_files,
     }
 
 @dffml.op(
     inputs={"repo": git_repository_checked_out,},
-    outputs={"result": ActionYAMLFileWorkflowUnixStylePath},
-    expand=["result"],
+    outputs={"actions": ActionYAMLFileWorkflowUnixStylePath, "is_github_action": IsGitHubAction},
+    expand=["actions"],
 )
 def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
-    return {
-        "result": map(
+    list_of_action_yml_files = list(
+        map(
             str,
             relative_paths(
                 repo.directory,
                 pathlib.Path(repo.directory).rglob("**/action.yml")
             ),
         ),
+    )
+    return {
+        "is_github_action": bool(list_of_action_yml_files),
+        "actions": list_of_action_yml_files,
     }
 
 
