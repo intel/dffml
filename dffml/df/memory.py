@@ -437,16 +437,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     async def result(self) -> Tuple[bool, BaseInputSetContext]:
         # Notify whatever is listening for new inputs in this context
         async with self.result_notification_set() as ctx:
-            """
-            return await ctx.added()
-            """
-            async with ctx.parent.event_added_lock:
-                await ctx.parent.event_added.wait()
-                ctx.parent.event_added.clear()
-                async with ctx.parent.lock:
-                    notification_items = ctx.parent.notification_items
-                    ctx.parent.notification_items = []
-                    return False, notification_items
+            more, notification_item = await ctx.added()
+            return more, [notification_item]
 
     async def added(
         self, watch_ctx: BaseInputSetContext
@@ -455,16 +447,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         handle_string = (await watch_ctx.handle()).as_string()
         # Notify whatever is listening for new inputs in this context
         async with self.input_notification_set[handle_string]() as ctx:
-            """
-            return await ctx.added()
-            """
-            async with ctx.parent.event_added_lock:
-                await ctx.parent.event_added.wait()
-                ctx.parent.event_added.clear()
-                async with ctx.parent.lock:
-                    notification_items = ctx.parent.notification_items
-                    ctx.parent.notification_items = []
-                    return False, notification_items
+            more, notification_item = await ctx.added()
+            return more, [notification_item]
 
     async def definition(
         self, ctx: BaseInputSetContext, definition: str
