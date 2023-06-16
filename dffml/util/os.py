@@ -1,4 +1,5 @@
 import os
+import pathlib
 import contextlib
 
 
@@ -39,3 +40,9 @@ def prepend_to_path(*args: str, env = None):
     finally:
         env["PATH"] = old_path
 
+
+def which(binary):
+    for dirname in os.environ.get("PATH", "").split(":"):
+        check_path = pathlib.Path(dirname, binary)
+        if check_path.exists():
+            return check_path.resolve()
