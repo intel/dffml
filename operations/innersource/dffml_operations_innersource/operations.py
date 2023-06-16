@@ -14,6 +14,7 @@ from dffml_feature_git.feature.definitions import (
 GitHubActionsWorkflowUnixStylePath = NewType("GitHubActionsWorkflowUnixStylePath", str)
 JenkinsfileWorkflowUnixStylePath = NewType("JenkinsfileWorkflowUnixStylePath", str)
 GroovyFileWorkflowUnixStylePath = NewType("GroovyFileWorkflowUnixStylePath", str)
+GroovyFileWorkflowUnixStylePaths = NewType("GroovyFileWorkflowUnixStylePaths", list[GroovyFileWorkflowUnixStylePath ])
 ActionYAMLFileWorkflowUnixStylePath = NewType("ActionYAMLFileWorkflowUnixStylePath", str)
 IsGitHubAction = NewType("IsGitHubAction", bool)
 IsJenkinsLibrary = NewType("IsJenkinsLibrary", bool)
@@ -65,8 +66,12 @@ def jenkinsfiles(self, repo: git_repository_checked_out.spec) -> dict:
 
 @dffml.op(
     inputs={"repo": git_repository_checked_out,},
-    outputs={"result": GroovyFileWorkflowUnixStylePath, "is_jenkins_library": IsJenkinsLibrary},
-    expand=["result"],
+    outputs={
+        "is_jenkins_library": IsJenkinsLibrary,
+        "groovy_files": GroovyFileWorkflowUnixStylePaths,
+        "groovy_file": GroovyFileWorkflowUnixStylePath,
+    },
+    expand=["groovy_file"],
 )
 def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
     list_of_groovy_files = list(
@@ -82,8 +87,9 @@ def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
         ),
     )
     return {
-        "is_github_action": bool(list_of_action_yml_files),
+        "is_jenkins_library": bool(list_of_groovy_files),
         "groovy_files": list_of_groovy_files,
+        "groovy_file": list_of_groovy_files,
     }
 
 @dffml.op(
