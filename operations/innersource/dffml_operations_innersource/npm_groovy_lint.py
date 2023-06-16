@@ -11,6 +11,7 @@ import dffml
 # from .operations import (
 from dffml_operations_innersource.operations import (
     RepoDirectory,
+    GroovyFileWorkflowUnixStylePaths,
 )
 
 
@@ -34,7 +35,7 @@ async def code_narc_server(
     logger: logging.Logger = None,
 ) -> CodeNarcServerProc:
     # Path to compiled CodeNarcServer within released package
-    java_lib_path = npm_groovy_lint_cmd[1].resolve().parents[1].joinpath(
+    java_lib_path = npm_groovy_lint_cmd[-1].resolve().parents[1].joinpath(
         "lib", "java",
     )
     # Run the server
@@ -118,10 +119,13 @@ async def npm_groovy_lint(
     # TODO Port for code narc is currently hardcoded, upstream fix and use here.
     _code_narc_proc: CodeNarcServerProc,
     npm_groovy_lint_cmd: NPMGroovyLintCMD,
+    groovy_paths: GroovyFileWorkflowUnixStylePaths,
     *,
     env: dict = None,
     logger: logging.Logger = None,
 ) -> NPMGroovyLintResult:
+    if not groovy_paths:
+        return
     # Check for config file
     config_args = []
     npmgroovylintrc_paths = list(pathlib.Path(repo_directory).rglob(".groovylintrc.json"))
@@ -129,8 +133,6 @@ async def npm_groovy_lint(
         if logger and len(npmgroovylintrc_paths) > 1:
             logger.warning("Choosing first config file of multiple found: %r", npmgroovylintrc_paths)
         config_args = ["--config", npmgroovylintrc_paths[0]]
-    # Only scan groovy files
-    groovy_paths = list(pathlib.Path(repo_directory).rglob("*.groovy"))
     proc = await asyncio.create_subprocess_exec(
         *npm_groovy_lint_cmd,
         *config_args,

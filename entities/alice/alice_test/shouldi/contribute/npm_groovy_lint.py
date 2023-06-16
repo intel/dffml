@@ -47,6 +47,8 @@ async def ensure_npm_groovy_lint(
     npm_groovy_lint_binary_path = pathlib.Path(NPM_GROOVY_LINT_DEFAULT_BINARY)
     # Bail out if we already have a copy of the binary available in the path,
     # aka that subprocess -> fork + exec will succeed.
+    if dffml.inpath(npm_groovy_lint_binary_path.name):
+        return [dffml.which(npm_groovy_lint_binary_path.name)]
     if (
         npm_groovy_lint_binary_path.exists()
         or (
