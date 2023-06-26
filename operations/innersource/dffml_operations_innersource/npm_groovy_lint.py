@@ -15,11 +15,15 @@ from dffml_operations_innersource.operations import (
 )
 
 
-NPMGroovyLintCMD = NewType("NPMGroovyLintCMD", str)
+NPMGroovyLintCMD = NewType("NPMGroovyLintCMD", list[str])
 NPMGroovyLintResult = NewType("NPMGroovyLintResult", str)
 JavaBinary = NewType("JavaBinary", str)
 CodeNarcServerProc = NewType("CodeNarcServerProc", object)
 CodeNarcServerReturnCode = NewType("CodeNarcServerReturnCode", int)
+
+
+class CouldNotResolvePathToNPMGroovyLintInstallError(Exception):
+    pass
 
 
 class CodeNarcServerUnknownFailure(Exception):
@@ -35,7 +39,14 @@ async def code_narc_server(
     logger: logging.Logger = None,
 ) -> CodeNarcServerProc:
     # Path to compiled CodeNarcServer within released package
-    java_lib_path = npm_groovy_lint_cmd[-1].resolve().parents[1].joinpath(
+    npm_groovy_lint_path = npm_groovy_lint_cmd[-1]
+    if isinstance(npm_groovy_lint_path, str):
+        npm_groovy_lint_path = pathlib.Path(npm_groovy_lint_path)
+        if not npm_groovy_lint_path.exists():
+            npm_groovy_lint_path = dffml.which(npm_groovy_lint_path.name)
+    if not isinstance(npm_groovy_lint_path, pathlib.Path):
+        raise CouldNotResolvePathToNPMGroovyLintInstallError(npm_groovy_lint_cmd)
+    java_lib_path = npm_groovy_lint_path.resolve().parents[1].joinpath(
         "lib", "java",
     )
     # Run the server
@@ -45,6 +56,7 @@ async def code_narc_server(
         [
 
             java_binary,
+            "-Djava.net.useSystemProxies=true",
             "-Xms256m",
             "-Xmx2048m",
             "-cp",
