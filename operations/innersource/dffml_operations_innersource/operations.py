@@ -288,7 +288,7 @@ def has_docs(
         if "readme" == path.stem.lower():
             output["readme_present"] = True
             for check in check_files_or_strings:
-                if check in path.read_text().lower():
+                if check in path.read_text(errors='backslashreplace').lower():
                     output[check] = True
         for check in check_files_or_strings:
             if check.replace(" ", "_") == path.stem.lower():
