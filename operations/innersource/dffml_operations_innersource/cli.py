@@ -75,6 +75,21 @@ async def github_repo_id_to_clone_url(
     return repository["clone_url"]
 
 
+LocalRepoDirectory = NewType("LocalRepoDirectory", str)
+LocalRepoURL = NewType("LocalRepoURL", str)
+
+
+@dffml.op(
+    inputs={
+        "url": LocalRepoURL,
+        "directory": LocalRepoDirectory,
+    },
+    outputs={"repo": dffml_feature_git.feature.definitions.git_repository},
+)
+def local_repo_resolver(url: LocalRepoURL, directory: LocalRepoDirectory):
+    return {"repo": {"URL": url, "directory": directory}}
+
+
 COLLECTOR_DATAFLOW = dffml.DataFlow(
     dffml.GroupBy,
     *dffml.opimp_in(dffml_feature_git.feature.operations),
