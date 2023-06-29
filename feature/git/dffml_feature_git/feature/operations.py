@@ -463,6 +463,8 @@ async def count_authors(author_lines: dict):
 
 @op(inputs={"repo": git_repository}, outputs={}, stage=Stage.CLEANUP)
 async def cleanup_git_repo(self, repo: Dict[str, str]):
+    if "DFFML_FEATURE_GIT_SKIP_CLEANUP" in os.environ:
+        return {}
     # TODO Executor shutil.rmtree
     await run_command(
         ["rm", "-rf", repo.directory], logger=self.logger,
