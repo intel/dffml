@@ -37,7 +37,6 @@ from .types import (
     DataFlow,
     APPLY_INSTALLED_OVERLAYS,
 )
-from .system_context.system_context import APPLY_INSTALLED_OVERLAYS
 
 from .log import LOGGER
 
