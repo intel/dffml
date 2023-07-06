@@ -76,17 +76,28 @@ async def github_repo_id_to_clone_url(
 
 
 LocalRepoDirectory = NewType("LocalRepoDirectory", str)
-LocalRepoURL = NewType("LocalRepoURL", str)
 
 
 @dffml.op(
     inputs={
-        "url": LocalRepoURL,
         "directory": LocalRepoDirectory,
     },
     outputs={"repo": dffml_feature_git.feature.definitions.git_repository},
 )
-def local_repo_resolver(url: LocalRepoURL, directory: LocalRepoDirectory):
+async def local_repo_resolver(
+    self, directory: LocalRepoDirectory,
+) -> dffml_feature_git.feature.definitions.git_repository.spec:
+    async for event, result in dffml.run_command_events(
+        ["git", "remote", "get-url", "origin"],
+        cwd=directory,
+        logger=self.logger,
+        raise_on_failure=False,
+        events=[dffml.Subprocess.STDOUT, dffml.Subprocess.COMPLETED],
+    ):
+        if event is dffml.Subprocess.STDOUT:
+            url = result.decode().strip().replace(".git", "")
+        elif event is dffml.Subprocess.COMPLETED and result != 0:
+            raise RuntimeError("Failed to get local directory remote URL")
     return {"repo": {"URL": url, "directory": directory}}
 
 
