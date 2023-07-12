@@ -95,7 +95,9 @@ async def local_repo_resolver(
         events=[dffml.Subprocess.STDOUT, dffml.Subprocess.COMPLETED],
     ):
         if event is dffml.Subprocess.STDOUT:
-            url = result.decode().strip().replace(".git", "")
+            url = result.decode().strip()
+            if url.endswith(".git"):
+                url = url[:-4]
         elif event is dffml.Subprocess.COMPLETED and result != 0:
             raise RuntimeError("Failed to get local directory remote URL")
     return {"repo": {"URL": url, "directory": directory}}
