@@ -99,11 +99,26 @@ def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
 )
 def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
     list_of_action_yml_files = list(
+        pathlib.Path(repo.directory).rglob("**/action.yml")
+    )
+    # Remove YAML files that are not GitHub Actions (for example if someone
+    # named a workflow action.yml).
+    remove_paths = set()
+    for action_path in list_of_action_yml_files:
+        action_text = action_path.read_text(errors="backslashreplace")
+        action_text = action_text.replace("\r", "")
+        # Look for runs: at top level
+        if not "runs:" in action_text.split("\n"):
+            remove_paths.add(action_path)
+    for remove_path in remove_paths:
+        list_of_action_yml_files.remove(remove_path)
+    # Conver to repo relative paths
+    list_of_action_yml_files = list(
         map(
             str,
             relative_paths(
                 repo.directory,
-                pathlib.Path(repo.directory).rglob("**/action.yml")
+                list_of_action_yml_files,
             ),
         ),
     )
