@@ -16,6 +16,7 @@ JenkinsfileWorkflowUnixStylePath = NewType("JenkinsfileWorkflowUnixStylePath", s
 GroovyFileWorkflowUnixStylePath = NewType("GroovyFileWorkflowUnixStylePath", str)
 GroovyFileWorkflowUnixStylePaths = NewType("GroovyFileWorkflowUnixStylePaths", list[GroovyFileWorkflowUnixStylePath ])
 ActionYAMLFileWorkflowUnixStylePath = NewType("ActionYAMLFileWorkflowUnixStylePath", str)
+ActionYAMLFileWorkflowUnixStylePaths = NewType("ActionYAMLFileWorkflowUnixStylePaths", list[ActionYAMLFileWorkflowUnixStylePath])
 IsGitHubAction = NewType("IsGitHubAction", bool)
 IsJenkinsLibrary = NewType("IsJenkinsLibrary", bool)
 
@@ -94,8 +95,12 @@ def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
 
 @dffml.op(
     inputs={"repo": git_repository_checked_out,},
-    outputs={"actions": ActionYAMLFileWorkflowUnixStylePath, "is_github_action": IsGitHubAction},
-    expand=["actions"],
+    outputs={
+        "actions": ActionYAMLFileWorkflowUnixStylePaths,
+        "action": ActionYAMLFileWorkflowUnixStylePath,
+        "is_github_action": IsGitHubAction,
+    },
+    expand=["action"],
 )
 def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
     list_of_action_yml_files = list(
@@ -125,6 +130,7 @@ def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
     return {
         "is_github_action": bool(list_of_action_yml_files),
         "actions": list_of_action_yml_files,
+        "action": list_of_action_yml_files,
     }
 
 
