@@ -2,9 +2,50 @@ import json
 import pathlib
 import logging
 import tempfile
+import dataclasses
 from typing import Optional
 
 import dffml
+
+
+@dataclasses.dataclass
+class GHAuthStatus:
+    username: str
+
+
+class GHAuthStatusUncapturedError(Exception):
+    pass
+
+
+async def gh_auth_status(
+    *,
+    logger: Optional[logging.Logger] = None,
+) -> str:
+    auth_status = GHAuthStatus(
+        username=None
+    )
+    async for event, result in dffml.run_command_events(
+        [
+            "gh",
+            "auth",
+            "status",
+        ],
+        logger=logger,
+        events=[dffml.Subprocess.STDOUT_READLINE, dffml.Subprocess.STDERR_READLINE],
+    ):
+        if event not in (
+            dffml.Subprocess.STDOUT_READLINE,
+            dffml.Subprocess.STDERR_READLINE,
+        ):
+            continue
+        line = result.strip().decode()
+        if "Logged in to" in line:
+            auth_status.username = line.split()[-2]
+    if not any(auth_status.__dict__.values()):
+        raise GHAuthStatusUncapturedError(f"Not all fields were captured: {auth_status!r}")
+    if logger:
+        logger.debug("%r", auth_status)
+    return auth_status
 
 
 async def gh_issue_create(
@@ -99,7 +140,6 @@ async def gh_issue_search_by_title(
     *,
     logger: Optional[logging.Logger] = None,
 ) -> str:
-    # TODO Add kwarg filter for author
     async for event, result in dffml.run_command_events(
         [
             "gh",
@@ -130,6 +170,9 @@ async def gh_issue_create_or_update_by_title(
     *,
     logger: Optional[logging.Logger] = None,
 ) -> str:
+    # Get user we are logged in as so we only update issues which we have
+    # permissions to update.
+    auth_status = await gh_auth_status(logger=logger)
     # Try to find an exsiting issue with the same title
     found_issue_to_update = None
     found_issue_to_update_closed = None
@@ -138,6 +181,8 @@ async def gh_issue_create_or_update_by_title(
         title,
         logger=logger,
     ):
+        if issue["author"]["login"] != auth_status.username:
+            continue
         # TODO Data model from data model generation from schema
         if issue["title"] == title:
             if issue["state"] == "OPEN":
