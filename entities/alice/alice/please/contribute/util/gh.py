@@ -152,7 +152,7 @@ async def gh_issue_search_by_title(
             "--search",
             title,
             "--json",
-            "title,url,state,author,state",
+            "title,url,state,author,state,number",
         ],
         logger=logger,
         events=[dffml.Subprocess.STDOUT],
@@ -176,11 +176,17 @@ async def gh_issue_create_or_update_by_title(
     # Try to find an exsiting issue with the same title
     found_issue_to_update = None
     found_issue_to_update_closed = None
-    async for issue in gh_issue_search_by_title(
-        repo_url,
-        title,
-        logger=logger,
-    ):
+    # Sort issues in case we have duplicates
+    issues = [
+        issue
+        async for issue in gh_issue_search_by_title(
+            repo_url,
+            title,
+            logger=logger,
+        )
+    ]
+    issues = list(sorted(issues, key=lambda issue: issue["number"], reverse=True))
+    for issue in issues:
         if issue["author"]["login"] != auth_status.username:
             continue
         # TODO Data model from data model generation from schema
@@ -189,6 +195,7 @@ async def gh_issue_create_or_update_by_title(
                 found_issue_to_update = issue
             else:
                 found_issue_to_update_closed = issue
+            break
     # If we don't find it, create it
     if found_issue_to_update is None and found_issue_to_update_closed is None:
         return await gh_issue_create(
