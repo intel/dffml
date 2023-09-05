@@ -1,0 +1,102 @@
+## 2022-07-25 Supply Chain Integrity, Transparency and Trust (SCITT)
+
+- TODO
+  - [ ] Get involved in SCITT
+    - [x] Meetings
+      - https://docs.google.com/document/d/1vf-EliXByhg5HZfgVbTqZhfaJFCmvMdQuZ4tC-Eq6wg/edit#
+      - Weekly Monday at 8 AM Pacific
+        - Joining today
+      - https://armltd.zoom.us/j/99133885299?pwd=b0w4aGorRkpjL3ZHa2NPSmRiNHpXUT09
+    - [x] Mailing list
+      - https://www.ietf.org/mailman/listinfo/scitt
+      - https://mailarchive.ietf.org/arch/browse/scitt/
+    - [ ] Slack
+      - https://mailarchive.ietf.org/arch/msg/scitt/PbvoKOX996cNHJEOrjReaNlum64/
+      - Going to email Orie Steele orie (at) transmute.industries to ask for an invite.
+- Links
+  - https://github.com/intel/dffml/discussions/1406#discussioncomment-3181956
+  - https://github.com/intel/dffml/discussions/1406#discussioncomment-3223247
+  - https://github.com/transmute-industries/openssl-did-web-tutorial
+- Folks will be in Philly on Thursday for meeting
+  - There is a remote link (see mailing list?) for the Thursday meeting
+- Typical global warming centric chit chat
+- Others at RATs meeting or busy with other IETF activities
+- Introductions
+  - Kelvin Cusack
+    - Filling in for John from his org
+  - John Andersen
+    - Connecting dots between this and OpenSSF
+      - Yogesh was excited to see someone from Intel
+        - Intel is involved in RATs but not as much here
+  - Kiran Karunakaran
+    - Microsoft
+    - On Kay Williams's team
+    - Will likely lead this meeting in the future
+- Upcoming Birds of Feather (BoF)
+  - You need to register here: https://docs.google.com/document/d/1vf-EliXByhg5HZfgVbTqZhfaJFCmvMdQuZ4tC-Eq6wg/edit?pli=1#heading=h.214jg0n2xjhp
+    - There is registration for remote
+  - Problem Statement currently scoped around software
+  - We went back to a more scoped problem statement is that we want to form a formal working group in the IETF for SCITT.
+  - In order to form it we have to have stuffiest people show interest in the problem space
+  - Need problem space and charter so that it's scoped enough that the leadership is confident that the group can make progress
+  - The early design proposal for the SCITT transparency service is that the service is content agnostic
+  - any kind of metadata could be provided and retrieved
+  - SBOMs, Software Test Cases, Hardware BOMs, Test results on other types of products
+  - Electronic ballots (Ray, see mailing list), oil, gas, physical goods (U.S. govt.)
+  - In order to gain confidence from the leadership at IETF to form the WG we felt it was critical to narrow the scope for now to software
+    - Leadership thought scope was too big at first
+- Thoughts around scope
+  - Charter is focused on software, an attainable goal
+  - Once we have a WG we can later broaden the scope via re-chartering
+- We will design something that works for hardware and for software
+  - We are hanging software window curtains but we are looking at everything
+- Software systems interact with everything else
+  - Dick Brooks (REA), any manifest could be signed and processes with SCITT
+  - It's just metadata, what was issued, how it was issued
+    - @dffml: We are encoding system contexts, Alice, into the chain, one place where she will live.
+- Opens
+  - Open Policy Agent (mentioned in meeting minutes doc future topics)
+    - What are your plans / thoughts around Open Policy Agent and encoding policies into SCITT?
+      - Policy can be used in two places
+        - Policy for what can be put onto register
+          - Some registries might constrain themselves for what types of data they allow
+      - Policy for someone evaluating the contents of the registry to make discussions for fitness of use
+     - REGO also considered as a policy language
+       - Perhaps decide on multi
+       - This policy discussion will happen in this WG for now, then maybe a sub working group
+  - Dick Brooks: Mentions HR4081
+    - On topic for what we are 
+    - Talked about attestations for devices containing a camera and microphone and is connected to the internet
+      - There will need to be an attestation from the device 
+        - Dick submitted to local rep to include software attestations as well
+      - https://www.congress.gov/bill/117th-congress/house-bill/4081
+https://www.congress.gov/bill/117th-congress/house-bill/4081/text
+- Producers and other parties provide content into the system, attestations, claims, recorded into SCITT ledger
+- Dick contacted his congress person to ask to add an amendment to HR4081
+  - Amendment for smartphone apps to provide a trust score
+    - Tie in with OpenSSF metrics database to grab the security of repos involved
+  - Dick
+    - Proposed amendment I mentioned for HR 4081:
+    - "Require smart phone app stores to include a software supply chain trust score for each app". This gives consumers the ability to check trustworthiness before installing an app,
+- Ray: think about attestations is different than the transparency ledger
+  - Thinks it's a lot to bite off to do both
+  - Are there IoT folks that might have more attestation experience we could tap into?
+  - Is there a sub-working group focused on device attestations (in response to HR4081)
+    - Device attestations could be recorded tin the transparency ledger
+    - TCG DICE WG is a target point of engagement (UCAN, CBOR, DID).
+      - https://trustedcomputinggroup.org/work-groups/dice-architectures/
+      - https://www.trustedcomputinggroup.org/wp-content/uploads/Device-Identifier-Composition-Engine-Rev69_Public-Review.pdf
+      - Looking at hardware actively attesting
+      - Microsoft has an Open Source implementation on GitHub
+    - This attestation stuff starts to look at real life commerce, Ray thinks it's important to 
+- Joshua Lock
+  - On software attestations, I have been working on a page for the SLSA website to describe the model we're working with. I can share to the SCITT list once the change is merged.
+  - IIRC the SCITT draft standards refer to a 'software attestation" as a "claim", to disambiguate from RATS & TCG attestations
+- Remote Attestation and Device Attestation
+  - Embraced COSE and CBOR
+    - Also in SCITT
+    - Hopefully we converge on underlying formats for both in-toto style and remote attestation style attestations
+- There are also NIST attestations
+- Vuln information mentioned by Kay as possible content inserted into SCITT
+  - This is a goal of ours with our CVE Binary Tool engagement
+  - We also could encode SBOMs from the systems that built them, we could patch sigstore to insert into a SCITT ledger

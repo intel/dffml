@@ -1,0 +1,15 @@
+- https://twitter.com/0x_philbert/status/1585805986048233472?s=20&t=EQzvXUz0Kz3T-IwKQm2e2Q
+- Sequence for mental model docs
+  - alice as Ghost in brain
+  - We pick Her out of our head with two fingers
+  - we ask her
+    - whoooo
+    - Are
+    - Youuuu?
+  - she helps us look in now that shes out
+  - We write it all down
+    - here is where we define the multi context parallel conscious state mental model and map that to the dataflow description
+    - This is probably also where the draft example sequence (downloder.py) original improve dataflow docs code should go.
+      - https://github.com/intel/dffml/issues/1279#issuecomment-1025267749
+  - We give her stack of software pancakes that say EAT me
+  - She grows to our size

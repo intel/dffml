@@ -1,0 +1,29 @@
+## 2023-01-07 @pdxjohnny Engineering Logs
+
+- https://twitter.com/csuwildcat/status/1611392365524307977
+  - Daniel Brrrrrrrrr (lol) examples of DWN hook related stuff
+  - https://gist.github.com/csuwildcat/79e8934b878a1ec591c4121d88f18a83
+  - https://gist.github.com/csuwildcat/2ac6ebf4c581c5df143c32fa4911850e/revisions
+    - Woohoo he just updated this!
+  - https://gist.github.com/csuwildcat/e7b0f42d6abd1ee0b7685cf6c1f5081a
+- https://www.hezmatt.org/~mpalmer/blog/2020/05/17/private-key-redaction-ur-doin-it-rong.html
+- https://github.com/mpalmer/vmdksync
+  - Apply VM snapshots to raw block devices
+  - https://man7.org/linux/man-pages/man1/pv.1.html
+    - > monitor the progress of data through a pipe
+- docs/arch/alice/discussion/0010/reply_0000.md:Phased reality consensus shift - DAGs of DAGs over time where time is relative to states of consciousness
+  - Vol 3: Phased consensus reality shift
+- Eventually extract container builds from ensure binary serialized flows (with those overlays added)
+- https://docs.oasis-open.org/sarif/sarif/v2.0/csprd01/sarif-v2.0-csprd01.html
+- Graph synthesis to dockerfile with distro install methods as operations for mappings, this deployment is run_subflow of it's flow given via input which is boolean for method for dataflow as class and string for distro, so it knows how to map to apt-get, yum, etc. The reason we need this is because we need to be able to apply overlays at arbirary levels of gruanularity for our reverse fuzzing capabilities.
+  - Melange seems to offer aligned caching, so we will target that after we 
+  - Put them somewhere else, something like their own `dffml-operations-dep`
+    - Okay now we're really going down the dependency rabbit hole.
+      - This will be our package where we extract dependency info and rebuild. Our serializer / deserializer across development environments. Helps others get up to speed, allows us to delta across environments.
+      - #596
+      - It's like a livepatch for a VM where you analyze the state (Alice the Overlay: Snapshot of the System Context).
+      - This allows us to go from
+        - it works on my machine -> it works in CI/CD -> it works in cloud dev
+      - To
+        - it works on my machine -> it works in CI/CD -> it works in cloud dev -> it works on your machine
+      - Coincidentally, this is also what allows us to "learn" deployment methods. To build the reverse fuzzer, the thing which helps us understand which API combinations are successful. What are potential candidates for reuse. We then use Vol 3 techniques to influence pre-ideation, detect in flight trains of thought and target for online transcription via side channel inference.

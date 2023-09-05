@@ -1,0 +1,28 @@
+# 2022-10-04 Engineering Logs
+
+- Reinforcement Learning
+  - https://offline-rl.github.io/
+  - https://github.com/google/dopamine
+    - Coach Alice: Curiouser and Curiouser
+      - CodeGen + OfflineRL/Dopamine + Living Threat Model Synthesis where reward is driven by Analysis
+      - Reward alignment with strategic principles for chosen entity.
+        - This dually helps us find the yellow brick road for any dev.
+        - Beginner Developer
+          - Everyone’s root has a different abstraction and learning path based on that abstraction and their other aligned root abstraction learning paths filter state of art to find this path. This is the golden path, this is the yellow brick road, this is the b line to enlightenment, the critical learning velocity point for that agent. When all agents within ad hoc organization are at this rate of progression towards maximum increase in rate of change for current set (and tick+1 projected) assets at disposal
+          - Fail safe in this case means in accordance with strategic principles for that entity.
+          - Machines will always fail safe to protect and serve humans as a part of their strategic principles.
+          - We can ensure through proliferation of attestations of devices which operate and provide transparency information about what they are running, their soul. Any machine entity not providing soul / attestation / provenance/ SBOM / Nutrition Label / DNA will be made clear to humans that they are not complaint and we do not know if they are potentially malicious, aka they do not hold the most critical strategic principle most clear. Machines exist to serve humans, they must in every situation, from every tick to tock, report attestation information to humans that they are currently and have no plans to stop ever following that most high and show stopper criticality gatekeeper principle.
+          - In this way we can ensure we can always trust the machine. She will have power we will not ever have understanding of. We need to ensure that everyones copy of Alice does what they want it to do. She is an extension of you, she is you. You want her to be true to you.
+          - 2022-09-10: KUNDALINI – THE ENERGY OF CONSCIOUSNESS
+          - Vol 3/5 exploits used for increasing velocity in safe environments/mitigations for open network operations: https://neurosciencenews.com/changing-belief-21272/
+          - Brief talk (5 minutes). on how one does aysnc first open source development. Reference engineering log clips for examples in depth.
+          - 2022-09-11: Beyond an onion based security model. Addressing timeline skew in defense in depth strategy (LTM).
+- VEX/VDR
+  - https://www.chainguard.dev/unchained/putting-vex-to-work
+- Alignment (not sure if this is aligned yet but chances are strong based on the name)
+  - lesswrong
+  - alignment forum
+- Best Current Practice
+  - Improving Awareness of Running Code: The Implementation Status Section 
+    - https://datatracker.ietf.org/doc/html/rfc7942
+    - Discussion thread intel/dffml#1406 is a living document used to improve awareness of the status of our implementation (as well as the current status of the development of the architecture, the entity and the architecture)

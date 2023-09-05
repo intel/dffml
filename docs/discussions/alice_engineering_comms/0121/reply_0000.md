@@ -1,0 +1,42 @@
+- https://open.substack.com/pub/tidyfirst/p/the-story-of-a
+- https://projectf.io/posts/lib-clock-xd/
+  - Vol 6
+- https://post.news/article/2J9CwZazSbKMTVt9x2Yy8okvBgu
+  - How to mothball your twitter
+- https://mastodon.social/@bengo/109542382708854794
+  - https://en.m.wikipedia.org/wiki/Genetic_memory_(computer_science)
+  - > In computer science, genetic memory refers to an artificial neural network combination of genetic algorithm and the mathematical model of sparse distributed memory. It can be used to predict weather patterns.[1] Genetic memory and genetic algorithms have also gained an interest in the creation of artificial life.[2] 
+    - Talk to Terri
+- https://mastodon.social/@bengo/109542479257241705
+  - https://en.wikipedia.org/wiki/Hopfield_network
+  - > Hopfield networks serve as content-addressable ("associative") memory systems with binary threshold nodes, or with continuous variables.[4] Hopfield networks also provide a model for understanding human memory
+- https://mastodon.social/@bengo/109542482950980067
+  - https://en.m.wikipedia.org/wiki/Sparse_distributed_memory
+  - > Sparse distributed memory (SDM) is a mathematical model of human long-term memory... The SDM may be regarded either as a content-addressable extension of a classical random-access memory (RAM) or as a special type of three layer feedforward neural network.
+- Don’t currently bother with cve bin tool full dffml dataflow based scanning for now, just implement within existing cve bin tool stuff passing context / linkage / liniage via paths / dffml.Input / system context style chain, see existing loging fpr help
+  - use tpm2-pytss for sample kick tires
+- Hmmm, if we cant make the clock speeds faster, then we need to put the hardware where the clock is faster, and then edge node style send it back. The other day looking from pitock we thought infrastructure underground, maybe its not, maybe its infrastructure overground. Flip mode after all.
+  - Bing! Talk to Nick, Portland state rocket club :rocket:
+  - Let’s at least flush this idea out. Its at least worth seeing what data exists and running some tests.
+    - https://twitter.com/kenshirriff/status/1603827807741673477 Bendix Central Air Data Computer (CADC)
+    - [:eye: ‘imiloa](https://imiloahawaii.org/aboutimiloa)
+    - Now Now this would be a fucking dope way to exploit vol 3 thought arbitrage
+      - > AND FOR ALL the gifts of creation ~ for all the love around us GREETINGS & THANKS - and for that which is forgotten WE REMEMBER ><><><><>< WE END OUR WORDS :dove: NOW OUR MINDS ARE ONE
+    - https://youtu.be/abRsFX8GvVU
+    - Gotta think outside the “box” huh-HUH!
+- TODO
+  - [x] Nick is looking into the accelerated computation via alternative orbits, spins, tilts.
+    - What happens when we put something in orbit around the moon? The speed electors move is the speed they move, theoretically right, what about mechanical based compute? Research that mechanical flight control system and see if that might help, can always parallelize and ADC / DAC.
+  - [ ] Play with rust based web5 tooling, see about python rust binding / wasm embed interpreter status these days or just subprocess call it https://www.spruceid.dev/quickstart
+  - [ ] Flush out SCITT receipt facilitated review based “honor system” use of resources, perhaps hedged with agreegate barter “insurance” aka equilibrium flow maintain-nence
+  - [x] D suggested we listen to This American Life, “The Ghost in the Machine”
+    - https://www.thisamericanlife.org/757/transcript
+      - > I'm a ghost, and I'm in a spaceship, and I'm hurtling through the universe. And I'm traveling forward, and I'm traveling backward, and I'm traveling sideways, and I'm traveling nowhere. [AI, GPT-3]
+      - D’s funnier version: And I'm a Ghost and I’m in a spaceship and I’m turtling though the universe
+        - “Like the stack of turtles thing”
+        - We talked about the risk of manipulation from the “one big entity” [Sergia] version of AI and the need for context awareness and multiple truths being valid based on perspective.
+          - https://dair-community.social/@sergia/109524541996285253
+  - [x] Yay for CVE bin tool release!
+    - Forgot about https://github.com/ossf/osv-schema
+      - Add to schema dir and look at screenshots for missed messages from Terri and Anthony
+  - [ ] https://www.digitalocean.com/community/tutorials/how-to-install-mastodon-on-ubuntu-20-04

@@ -1,0 +1,4 @@
+- https://mailarchive.ietf.org/arch/msg/scitt/Z4jBFyJK5bnzSo8pb72KTXxr7PM/
+- https://deepai.org/machine-learning-glossary-and-terms/association-learning
+  - > bioinformatics
+    - grep -i dna

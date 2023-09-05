@@ -1,0 +1,2 @@
+- TODO
+  - [ ] Enable full attested ODIC through devcloud for attested anroid vms with vtpms https://youtu.be/4wZnl0njxm8

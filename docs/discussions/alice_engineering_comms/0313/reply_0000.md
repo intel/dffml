@@ -1,0 +1,3 @@
+- https://github.com/confidential-containers/documentation/issues/18
+- https://github.com/kata-containers/kata-containers/issues/1332
+- https://community.intel.com/t5/Blogs/Products-and-Solutions/Security/Zero-Trust-Confidential-Computing-for-Containers-with-Intel-s/post/1408342

@@ -1,0 +1,5 @@
+- Great talk from Brooklyn on Edge and Web5
+  - https://youtu.be/a6fvZA0L-ok
+- Good overview of k8s
+- https://huggingface.co/bigscience/bloom
+  - GPT-3

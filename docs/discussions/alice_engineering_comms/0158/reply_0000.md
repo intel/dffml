@@ -1,0 +1,23 @@
+## 2023-01-25 @pdxjohnny Engineering Logs
+
+- For Coach Alice, explaining git repo stuff or overlaying as a cleanup operation on the git features to explain what happened.
+  - https://github.com/initialcommit-com/git-sim
+  - https://github.com/initialcommit-com/git-story
+- https://arxiv.org/abs/2301.10677
+  - grep: Online Cloning
+- https://github.com/surrealdb/surrealdb.wasm/blob/03af7340b285869a38d088fdc831ba3a6cb3253e/src/app/mod.rs
+  - Example of WebSocket connection within WASM
+- https://identity.foundation/waci-didcomm/
+- Threat modeling podcast might come out today
+- https://stix2-generator.readthedocs.io/en/latest/language.html
+  - Looks helpful for describing threats to different deployments
+- https://transmute-industries.github.io/vc-pgp/#example
+  - See about this example but SBOM as the VC type
+- For containers
+  - `cargo install --git https://github.com/mpalmer/action-validator --rev a21476343a2def79d16a924cedc194d19a4c2ec1`
+- TODO
+  - [x] Create `schema/` directory ADR
+    - https://github.com/intel/dffml/blob/alice/docs/arch/0010-schema.rst
+  - [ ] 2nd party FROM rebuild chains
+    - https://github.com/w3c-ccg/traceability-interop/tree/main/environment-setup
+  - [ ] https://asdf-vm.com/

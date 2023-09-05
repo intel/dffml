@@ -1,0 +1,3 @@
+- https://www.alpinelinux.org/posts/Alpine-3.18.0-released.html
+- Python 3.11 task groups and other features, data class transforms, dep related anything?
+  - We have a TODO about data class transforms somewhere, need to map in new feature set to that

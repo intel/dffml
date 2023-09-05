@@ -1,0 +1,43 @@
+## 2023-02-13 SCITT
+
+- https://datatracker.ietf.org/meeting/interim-2023-scitt-06/session/scitt
+- https://github.com/ietf-scitt/draft-birkholz-scitt-software-supply-chain-use-cases/pull/17#discussion_r1102974621
+- Offline verification use case
+  - Preloading to fight Trojan horse attacks (equivalent of cert pinning using transparency logs?)
+    - Our TDX/SGX/TPM Verifiable Credentials use case for full offline CI/CD -> logs as auth
+- Hannes Tschofenig: We also have our Distributed database append only log
+  - SBOM
+  - Report of static analysis
+  - Identity of the entity inserting is important so we know if we can "trust" the content in the ledger
+    - So we know a bit more about what it means if that entity added to that log
+      - For example we may have other logs which track our trust in those entities
+      - John (not said): With SCITT we can graft our own for 2nd party / 3rd party trust boundaries and offline use cases
+  - Let's talk about OpenID Connect
+    - John (not said): We like OpenIDVC
+      - https://openid.net/openid4vc/
+  - OpenID allows us to provide authentication class and methods
+    - Can authenticate via AMR, which let's us know what level the ID token was validated to
+    - The ACR value allows client to say I would like a certain level of assurance for an auth
+  - Cedric Fournet:
+    - We aligned on DID because it is even more flexible
+  - Raymond Lutz: The functoin of SCITT ot to connect a semantic meaning to what's in the log
+    - Who is the "I" that's releasing that semantic concept and linking it to that hash value?
+    - How do we link identity to the semantic meaning of an artifact?
+    - John (not said): We leverage ActivityPub Extensions for security.txt style
+      - `inReplyTo: "$activitypubextensions_thread", content: "https://time.crystals.prophecy.chadig.com/bulk.1.0.0.schema.json"`
+      - https://github.com/ietf-scitt/use-cases/blob/17182b63abbd8952ac0868f621395dddc75a1715/openssf_metrics.md#activitypub-extensions-for-securitytxt
+  - Dick Brooks: We need to look at policy on insert
+    - Each statement might have a set of critiera whcih needs to be validated by an authorized praty before it can be added to a registry
+      - John (in chat): Would https://identity.foundation/credential-manifest/#input-evaluation be helpful for facilitating insert policy?
+  - Charles Hart: The owner of SCITT has gatekeeper (grep Alice arch/discussion)
+    - We need to solve the problem 
+- Henk Birkholz: "SCITT instances" are intended to be fueled by "RATS WG output" in the future.
+- Steve Lasker: Idenitty helps us give context, main purpose of SCITT is produced or attested to by an ideneitty that you choose to trust
+  - John (not said): These identities could also be ephemeral roles whcih are tied to attested compute (aka built from CI/CD and deployed to confidential compute, example: build_images_containers.yml -> #1247 -> Project Amber -> OIDC -> more builds -> SCITT)
+- Jon Geater: Strong identity is who made that statement, we don't have to go down complicated identity route to fulfil our mission, if I say something about microsoft
+  - Who owns SCITT? This community here owns SCITT, we shoudl define how deep trust relations
+  - We are looking to seal a working copy of the arch this week
+- https://youtu.be/TilY8TEO5tk?t=3275
+- NTT
+  - [ ] Federation
+    -  RFCv1 of ActivityPub based federation: https://github.com/ietf-scitt/use-cases/blob/2d7d48efba01de89cd2e072dc1e30d7473f4f472/openssf_metrics.md#activitypub-extensions-for-securitytxt

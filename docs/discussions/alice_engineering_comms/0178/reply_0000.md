@@ -1,0 +1,2 @@
+- https://github.com/GoogleContainerTools/kaniko/issues/1836#issuecomment-1430436134
+  - Everything as content addresses, we want OSS snyk on all 2nd and ideally 3rd party plugins

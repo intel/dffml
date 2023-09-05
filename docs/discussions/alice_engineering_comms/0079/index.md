@@ -1,0 +1,25 @@
+# 2022-11-07 Engineering Logs
+
+- IPVM meeting tomorrow on content addressable execution
+  - https://ipfs.tech/
+  - https://www.youtube.com/watch?v=FhwzEKNZEIA
+  - https://www.youtube.com/watch?v=rzJWk1nlYvs
+  - See recent notes on content addressable `serviceEndpoint` defined via dataflows pinned by `did:merkle:`
+  - https://atproto.com/guides/data-repos
+- Zephyr
+  - What is at the top of the build parameter hierarchy
+    - They use a Kconfig system
+    - They could use overlays for this
+  - Firmware build because it's embedded it more build time configs
+    - How do we organize storage?
+      - The Knowledge graph and data flows to link to describe those other flat structures
+    - Need unique build ids
+      - `did:merkle:` of serialized Open Architecture
+  - They only ever run a few subsets of Kconfig parameter sets (a few parameters)
+    - Parameters are any inputs that can effect the build
+      - Tool chain version
+  - Marc's example
+    - Let's say I care about, git version ,tool chain version, various .config
+      - https://github.com/zephyrproject-rtos/zephyr/pull/51954#issuecomment-1302983454
+    - I track those for reproducability (and caching) information
+    - When I want to generate a content addressable build I take all those JSON files (which are the generic graph serisalization of all the stuff you care about) you concat and checksum (`did:merkle:`).

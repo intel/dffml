@@ -1,0 +1,52 @@
+## 2023-03-20 @pdxjohnny Engineering Logs
+
+- https://github.com/microsoft/semantic-kernel/blob/main/docs/PLANNER.md#what-is-the-value-of-goal-oriented-ai
+  - https://hbr.org/2016/09/know-your-customers-jobs-to-be-done
+  - Bingo
+- https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=command-line&pivots=programming-language-python
+  - https://github.com/MicrosoftDocs/azure-docs
+- https://www.instill.tech/docs/core-concepts/ai-task#standardise-via-vdp-protocol
+- https://github.com/microsoft/semantic-kernel/blob/main/samples/apps/book-creator-webapp-react/README.md
+- https://github.com/microsoft/semantic-kernel/tree/python-preview
+  - https://github.com/microsoft/semantic-kernel/blob/python-preview/python/FEATURE_PARITY.md
+- https://www.instill.tech/docs/destination-connectors/airbyte#low-code-setup
+- https://github.com/raysan5/raylib
+  - Vol 2
+- https://github.com/tloen/alpaca-lora
+- https://github.com/MicrosoftDocs/azure-docs
+- ActivityPub security.txt/md rebroadcast -> latest info on APIs available -> auto hypothesis -> evaluation of execution against strategic plans and principles
+  - The basic automated software development ^ loop
+- Writing the wave++
+  - https://github.com/34j/so-vits-svc-fork
+- https://github.com/OneMoreByte/mva/blob/8a86f24e1411502243bc70404fb8646fec0202ba/mva.py#L214
+  - For large file mirroring
+- https://github.com/ossf/wg-vulnerability-disclosures/issues/125#issuecomment-1462563173
+  - List of projects using CyloneDX format for VEX and VDR
+- [OpenVEX Presentation](https://www.youtube.com/watch?v=MBn1Ph6aBxc)
+- https://github.com/ossf/wg-vulnerability-disclosures/issues/124
+  - https://github.com/JLLeitschuh/code-sandbox/commit/65987132b65a1c32672aa236f33569efbb04cf7e - Create GH-ROBOTS.txt
+- https://github.com/ossf/scorecard/issues/1874#issuecomment-1178259870
+  - Protobuf schema for scorecard results
+- TODO
+  - [x] Fix python package release workflow
+    - [release.yml](https://github.com/srossross/rpmfile/blob/master/.github/workflows/release.yml)
+    - We use rpmfile for scanning binaries from different distros which package using the RPM format
+      - #789
+      - https://github.com/intel/dffml/issues/595
+    - We should capture the webhook event from the release upload and play with that to update pinning within downstream CD
+      - #906
+      - [Rolling Alice: Architecting Alice: Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
+  - [ ] https://github.com/intel/project-example-for-python/issues/3
+    - [ ] Auto roll in alignment with conventional commits and https://tqrg.github.io/secom/
+  - [ ] https://github.com/ossf/wg-vulnerability-disclosures/issues/124
+    - [Google Doc: Specification: OpenSSF Compliant Automated Vulnerability Fix Campaign](https://docs.google.com/document/d/1_QwN7yQXWGM2tJaostIRNqyZIhVceVlIyXqCrSdC4E8/edit?disco=AAAArT7aBmI)
+      - > Has there been any discussion around maintaining forks and tracking the upstreaming of the fixes from the fork into the upstream? Sometimes there are no maintainers around, and a fork is the only way to go. In that case, we'd probably want to reduce the amount of forks waiting around with fixes, we don't want more than one campaign trying to submit the same fix.
+        - Funny, this is what got us involved in rpmfile in the first place
+      - Our pinning enables us to leverage these forks
+        - https://github.com/ossf/scorecard/blob/main/checks/evaluation/pinned_dependencies.go#L291-L295
+    - Have been working on an aligned RFC (still WIP) over here: https://github.com/ietf-scitt/use-cases/pull/18. Seems like transparency services will be where we log the end assessment of is vuln/is not vuln ([2022-07-20 Identifying Security Threats WG](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3191292))
+  - [ ] Semantic kernel cleanup of #1369 and #1406 into something legible
+    - https://github.com/mayooear/gpt4-pdf-chatbot-langchain
+    - Pagination for dump_discussion
+      - https://gist.github.com/9f3dc18f0a42d3107aaa2363331d8faa
+      - https://github.com/intel/dffml/blob/4dae1a3e6b6d37b81f71659599d1ddef800ac176/scripts/dump_discussion.py#L73

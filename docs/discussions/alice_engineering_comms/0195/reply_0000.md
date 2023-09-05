@@ -1,0 +1,139 @@
+## 2023-03-03 @pdxjohnny Engineering Logs
+
+- Do another manifest conversion into a SLRUM job (as schema)
+  - Thank you Dave Florey! 🥳🥳🥳
+  - https://slurm.schedmd.com/quickstart.html
+- We want SPIFFE interop
+- https://aurae.io/#expanded-overview
+  - > Authentication: Aurae extends [SPIFFE](https://github.com/spiffe)/[SPIRE](https://github.com/spiffe/spire) (x509 mTLS)-backed identity, authentication (authn), and authorization (authz) in a distributed system down to the Unix domain socket layer.
+  - Forge local fulcio
+- https://aurae.io/blog/2022-10-24-aurae-cells/#aurae-spawn
+  - > Aurae Spawn: The name Spawn() is taken from the Rust std::process crate and resembles a pattern what most Linux users will know as unshare(2) or namespace delegation. Basically a spawned instance of Aurae will inherit certain properties from the parent, and will come with a few basic guarantees with regard to security and connectivity.
+ Aurae is designed to be recursive, which enables nested isolation zones and gives the project the basic building blocks it needs to hold an opinion on how users should run workloads. Spawned Aurae instances will receive a bridged TAP network device which a nested auraed daemon will listen on by default. This allows a parent Aurae instance running with an independent kernel to communicate directly with a child instance over the same mTLS authenticated gRPC API the rest of the project leverages. `rpc Spawn(Instance) returns (InstanceStatus) {}` Aurae will manage creating an ephemeral [SPIFFE](https://github.com/spiffe/spiffe) service identity for each spawned instance and will delegate down kernel images, initramfs, and even the auraed daemon itself.
+- https://blog.envoyproxy.io/securing-the-service-mesh-with-spire-0-3-abb45cd79810
+- https://github.com/aurae-runtime/auraed/tree/bff23e58fcea2ab877b391adee39bfa8fd14fd4e/stdlib/v0
+  - Best practice! Versioning within a lib.
+  - https://github.com/future-highway
+    - We're on our way to helping Alice onramp data from offline caches back into the data super highway of the future
+      - Ref: data super highway of the future, early engineering logs
+- https://slurm.schedmd.com/mpi_guide.html#intel_mpi
+  - This looks like devcloud
+    - #1247
+  - We'll run this within the cf lobs
+- Run everything out of GitHub, but also with the ability to run it grafted. All at the same time, just by rebroadcasting.
+  - GitHub is test env
+  - Mirror execution env is prod
+    - Loosly coupled means we are doing the same thing as versioned learning.
+      - On propagation, does it fit within allowlist of SCITT instance squishy version range (set)?
+        - Do you want to run the query + policy evaluation?
+          - You can look at the dataflow before you run it. And overlay your policy to evaluate propagation as a gatekeeper or itself overlay policy onto the dataflow for contexat aware tailoring before execution.
+          - You can say, I'll execute many manifests that unpack into SLURM manifests
+            - You'd do this by having a downstream listener which execute the shim to transform into the SLURM version of `qsub`
+              - This is our `alice threats listen activitypub -korifi` 
+- https://github.com/transmute-industries/jsonld-github-action
+  - For reverse of shim
+- ActivityPub extensions for security.txt
+  - Can you put things in `@context`?, yes. Unsure if other servers will propagate events.
+  - It this piggybacking within the content approach interoperable today, yes.
+- Somewhere, something happened
+  - Bob tells Alice what happened
+  - Alice decides, do I care about what whappened? (the federated event)
+    - It's the triage process
+     - https://github.com/intel/cve-bin-tool/issues/2639
+     - Take upstream policy (attached to incoming via `inReplyTo` and or `replies`, you'd have to decide if you want to dereference these, perhaps based on reputaion of propagator to reduce attack impact)
+- A container image was created (`FROM` rebuild chain)
+  - Bob's forge tells Alice's forge, here's the content address uri for the manifest just pushed
+  - Alice looks at the manifest, runs through all the packages she's maintaining in her forge
+    - She applies the threat model of each as an overlay when determining if she wants to propagate into her internal environment
+      - If any of these
+  - Alice's downstream listener executes a system context to system context translation (grep: equilibrium, context-to-context)
+    - She executs the shim
+      - #1273
+      - It parses the content in alignment with the schema
+        - The shim already supports validation so we could actually just serialize the would be HTTP requests to files (same as staged when offline)
+          - https://github.com/intel/dffml/pull/1273/files#r794027710
+          - Could add activity style using this operation (function) as upstream, just copy paste and push to shim
+            - https://github.com/intel/dffml/blob/e1914f794c7ccc3a7483fa490cfbe5170bf65972/dffml/util/testing/manifest/shim.py#L744-L757
+    - https://github.com/tern-tools/tern#report-cyclonedxjson
+      - Upload resulting SBOM to registry `FROM scratch` style or via
+        - https://github.com/opencontainers/image-spec/blob/819aa940cae7c067a8bf89b1745d3255ddaaba1d/artifact.md
+        - https://github.com/opencontainers/image-spec/blob/819aa940cae7c067a8bf89b1745d3255ddaaba1d/descriptor.md#examples
+- A SBOM was published
+  - Bob's forge uploads an SBOM to the registry
+  - Alice's forge decides if she wants to propagate it (prioritizer, gatekeeper, umbrella)
+    - Alice looks at the manifest, runs through all the packages she's maintaining in her forge
+    - She applies the threat model of each as an overlay when determining if she wants to propagate into her internal environment
+      - If any of these use similar components as were mentioned in this SBOM, propagate
+  - Alice's listener receives the new SBOM event
+    - She uploads a manifest instance of a SLURM submit job spec to her registry
+      - https://slurm.schedmd.com/rest_api.html#slurmV0038SubmitJob
+- A manifest instance of a SLURM submit job was published to Alice's registry
+  - Bob's forge uploads an SBOM to the registry
+  - Alice's forge decides if she wants to propagate it (prioritizer, gatekeeper, umbrella)
+    - Alice looks at the manifest, runs through all the packages she's maintaining in her forge
+    - She applies the threat model of each as an overlay when determining if she wants to propagate into her internal environment
+      - If any of these use similar components as were mentioned in this SBOM, propagate
+  - Alice's listener within korifi receives the new IPMV///SLURM submit job event
+    - She downloads the job contents from the manifest
+      - `FROM scratch`, `results.yaml` extraction style tar pipe
+    - She executes the shim
+    - The next phase parser runs kaniko
+      - `grep ' Push' | awk '{print $NF}' | sed -e 's/.*@sha/sha/' -e 's/.*://g' | sed -e 'N;s/\n/=/'`
+- #1399!
+  - Where is Here?
+  - Now!
+  - :)
+
+```console
+$ gh pr -R https://github.com/intel/dffml merge --rebase --auto 1406
+```
+
+- https://github.com/ietf-scitt/cose-merkle-tree-proofs/pull/12
+- https://github.com/securefederatedai/openfl/blob/develop/docs/running_the_federation.rst
+- https://github.com/securefederatedai/openfl/blob/develop/docs/running_the_federation.rst#aggregator-based-workflow
+- https://openfl.readthedocs.io/en/latest/running_the_federation.html#federation-api
+- https://github.com/securefederatedai/openfl/blob/develop/tests/openfl/transport/grpc/test_director_server.py
+- https://github.com/securefederatedai/openfl/blob/58efdcc57f477f031a58ab8995fade57ca02643f/tests/openfl/transport/grpc/test_director_server.py
+- https://openfl.readthedocs.io/en/latest/install.html#productname-with-docker
+- https://openfl.readthedocs.io/en/latest/workflow_interface.html
+- https://openfl.readthedocs.io/en/latest/source/openfl/communication.html
+- https://github.com/jenkinsci/opentelemetry-plugin#using-the-opentelemetry-otlphttp-rather-than-otlpgrpc-protocol
+- https://github.com/jenkinsci/opentelemetry-plugin/blob/9061f4a915e5b8bf65ffe10393c55530b41162ab/src/main/kibana/jenkins-kibana-dashboards.ndjson
+- https://github.com/jenkinsci/opentelemetry-plugin/blob/9061f4a915e5b8bf65ffe10393c55530b41162ab/src/main/java/io/jenkins/plugins/opentelemetry/opentelemetry/common/OffsetClock.java#L36
+  - grep clock skew
+- https://codeberg.org/Codeberg/forgejo
+  - Codeburg has a fork, shows engagement from community
+- https://codeberg.org/Codeberg/avatars
+  - For Alice/entity instances
+- https://inqlab.net/git/ocaml-xmppl.git/
+- https://inqlab.net/git/guile-datalog.git/
+- https://github.com/lindig/polly
+  - OCaml bindings for Linux epoll(2)
+- ActivityPub maintainer Christine Lemmer-Webber talked about this on mastodon
+  - https://spritely.institute/goblins/
+  - https://spritely.institute/files/docs/guile-goblins/0.10/OCapN-The-Object-Capabilities-Network.html#OCapN-The-Object-Capabilities-Network
+  - https://docs.racket-lang.org/goblins/captp.html#%28part._.Cap.T.P_usage_example%29
+    - **ALIGNED**
+  - https://octodon.social/@quinn/109955448257454151
+  - https://docs.racket-lang.org/goblins/captp.html#%28part._.Fake_.Intarwebs%29
+    - 🛤️🛤️🛤️🛤️🛤️🛤️🛤️
+  - https://pkgs.racket-lang.org/package/goblins
+  - https://pkg-build.racket-lang.org/server/built/install/goblins.txt
+- https://github.com/aurae-runtime/aurae/pull/437
+  - Wardly map: Future libvirt ^
+  - Best practice: rust: Vendoring in `creates/`
+    - Alice could help facilitate tracking upstream for `overlays/` where overlays are distro package style patchsets / dataflow / manifest as patchset
+    - This is that evolution of QEMU we've wanted!!!!!!!!!!!!
+      - https://github.com/aurae-runtime/aurae/pull/437/commits/ce682c5936c1e0df5863b07734f6ffbe9c5c6fd3#diff-a9b9110f95a34509551c21058f6a1a2d3aa928a9fd11bd248d0bdbb47c03ee75
+      - Now to hook the reverse fuzzer (codegen) / fuzzer loop up
+- https://github.com/containers/youki
+- https://gzigzag.sourceforge.net/nutshell.html
+- https://github.com/krisnova/home
+- https://github.com/WebOfTrust/keripy/blob/development/src/keri/demo/demo.md
+- TODO
+  - [ ] Play with ActivityPub tags seen yesterday for potential as flat file serializable with eventing on rejoin #1400
+  - [ ] A VEX was published...
+    - See recent meetings with Anthony involved
+  - [x] Reach out to intel/openfl maintainer about federation protocol
+    - Patrick Foley
+  - [x] https://github.com/intel/open-ecosystem-ref-code

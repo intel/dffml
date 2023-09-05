@@ -1,0 +1,2 @@
+- webcrypto ActivityPub server to server how not to password style client to client bootstrap
+  - https://mastodon.social/.well-known/webfinger?resource=acct:example@mastodon.social

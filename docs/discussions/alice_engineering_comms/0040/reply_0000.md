@@ -1,0 +1,65 @@
+## 2022-09-28 @pdxjohnny Engineering Logs
+
+- Terraform
+  - https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http
+  - https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs
+- VSCode
+  - https://sourcegraph.com/search?q=repo:%5Egithub%5C.com/microsoft/.*+remotePlatform&patternType=standard
+  - Goal: DERP remote connect to ssh coder
+    - Tabled this for later
+    - https://github.com/coder/coder/search?q=derp
+      - They added support for a config option!
+      - https://github.com/coder/coder/pull/4030
+      - https://github.com/coder/coder/blob/7e54413d3b39d8da8cd404190739a7de35f467de/docs/networking.md
+    - Tailscale added official docs on running DERP servers!
+      - https://tailscale.com/kb/1118/custom-derp-servers/#why-run-your-own-derp-server
+      - https://github.com/coder/coder/blob/7e54413d3b39d8da8cd404190739a7de35f467de/docs/networking/port-forwarding.md
+  - https://github.dev/intel/dffml
+  - https://github.com/microsoft/vscode/blob/236adc221bb31701db4c2a36ffed544653b26311/src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts#L253-L285
+  - https://github.com/microsoft/vscode-docs/blob/b0cc336a950effd3d5c012900a6ec1ba613fc8fb/docs/remote/troubleshooting.md
+    - https://sourcegraph.com/search?q=context:global+repo:%5Egithub%5C.com/microsoft/.*+showLoginTerminal&patternType=standard
+      - https://github.com/microsoft/vscode-cpptools/blob/ebb24763bd1143d9177a5fa6a7b70ade8c9f05ab/Extension/src/SSH/sshCommandRunner.ts
+        - Seems like a vendored version of what we are looking for
+      - https://github.com/microsoft/vscode/blob/0c22a33a9d670a84309447b36abdbd8c04ee6219/src/vs/workbench/services/remote/common/remoteAgentService.ts#L20
+      - https://github.com/microsoft/vscode/blob/b7d5b65a13299083e92bca91be8fa1289e95d5c1/src/vs/workbench/services/remote/browser/remoteAgentService.ts#L22
+      - https://github.com/microsoft/vscode/blob/b7d5b65a13299083e92bca91be8fa1289e95d5c1/src/vs/platform/remote/browser/browserSocketFactory.ts#L268
+- GitHub Actions for downstream validation of 2nd party plugins.
+  - https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container
+  - https://docs.github.com/en/actions/using-containerized-services/about-service-containers
+  - docs: tutorials: rolling alice: forward: security: supply chain: Mention tie to distributed compute
+    - https://github.com/intel/dffml/commit/e9af134d07f104e6db89ac872a8c2249198261da
+    - https://twitter.com/pdxjohnny/status/1575152364440657920
+    - https://twitter.com/pdxjohnny/status/1574974594863472640
+- Open Architecture
+  - Threat Modeling
+    - [FIRST](https://www.first.org/cvss/v2/team)
+    - [Open SSF](https://openssf.org/)
+      - https://openssf.org/oss-security-mobilization-plan/
+      - Integration points
+        - https://github.com/ossf/scorecard
+        - https://github.com/ossf/criticality_score
+        - https://github.com/ossf/osv-schema
+      - Manual ask first, do you do threat modeling?
+        - Eventually attestations / assertions
+      - Get involved with risk assessment work in OpenSSF happening.
+        - Lot's happening in ID security threats, stay engaged there.
+          - Risk assessment work might land here.
+- Upstream communities which may be good places to show up and participate
+  - OpenSSF Identifying Security Threats (still)
+- Similar
+  - https://github.com/ossf/fuzz-introspector/blob/main/doc/Architecture.md
+  - https://github.com/chaoss/wg-risk
+    - https://github.com/chaoss/wg-risk/blob/main/focus-areas/dependency-risk-assessment/upstream-code-dependencies.md
+- CHAOSS Augur
+  - https://github.com/chaoss/augur/blob/main/docker-compose.yml
+  - https://github.com/chaoss/augur/blob/main/scripts/docker/docker-setup-database.sh
+  - https://github.com/chaoss/augur/pkgs/container/augur_backend
+  - https://oss-augur.readthedocs.io/en/main/getting-started/installation.html
+  - https://oss-augur.readthedocs.io/en/main/development-guide/workers/creating_a_new_worker.html
+
+![initial-sketch-of-abstract-compute-architecture](https://user-images.githubusercontent.com/5950433/196192835-3a6ddb72-6a52-4043-bb6c-348382f2fcac.jpeg)
+
+- TODO
+  - [ ] `CITATIONS.cff` demo
+    - https://github.com/intel/dffml/discussions/1406#discussioncomment-3510908
+    - https://securitytxt.org/ RFC 9116

@@ -1,0 +1,55 @@
+## 2023-02-28 KERI and IETF SCITT
+
+- 1:1 Sam/John
+- Did method determines trust basis
+  - With KERI, it's an AID, helps facilitate a level of security
+- DID spec is name space : method specifics : ...
+- Administrative trust basis
+- Did web uses HTTP as trust basis
+- Some are blockchain based
+- KERI is append only event log for trust basis
+- DICE has compatible trust basis
+  - Cryptographically derived used the name mechanism as the identifier
+  - DICE doesn't do pre-rotation
+    - Would have to reprovision mcu if you need to rotate keys
+- Reputation associated with keys
+  - If rotated, how do you determine who's the same
+    - Add to TS (KERI)
+- DUplicity evident
+  - Beyond tamper evident: send data send digest
+  - Key state with KERI is not just tamper evident but duplicaty evident
+    - If I do a pre-protations I can create two differnt rotation events that went to two different keys
+      - Can't do a fork without declaring it's a fork
+      - Verifier says I can apprate the trust basis because I can look at the event log and if you're being duplicitas
+        - Can't send an NFT to multiple people (title), one of them can't be write, there is duplicity here, have to sign and publish if I'm going to anchor it to my key event log.
+        - Watcher network allows verifiers to see duplicity
+          - Reach of watcher network they care about is the breadth of their ecosystem
+          - If there is a three party transaction, duplicity
+          - If bob and sue want to see if Alice is being duplicitace, then bob checks with sue to see what Alice's key state is
+- Digital signature acts around the world hold legal recourse
+- Verifier always checks with watcher, if watcher says it's good then we trust
+- Witnesses enable the controller of the identifier to increase the stregth of their control
+- We need to trust that watchers won't deleete proof of duplicatity
+  - I need 1 honest watcher, the only thing dishonest ones watchers can do it delete, theey can manufacture proof of duplicity
+  - Will can says has Alice been duplicitus? Will can lie and say no, Alice would have to prevent there being one honest Will, her duplicity will be envident
+- With DID we would need to evaluate the security of the method before I use it
+- If a codebase had multiple DID methods used to contribute to it
+  - The security is the security of the weakest did method
+- We need to go KERI route to prevent duplicity in the supply chain
+- Could publish ACDC for the VEX publishing
+  - VC meant verifiable claim originally, now it's credential
+  - Can anchor in key state log anything I want, OpenVEX, etc.
+  - Anyone can make an assertion
+  - Already setup to be able to do this
+- VC went hard on RDF interop
+- Allows containers to carry VC of any form, so long as they have a transformer that will produce (one way) JSONLD RDF compliant representation.
+  - Content type +ld means jsonld, means `@context`
+  - What is a MUST you must be able to transform into something with an `@context`, so we can do AcitivtyPub+registry -> JSONLD
+- KERI is agnosic about name spacing, if you only wanted to use `did:keri`, then you would skip using the DID method namespace and just use the KERI stuff
+- Next steps
+  - ACDC transmission of records, setup watchers
+- DID provides namespacing
+  - KERI is the highest protection ring currently available
+  - Using DID methods where there is no duplicity detection means there are non-context local events which could alter the validity of key state (Example: Keys stored in blockchain, a key signing two things, one of which it wasn't supposed to sign.
+    - KERI solves the distributed locking problem needed to operationalize #51 across address spaces
+      - #772

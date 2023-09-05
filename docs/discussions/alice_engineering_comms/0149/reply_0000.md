@@ -1,0 +1,3 @@
+- https://stevengharms.com/posts/2023-01-02-optimal-mastodon-tools/
+  - To view comms
+  - Can render images or content to images i.e. mermaid and render

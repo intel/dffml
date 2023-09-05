@@ -1,0 +1,21 @@
+## 2023-04-18 @pdxjohnny Engineering Logs
+
+- https://github.blog/changelog/2023-04-17-introducing-repository-rules-public-beta/
+- https://github.com/jdxcode/rtx
+  - https://github.com/direnv/direnv
+    - https://github.com/direnv/direnv/issues/1088
+- https://github.com/LemmyNet/lemmy
+  - https://github.com/SleeplessOne1917/lemmy-bot
+    - TODO: Add server-sent events or websocket support
+      - [Client event listening - https://codeberg.org/fediverse/fep/issues/86](https://codeberg.org/fediverse/fep/issues/86)
+- https://github.com/embassy-rs/embassy
+- https://github.com/webonnx/wonnx
+- https://www.apollographql.com/docs/federation#how-it-works
+- https://github.com/apollographql/supergraph-demo-fed2
+- https://codeberg.org/fediverse/fep/issues/86
+- TODO
+  - [x] https://github.com/intel/dffml/pull/1450
+    - https://github.com/intel/dffml/pull/1061#discussion_r1170678614
+      - We'll be patching renovate and dependabot and integrating FROM rebuild chains off the pinning updates as containers are built with the poly repo pull requests, we'll have auto pull requests to pull requests to update the manifests as we promote across
+  - [ ] Container build digest output
+  - [ ] FROM chain auto pinning

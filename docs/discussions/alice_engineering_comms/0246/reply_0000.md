@@ -1,0 +1,4 @@
+- https://github.com/lexfo/sshimpanzee
+- https://github.com/HavocFramework/Havoc
+- https://github.com/Orange-Cyberdefense/GOAD
+  - ActiveDirectory sandbox

@@ -1,0 +1,33 @@
+- stable diffusion
+  - https://github.com/divamgupta/stable-diffusion-tensorflow/pull/50/files
+- reinforcement learning
+  - https://arxiv.org/abs/1903.00714
+    - RL for supply chain
+  - https://github.com/facebookresearch/mvfst-rl
+    - > mvfst-rl is a framework for network congestion control in the QUIC transport protocol that leverages state-of-the-art in asynchronous Reinforcement Learning training with off-policy correction.
+- GitHub Actions
+  - https://github.com/GoogleContainerTools/kaniko#running-kaniko-in-docker
+    - See if updating the `build_images_containers.yml` works if we add these volume mounts and so forth.
+    - There may have been an OCI image issue. Maybe we can rebuild and push in docker format?
+      - Lets just switch to podman or docker onstead of kaniko because we know that works on actions
+- Container Registry
+  - Provide on demand image builds where final layers are just added staticlly
+    - https://github.com/ImJasonH/kontain.me
+      - https://github.com/google/go-containerregistry/blob/a0f66878d01286cac42d99fb45e3b335710c00a5/pkg/v1/random/image.go
+  - These layers then have their SBOM added where they have provenance as the data provenance for the addition of the layer
+  - Then we have content addressability and SBOM and provenance from sigstore etc. via existing registry interoperability tooling
+  - Compute contracts can be issued by having the pull from the registry be authed by verifiable credential
+    - Registry releases content addressable verifiable with SCITT recpit of release (because data might be sensitive, need confirmed release in case of need to revoke / roll keys)
+- Created DigitalOcean space data.nahdig.com
+  - data.nahdig.com is for data with suspect provenance
+  - No `.` in any names in DO spaces! Certs will fail!
+    - We have taken no steps to think about hardening on OS DecentrAlice yet within context of scanning
+    - We should assume VM compromise, aka, data is best effort
+      - Hence nahdig
+      - Data from systems with provenance and hardening will be served from data.chadig.com
+  - https://nahdig.sfo3.cdn.digitaloceanspaces.com/
+  - https://nahdig.sfo3.digitaloceanspaces.com/
+  - https://data.nahdig.com/
+    - `contribute.shouldi.alice.data.nahdig.com`
+
+![create-digitalocean-space-data.nahdig.com](https://user-images.githubusercontent.com/5950433/196057425-a8b74ec5-9c24-42d3-8693-373a61be5d13.png)

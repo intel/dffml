@@ -1,0 +1,1 @@
+https://www.cnn.com/2022/09/03/tech/ai-art-fair-winner-controversy/index.html

@@ -1,0 +1,3 @@
+- https://tidyfirst.substack.com/p/fool-proof-design
+- https://github.com/intel/srs/tree/main/scan-build
+- https://github.com/tklengyel/drakvuf

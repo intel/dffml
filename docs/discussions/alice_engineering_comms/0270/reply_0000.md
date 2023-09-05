@@ -1,0 +1,57 @@
+## 2023-05-17 OpenSSF Vulnerabilities Disclosures
+
+- Upstream: https://docs.google.com/document/d/1Hok-hqFi-NfbNhWLnJiqpNwkTr0WodJ3m2THWM8ICH4/edit#bookmark=id.9ow07ifnlvno
+- Opens
+  - Notification mechanisms for new vulns (and VEX, and XYZ)
+    - https://github.com/openvex/spec/issues/9
+    - RFCv6: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays
+- Meeting Notes
+  - CRob was elected to chair TAC!
+    - Looking for an active member to help lead this series
+    - Jonathan and (tentatively) Madison to co-co-lead
+  - Mobilization calls will be on hold as strategy evolves from governing board
+  - Looking for contributors for OSS CVE guide for consumers
+    - Issue 115 - https://github.com/ossf/wg-vulnerability-disclosures/issues/115
+  - Autofix SIG - Jonathan
+    - Meeting this afternoon - 5 PM ET
+    - Will discuss document currently under review about how we’ll be fixing vulns at scale in open source
+    - Outgoing doc has been approved by the TAC
+      - CRob feels TAC repo is logically the landing spot
+      - Vuln disclosure group is nested far and might be hard to find
+  - OpenVEX - CRob
+    - Great call last monday, will alternate between technical call (tooling and spec) and evangelism call (industry OASIS, CSAF, CycloneDX, SPDX) to get folks using OpenVEX
+    - New exciting goose logo!
+    - There is an Australian focused meeting for the OSV folks. Will explore collaboration there.
+    - There is a mailing list for the OpenVEX sig
+      - openssf-sig-openvex@lists.openssf.org
+      - https://lists.openssf.org/g/openssf-sig-openvex
+- Opens
+  - Johnathan
+    - Working on a proposal for an idea
+      - The great repo audit
+        - OpenSSF funded by Alpha-Omega will engage in pentesting the major artifact servers.
+        - Usually when you buy software you’d look for a pentest report, etc.
+        - Because major artifact servers don’t have similar agreements, they are run as “public good” services, likely they haven’t been in scope for pentests before.
+        - Dev publishes a package, uploaded, information rendered, anti-hajaking, potentially including the consuming infra (pip, verify=False???)
+        - Would hire a pentest firm to do this.
+        - Vuln disclosure policy would be applicable here
+        - Some folks have said by the way introducing along with vuln disclosure policy sounds scary to pentesters
+        - With a pentest report sometimes you’d have a bulk of disclosures. This would cause a slew of findings which could all end up in the same remediation timelines activated in parallel. This would be problematic from a response time perspective.
+        - Would be good to ensure we have contacts and resources available to engage as findings come up.
+        - Cloud leverage policy for critical and high vulns, exceptions for the others.
+        - Would how we handle this project change based on who is managing the packaging registry/artifact server - a community run non-profit foundation vs. a corporate backing with more resources?
+        - Official and verified package processes. In scope or out of scope?
+          - Related?: SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays
+          - Focus on promotion and transparency service to track promotion reasoning from 3rd party to 2nd party (verified) or 1st party (official)
+  - Notification mechanisms for new vulns (and VEX, and XYZ)
+    - https://github.com/openvex/spec/issues/9
+    - Please add thoughts on how we can get more folks upstream using SBOM and vuln exchange formats
+    - We want to flush out how we can use them and connect each layer of the supply chain
+    - 29th of May call will be a place to discuss more
+  - https://www.wired.com/2012/10/joe-postel/
+  - NVD only has CVE- IDs, from CNAs
+    - https://github.com/ossf/wg-vulnerability-disclosures/issues/133
+    - [Tom Alrich](https://tomalrichblog.blogspot.com/2023/05/the-nvd-train-is-moving-time-to-get-on.html)’s open call for feedback about how the NVD can improve can be found here: [What improvements are needed in the NVD?](https://docs.google.com/document/d/1KM9ahZ0-VZ_Jr8WEDMTucrgucyigIiXvjbJ14EeTYe8/edit) 
+    - DDoS release trains by vuln issuance? (similar to pentesting artifact servers)
+    - Dave Dugal ([CVSS SIG](https://www.first.org/cvss/) chair) to come present in our WG about changes in the CVSS 4.0 schema - https://www.first.org/cvss/v4-0/, https://csrc.nist.gov/csrc/media/Presentations/2023/update-on-cvss-4-0/jan-25-2023-ssca-dugal-rich.pdf 
+    - Same with the folks who run [EPSS](https://www.first.org/epss/)

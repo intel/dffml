@@ -1,0 +1,5 @@
+- https://github.com/in-toto/attestation/blob/main/spec/predicates/runtime-trace.md
+- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0011_entering_wonderland.md
+  - https://github.com/cilium/tetragon
+  - https://github.com/aquasecurity/tracee
+- https://github.com/coder/coder/tree/main/helm

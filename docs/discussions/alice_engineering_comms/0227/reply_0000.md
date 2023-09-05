@@ -1,0 +1,32 @@
+## 2023-04-03 @pdxjohnny Engineering Logs
+
+- Submit claim for signature by notary
+  - Notary checks for receipts from needed sign offs
+    - In this example the SCITT instance the notary inserting into it have the same insert/sign policies (system context, dataflow, open architecture document, living threat model)
+      - Alice thinks: I'd like to do this sign op and insert into this SCITT
+        - She auths to SCITT via OIDC, she proves she had a valid token because she's issued a receipt. The whole process is wrapped up inside an enclave which runs within a parallel job. The enclave is then dumped at the end of the job so that it can be joined to an other transparency services. This enables decentralized hermetic builds.
+    - The notary is what's verifying the OIDC token.
+      - We can runs-on an SGX machine to do that.
+      - Using confidential compute and attribute based trust we can authenticate to a usage policy, this is the contract negotiation.
+  - Activity Pub Actors for signoff, you toot at them, they say okay I'll add this exception sign off for this use case /system context to SCITT
+    - Then policy violating system context collects all needed exception receipts, listens for their entry via listening to the SCITT ActivityPub stream, and then re-issues request for admissions along with exception receipts using overlay section of serialized system context object
+- CCF ledger
+  - https://github.com/microsoft/scitt-ccf-ledger/blob/main/DEVELOPMENT.md?plain=1
+  - > `[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=562968818&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json&location=WestEurope)`
+- https://github.com/citusdata/citus
+- https://blog.alexellis.io/deploy-without-credentials-using-oidc-and-github-actions/
+  - For auth to Notary and Notary to SCITT
+  - https://github.com/openfaas/faas-cli/issues/629#issuecomment-485031715
+  - https://github.com/actions/toolkit/blob/457303960f03375db6f033e214b9f90d79c3fe5c/packages/core/src/oidc-utils.ts
+  - https://github.blog/2023-01-11-passwordless-deployments-to-the-cloud/
+  - https://docs.github.com/en/rest/actions/oidc?apiVersion=2022-11-28
+- https://github.com/alexellis/arkade
+  - Kubernetes marketplace
+- https://github.com/cloudposse/github-action-yaml-config-query
+- https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#merge_group
+- TODO
+  - [ ] Reviews on SCITT container image PR
+    - [x] Orie https://github.com/scitt-community/scitt-api-emulator/pull/25#pullrequestreview-1369395034
+  - [ ] SCITT Federation over LDN
+    - [ ] Create pull request
+      - https://github.com/pdxjohnny/scitt-api-emulator/tree/linked_data_notifications_federation

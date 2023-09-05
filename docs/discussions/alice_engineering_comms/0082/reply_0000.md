@@ -1,0 +1,64 @@
+## 2022-11-10 @pdxjohnny Engineering Logs
+
+- Current focus is around leveraging threat model and architecture information to engage in automated context informed proactive, reactive, or periodic (tech debt cleanup) mitigation activities. This is in pursuit of enabling decentralized gamification / continuous improvement of the security lifecycle / posture of open source projects. Enabling them to overlay their custom logic on upstream OSS analysis and policy evaluation will ideally increase helpfulness of static and dynamic analysis and automated remediation.
+  - https://gist.github.com/pdxjohnny/07b8c7b4a9e05579921aa3cc8aed4866
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/README.md#rolling-alice-volume-0-introduction-and-context
+    - "Snapshot of System Context" here is content addressable execution
+      - [2022-11-08 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4086860)
+- https://github.com/TimothyClaeys/pycose
+- https://medium.com/transmute-techtalk/neo4j-graph-data-science-with-verifiable-credential-data-98b806f2ad78
+  - I saw this the other day and should have dug more
+- https://w3c.github.io/sync-media-pub/
+- Poly repo pull model dev tooling rubric into issues into pull request review for inclusion in 2nd or 3rd party set (or any manifest or within any overlay, just change tracking but rubric assisted for distributed checking see SCITT OpenSSF use case with mention of VEX/VDR/SBOM).
+- https://github.com/decentralized-identity/credential-manifest/issues/125#issuecomment-1278620849
+  - https://identity.foundation/presentation-exchange/#input-evaluation
+  - Similar to [2022-11-07 Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4073154)
+    - System Context
+      - Stumbled upon "valid system context" stuff (I/O must existing / be mapped)
+        - https://youtu.be/m0TO9IOqRfQ?t=3812&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
+        - https://github.com/intel/dffml/blob/1d4d6b2f817cd987ceff94b4984ce909b7aa3c7f/dffml/df/system_context/system_context.py#L101-L103
+- https://github.com/CycloneDX/bom-examples/tree/master/VEX/CISA-Use-Cases
+- https://github.com/hadolint/hadolint
+- https://github.com/sahlberg/fuse-nfs
+- https://socialhub.activitypub.rocks/pub/guide-for-new-activitypub-implementers
+- Lets just try implementing ATP
+  - https://atproto.com/guides/lexicon#schema-format
+  - ATP + SCITT! APT + SCITT! **APT + SCITT!**
+- XRPC looks like similar to IPVM woth effects
+  - https://atproto.com/specs/xrpc
+- (websub + OA) + ATP (Data repos)
+  - SCITT becomes identity help (notary) and format of message encapsulated in ATP in this case trust chains established via context / content analysis of ATP message (maybe contains a jwk)
+- https://github.com/w3c/activitystreams/blob/master/implementation-reports/activipy.md
+- https://github.com/microsoft/unilm
+  - https://github.com/microsoft/unilm/tree/master/edgelm
+    - > We evaluate EdgeFormer on the benchmarks of three popular seq2seq tasks: CoNLL-14 for GEC, XSUM for Abstractive Summarization, and SQuAD-NQG for Question Generation.
+  - https://github.com/microsoft/unilm/tree/master/adalm
+  - https://github.com/microsoft/unilm/tree/master/layoutlmv3
+    - Manifest->screenshot
+- https://github.com/w3c/activitystreams/blob/master/implementation-reports/annotation-protocol-server.md
+  - Inventory-esq #1207
+- `curl --url-query name@file https://example.com`
+  - https://daniel.haxx.se/blog/2022/11/10/append-data-to-the-url-query/
+- https://activipy.readthedocs.io/en/latest/about.html#what-is-activitystreams-how-might-it-help-me
+  - > And simple is good, because let’s face it, most users of most web application APIs are like poor Billy Scripter, a kid who has some scripting language like Ruby or Python or Javascript and some JSON parser in a toolbox and that’s about it. Billy Scripter knows how to parse JSON pulled down from some endpoint, and that’s about all he knows how to do. Poor Billy Scripter! But it’s okay, because ActivityStreams is simple enough that Billy can make it by. And because the [ActivityStreams Core](http://www.w3.org/TR/activitystreams-core/) serialization specifies that the [ActivityStreams Vocabulary](http://www.w3.org/TR/activitystreams-vocabulary/) is always implied and that those terms must always be available, Billy will always know what a [Like](http://www.w3.org/TR/activitystreams-vocabulary/#dfn-like) object or a [Note](http://www.w3.org/TR/activitystreams-vocabulary/#dfn-note) means. Horray for Billy!
+- TODO
+  - [ ] John, it's VDR and VEX, don't overcomplicate it, you can reference via DID later, stop getting distracted by shinny DIDs
+    - Remember it was always the initial plan to use this as the stream interface, maybe add websub
+    - https://docs.oasis-open.org/csaf/csaf/v2.0/csaf-v2.0.html
+    - https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=csaf
+    - CSAF is the overarching framework VEX fits into
+    - The SBOM almost acts like the `@context` for JSON-LD
+    - Do what you know, don't forget about `cve-bin-tool`, maybe find notes on prototyping that flow, maybe we should just do that based on binary analysis of project.
+      - Then use learnings to do Python packages / shouldi deptree
+      - Okay I forgot that might have also been the original plan, stick with the plan.
+  - [ ] VEX via simple HTTP service https://github.com/CycloneDX/bom-examples/tree/master/VEX/CISA-Use-Cases
+    - Future
+      - [ ] Updates via websub
+- Future
+  - [ ] wecsub stream of consciousness to facilitate fetchibg new VEX/VDR
+  - [ ] websub over DIDComm callback exec via open architecture
+  - [ ] VEX/VDR/SBOM/SCITT via ATP
+  - [ ] https://github.com/sahlberg/fuse-nfs userspace (GitHub Actions) proxy
+        over DERP to NFS spun up via dispatch (communicate across multiple jobs).
+  - [ ] Check for updates to crednetial manifest thread: https://github.com/decentralized-identity/credential-manifest/issues/125#issuecomment-1310728595
+  - [ ] [2022-11-10 SCITT API Emulator Spin Up](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4110695)

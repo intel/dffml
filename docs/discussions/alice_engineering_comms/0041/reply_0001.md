@@ -1,0 +1,123 @@
+## 2022-09-29 IETF SCITT Technical Meeting
+
+- Meeting Invite for SCITT Technical Meeting
+  - https://armltd.zoom.us/j/95609091197?pwd=V3NndVF1WGZzNUJDUGUzcEVWckxOdz09 
+  - Meeting ID: 956 0909 1197 
+  - Passcode: 65442 four
+  - +442034815240,,95609091197#,,,,*654424# United Kingdom
+- Yogesh Deshpande sent this out pre meeting on the mailing list:
+  - SCITT Technical Meeting Agenda
+    - Use Case Discussion
+    - Threat Model Discussions
+  - Link to Technical Notes Documents:
+    - https://docs.google.com/document/d/1euqijlS2EgZysIfjMrisyzWTPwTUsxSZ5j_eVNXOmWA/edit
+- Joe
+  - Working with Mike at [MSR] (Microsoft?)
+- Architecture Misc. Related (not discussed)
+  - https://github.com/ietf-scitt/draft-birkholz-scitt-architecture/issues/24
+    - RATs to SCITT terminology mapping to date
+- Last time
+  - Didn't get into threat model discussion
+- Use cases
+  - [Hardware / Microelectronics Use Case](https://github.com/ietf-scitt/use-cases/blob/main/hardware_microelectronics.md)
+  - [DRAFT SBOM Use Case](https://github.com/rjb4standards/Presentations/raw/master/2022-0912-SBOM%20Use%20Case.pdf)
+  - [DRAFT Software Supply Chain Artifact Examples](https://github.com/or13/use-cases/blob/59f8623abc3c351125fc097ac56cf88ae8ea2f1b/software_artifact_examples.md)
+  - [DRAFT OpenSSF Metrics](https://github.com/pdxjohnny/use-cases/blob/openssf_metrics/openssf_metrics.md)
+    - This is the one we're most closely (timeline wise) connected to.
+- SBOM use case aligns closely with NIST guidelines
+- What's in the registry
+  - Is it the Signed SBOM itself? No, it's the attestation from the notary (gatekeeper)
+    - The notary has the permissions to insert
+  - What goes on chain is an assertion
+- Consumers have no way to verify the digitality signed object 
+  - They should be able to submit the digitality signed object (content addressable) a query registries and determine trust via inspection of notary claims within the registry.
+  - To see if the entity has been registered
+- Example: Produce new version of embed TLS
+- SBOMs need to go in registry with other trusted data
+  - We need many different factors in determining trust
+  - We can insert more than just notarizations around SBOMs
+- Orie: Let's focus on single registry use cases for now
+  - Two permissions models we'll focus on
+    - https://github.com/ietf-scitt/draft-birkholz-scitt-architecture/issues/25
+    - Public read, private write
+      - Probably more complex policies would be active here (closer to full R/W)
+    - private read, private write
+  - Policy layer
+    - If inputs are always hashes, then how do you make sense of should you accept it or not?
+    - If the claims are rich, the policy can be rich (in terms of what can be applied).
+    - You might have to go to an auditor, then it's a private read scenarios (DID resolution with UCAN auth for example)
+     - What kind of policy could we apply to claims, or might want to apply to claims
+     - https://github.com/ietf-scitt/draft-birkholz-scitt-architecture/issues/26
+- Situation where data is not notarized
+  - Just sent as a package of requirements from end customer
+    - We have to comply with their data requirements, customer maintains the trusted registry 
+- On insert
+  - Have to auth that signature on COSE sign 1 is from the entity from the header
+  - COSE header tells you claims
+  - Content Types tell you what the payload is
+  - SCITT instance could use policy to validate
+  - https://github.com/transmute-industries/did-eqt/blob/main/docs/did-eqt-opa-primer.md#securing-did-method-operations-with-opa
+    - Alignment here with previous Open Architecture train of thought
+      - [2022-07-20 Identifying Security Threats WG](https://github.com/intel/dffml/discussions/1406#discussioncomment-3191292)
+      - [2022-07-19 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/discussions/1406#discussioncomment-3181956)
+      - [2022-07-25 Supply Chain Integrity, Transparency and Trust (SCITT)](https://github.com/intel/dffml/discussions/1406#discussioncomment-3223361)
+- Receipts are a critical part of this
+  - SCITT implementation is required to produce and independently verifiable cryptographic receipt
+  - You get back a (effectively countersignature), its been registered, it's tamper proof
+  - You don't have to query
+    - It's then independently verifiable, it carries the proff with it
+    - Its' in the draft 1 for the architecture and it's been in Sylvan Clebesch team's work implementation wise and in the draft of the receipts doc.
+      - https://datatracker.ietf.org/doc/draft-birkholz-scitt-architecture/
+      - https://datatracker.ietf.org/doc/draft-birkholz-scitt-receipts/
+- Dick: Looking for agreement on:
+  - Is there a
+    - Notary?
+    - Registry?
+    - etc.
+- Dick: Looking for agreement on objective function agreement:
+  - Give consumers a means to verify a digitally signed object
+  - It should include any claims that it is trustworthy
+- Roy: All we know is it was valid at the time it was signed
+  - Notary: Monty was Monty at the time you signed this
+- Authenticode signs with two different signatures so if they have to they can revoke one and roll it
+- Open Source Software
+  - We'll be inserting things as we build them sometimes via self notarization
+- Yogesh
+  - Rebuilding binary exact would allow for others to notarize build process without attested compute
+  - Fully Private
+  - Fully Public
+    - Designated roles have access
+  - We don't want to restrict our work to a specific deployment
+  - Notary has a role to play but we would like to make it a nice to have on to of existing
+    - Revisit this, Roy and John see notery as critical
+    - What are the levels of auditing we want to be done
+    - I have a receipt, I know that it's policy has been met
+    - What is the next level of auditing you want?
+      - There may be compute or other cost associated with going another level deep of auditing.
+- Monty: TCG forums have considerable interest in understanding firmware (TPM, etc.)
+  - SBOM like "manifests"
+- We are still focusing on software as the core use case.
+  - When the right time comes, we can open the architecture to other ecosystems
+  - The agreement at Philly was focus will be on software but we will architect it such that it could include hardware. We will when the right time comes
+  - We are doing it in a generic way. it could be used in other scenarios, we want to not pidgin hole into one vertical.
+- Orie: Defect in certain verifiable data systems (ones that log every interaction)
+  - In certain high security systems even a read is a write!
+    - This could be expensive in a public read scenario
+  - Cost associated with cold storage evaluation raises interesting questions
+    - Related to distributed compute
+      - https://twitter.com/pdxjohnny/status/1575152364440657920
+      - https://identity.foundation/sidetree/spec/#proof-of-fee
+      - [2022-09-29 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/discussions/1406#discussioncomment-3763478)
+- Read receipt
+  - I did a query at this point of time
+  - Proof of the most recent read of something
+  - Threat model: Is there a Time of Check Time of Use here?
+    - What if you need proof someone did a read?
+- TODO
+  - [ ] Sequence diagram for Notary and Verifier
+    - https://github.com/ietf-scitt/draft-birkholz-scitt-architecture/issues/27
+  - [ ] @pdxjohnny: Update these notes with references to async tbDEX contract notes from Alice thread around audit level.
+    - For future discussion 
+  - [ ] Dick: Definition on mailing list for what we are hashing against (file data stream?)
+    - Critical for content addressability
+    - We need to be careful of hashing compressed or decompressed objects

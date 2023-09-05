@@ -1,0 +1,37 @@
+## 2023-02-23 @pdxjohnny Engineering Logs
+
+- https://github.com/cloudfoundry-community/node-cfenv
+  - https://github.com/TBD54566975/dwn-sdk-js#usage
+  - https://github.com/TBD54566975/dwn-cli/pull/1/files
+- Eventting helps us have Alice sit alongside and look at new issues, workflow runs, etc. This will help her help developers stay away from known bad/unhelpful trains of thought.
+  - She can look at issue bodies for similar stack traces
+    - Eventually we'll have the updating like we do where we update issue or discussion thread with what console commands and outputs we run while debugging, or we'll just do peer to peer depending on context!
+    - #1207
+      - [live at HEAD](https://abseil.io/about/releases) is great, but poly repo PR validation will bring us into the *future*, since we'll be running inference over all the active pull requests
+        - We'll take this further to branches, then to the in progress trains of thought (active debug, states of the art which gatekeeper/umbrella/prioriziter says are active based on overlays for context of scientific exploration)
+          - As our inference gets better, we'll look across the trains of thought and [`Prohpet.predict()`]() state of the art trains of thought, then validate those via dispatch/distributed compute, then we'll start to just infer the outputs of the distributed compute, and validate based on risk and criticality, we'll then have our best guess muscle memory machine.
+- Mermaid has mind map functionality now
+- https://www.youtube.com/watch?v=tXJ03mPChYo&t=375s
+  - Alice helps us understand the security posture of this whole stack over it's lifecycle. She's trying to help us understand the metrics and models produced from analysis of our software and improve it in arbitrary areas (via overlays). She has overlays for dependency analysis and deciding if there is anything she can do to help improve those dependencies. `alice threats` will be where she decides if those changes or the stats mined from shouldi are aligned to her strategic principles, we'll also look to generate threat models based on analysis of dependencies found going down the rabbit hole again with alice shouldi (#596). These threat models can then be improved via running https://github.com/johnlwhiteman/living-threat-models auditor.py `alice threats audit`, threats are inherently strategic, based on deployment context, they require knowledge of the code (static), past behavior (pulled from event stream of distributed compute runs), and understanding of what deployments are relavent for vuln analysis per the threat model.
+    - Entity, infrastructure (methodology for traversal and chaining), (open) architecture
+    - What are you running (+deps), where are you running it (overlayed deployment, this is evaluated in federated downstream SCITT for applicablity and reissusance of VEX/VDR by downstream), and what's the upstream threat model telling you if you should care if what your running and how your running it yields unmittigated threats. If so, and Alice knows how to contribute, Alice please contribute. If not and Alice doesn't know how to contribute. Alice please log todos, across org relevant poly repos.
+    - When we do our depth of field mapping (ref early engineering log streams) we'll merge all the event stream analysis via the tuned brute force prioritizer (grep alice discussion arch)
+- Loosly coupled DID VC CI/CD enables AI in the loop development in a decentralized poly repo environment (Open Source Software cross orgs)
+- TODO
+  - [ ] Docs
+    - [ ] How to do async collaboration
+      - [x] How to do code review
+        - #1313
+      - [ ] Versioned Learning to help communicate best practices and understand how well our trains of thought are preforming (intent alignment, strategic plans and principles alignment, behavioral/goal alignment for different tasks like during debug or pursuing some new plan goal while modifying software DNA/arch/LTM)
+        - [All You Need Is Supervised Learning: From Imitation Learning to Meta-RL With Upside Down RL](https://arxiv.org/abs/2202.11960)
+        - [Multi-agent versioned learning](https://github.com/jetnew/SlimeRL)
+        - [DFFML Manifest Schema ADR](https://github.com/intel/dffml/blob/alice/docs/arch/0010-Schema.rst)
+  - [ ] https://intel.github.io/dffml/main/examples/webhook/webhook.html#webhook-dataflow
+    - kcp -> k8s -> cf push -> webhook service -> dataflow to create activitypub event -> dwn-cli send -> webrtc -> dwn-cli recv -> `alice threats listen activitypub -stdin` -> `alice shouldi contribute` -> `alice please contribute` -> soft-serve/github repo pull request -> webhook service
+    - https://www.youtube.com/watch?v=TMlC_iAK3Rg&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=2064s
+    - https://www.youtube.com/watch?v=THKMfJpPt8I&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=128s
+    - https://github.com/charmbracelet/soft-serve
+    - https://github.com/cloudfoundry/korifi/blob/main/HACKING.md#deploying-to-kind-for-remote-debugging-with-a-locally-deployed-container-registry
+    - https://github.com/cloudfoundry/korifi/releases/tag/v0.6.0
+      - Could we do an ingress that's source is DWN ActivityPub events?
+  - [ ] NVD API -> ActivityPub

@@ -1,0 +1,23 @@
+## 2022-07-18 @pdxjohnny Engineering Logs
+
+- TODO
+  - [x] Kick off OSS scans
+    - Targeting collaboration with CRob on metrics insertion to OpenSSF DB
+  - [ ] Finish Q3 plans (Gantt chart, meeting templates, etc.)
+    - Generate template for auto creation to fill every meeting / fillable pre-meeting
+- Future
+  - Engage with Loihi community
+    - See what we can do here, not sure yet, play with system context / mitigation inference in devcloud?
+    - https://www.intel.com/content/www/us/en/research/neuromorphic-community.html
+    - https://download.intel.com/newsroom/2021/new-technologies/neuromorphic-computing-loihi-2-brief.pdf
+    - https://www.intel.com/content/www/us/en/newsroom/news/intel-unveils-neuromorphic-loihi-2-lava-software.html
+  - 
+- References
+  - https://medium.com/51nodes/decentralized-schema-registry-aa662b8db12b
+  - https://www.microsoft.com/security/blog/2021/10/06/microsofts-5-guiding-principles-for-decentralized-identities/
+  - https://ariadne.space/2022/07/17/how-efficient-can-cat1-be/
+    - Usage of splice
+  - https://github.com/NVlabs/eg3d
+    - Seeing from different perspectives, inter domain conceptual mapping, encoded sysctxs alternate mitigations
+  - https://github.com/robmarkcole/satellite-image-deep-learning
+    - Knitting together system contexts (Alice could use for integration of various architectures)

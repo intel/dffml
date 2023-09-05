@@ -1,0 +1,128 @@
+## 2022-11-08 IPVM November Meeting Notes
+
+- Brooklyn Leading
+- **TODO** Link recording
+- Agenda
+  - Updates
+  - Convos in Lisbon
+  - Discussion
+- Last month didn't happen due to busy-ness
+- Lisbon
+  - Folks on this call were there in person for network labs week
+  - Talked about IPVM and other topics
+  - How to plug into other systems
+  - How it's different than other things
+  - IPVM got a grant, some funding, there is community faith
+  - First step is to work on invocation spec
+  - If we do a good job then in the next week or so it can serve as a basis for a few diffrrenet projects
+  - BucketVM
+    - UCAN based invocation
+  - WarpForge
+    - Build system, sets up linux sandbox then does deterministic builds (not WASM)
+      - Goals: Build libc form source
+      - Possibly aligned
+      - Catalogs and formulas
+  - Optimine?
+    - Nondeterministic computation in docker containers
+    - Getting existing workloads running
+    - They have a golang based configuration
+  - IPVM is less interested in ditributed algs and more interseted in doing fast WASM
+- How is interop being planned?
+  - IPVM wants to be fully deterministic, cached, verifiable
+  - Often need to resolve IPNS link, send email, etc. do "off chain"
+    - WASI is one way to do that
+    - That's not deterministic, you can do traced deception and read sth stream in but you can't parallelize and compare results
+  - If you use a managed effect system, you leave all the impure stuff to the runtime
+    - Do you have access to run this? Yes? Just log a yes on you have access to run that effect.
+    - Effects incoming run before WASM, effects outgoing
+      - Sounds very similar to OA
+        - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+        - https://github.com/intel/dffml/blob/main/docs/about.rst#what-is-key-objective-of-dataflows
+   - Example Effect: Operation invocation manifest, it calls back in using the input effect.
+   - If there are chunks then they can call into IPVM and it can use the
+   - Effects are like input events in DFFML dataflows
+   - Affinity
+     - I already have this cached, you should send me these effect
+     - I have a GPU
+       - Related: EDEN - [2022-11-08 @pdxjohnny Engineering Logs]()
+  - Brooklyn has been laying out and thinking about what's reasonable
+    - Data pipelines, composable out of existing jobs
+    - Can tell it to run things concurrently
+    - Dataflows are nice for this, dimond validation came up as an example
+    - Issues: JSON due to DAG
+      - There is as draft PR in the repo which says let's just name all the jobs
+        - https://github.com/ipvm-wg/spec/pull/8
+        - There might be a multi value output
+        - This is static invocation, we know ahead of time this is the level of parallelism
+        - You might have an output which invokes more jobs
+- Ideally, here's a UCAN, please do it
+  - There is already a place for authorizations
+  - In a UCAN, you have all the info you need to say please run this
+  - Sometimes people will add `invoke:true`, it's unclear if you should be able to delegate.
+  - Another approach is to put a think wrapper, you can rip off the auth part and wrap a new one
+- Irakli
+  - CID of WASM with data in, not invocation by CID, but invocation by mutable pointer?
+    - Brooklyn says ya we want multiple pointers?
+      - There is a before block in the invocation, do this effect as an input, then place that and that gets a name.
+  - How do define interfaces?
+    - https://radu-matei.com/blog/intro-wasm-components/ might get into major interfaces soon
+    - Challenge of links outside of IPLD
+    - Need to have some native notion of "I'm reading 9TB data but I have to read in blocks" needs to read off of streams and emit streams
+      - Autocodec inside of IPVM usually makes sense
+        - Instead of baking in JSON and CBOR and protobuf and all these thing, we just pass around WASM and say run this on these blocks of data, it's like ebpf, it's dynamic
+        - To get their webfilesystem to show in a gateway they had to do a bunmch of hacks right now
+          - If you put it in IPVM then you can just reuse that as the distributed compute method
+- What happens when a user creates one of these? How do we put syntactic sugar on top.
+  - How do we look at caching?
+- Non-goal: Support WASI right off the bat
+  - WASM allows us to restrict what will be run with effects
+    - Putting all effects on outside then WASM always allows us to use
+      - They want to replace FaaS stuff with distributed compute **ALIGNED**
+        - Fission goals: Decentralized open functions as a service, small short deterministic data flow, simple image transformations, etc.
+- Coming from erlang/elixr world
+  - What happens when there is an issue how does erlang supervision pattern apply and failure cases / states for dags, how do we filter off into declarative specs based on locality
+    - Not sure if giving people the choice of supervisor pattern is the right choice
+    - We should come up with the secure by default (giving people to modify supervision patterns has been a loss for erlang)
+      - With great power comes great responsibility, supervision is the correct concept, IPVM could be opinionated
+      - Affinity, this depends on that, defined failure modes with overlays?
+      - Look at k8s affinity and anti-affinity patterns
+        - Please go to another node
+  - WASM is a pure function with pure data (deterministic)
+  - People want things that look like objects or actors
+    - You can build that around this!
+    - It will look like eventual consistency or software transaction memory
+    - If you need locking then can use effects and soforth to land where you need
+- IPVM we want an analysis step, I'm going to reorder, come up with the dependency tree, (then overlay failure modes possible?)
+  - Failure modes defined as effects?
+- IPVM as a distributed scheduler
+  - Borrow VM and compiler tricks (if on a single threaded machine run that dispatch rest)
+  - Can look at "gas" costs (distributed compute cost, ref: Ethereum https://ethereum.org/en/developers/docs/gas/)
+- Melanie: Microkernel
+  - From chat: There is always a minimal set of functions application code need to communicate with the system- in our case we care about IPLD blocks. Is there a way to define affinity, so if a node has executed a command, loaded the IPFS in its cache, it’s more likely to get the next job with same base data?. Looks like it could be done outside Wasm. I'd like to say IPVM host code is close ish to a microkernel that ships with a kernel that can be pasted on modules when they get run to provide a better interface *to the system cals
+  - Looking to have effectivly this syscall style interface which you can referecnce for CID
+  - Works on filecoin VM, using WASM and micro kernel appraoch has been useful
+- Autocodec sounds similar to a WASM version of shim
+  - https://github.com/intel/dffml/pull/1273
+  - here to replace dag-cbor, dag-cb, running over dags of different types
+
+---
+
+Source: [docs/arch/alice/discussion/0023/reply_0044.md](https://github.com/intel/dffml/discussions/1369#discussioncomment-2778357)
+
+- https://hexdocs.pm/flow/Flow.html
+  - Elixir send the function where the data is, so it takes care of scheduling based on locality
+    - Has comms at base layer
+  - OTP - erlang is a glorified supervision tree
+    - Can hook into this to issue commands to erlang VMs, gives you fault tolerence
+    - Can run this over web3
+    - It can manage how it fails
+    - Backpressure is watching the infinate stream and it's monitoring and watching and detecting if it's oversubscribing the resources available
+    - People are using elixir with rust
+    - We deploy an elixir app
+      - We give a stream of data to the pipeline
+      - The produce plucks the head of the stream for the processes downstrema to do their work and it will stich the data bcak togethere. I twill partiion the data in parallel and then 
+      - If your process crashes, the supervision tree decides what to do (strategic plans)
+        - Model in elixir is crash, then supervisers break down
+  - Broadway is what is producing the events, flow is what
+  - Supervision tree could initaite fail fast patterns
+  - Discord uses elixir at the proxy and then rust for proecessing

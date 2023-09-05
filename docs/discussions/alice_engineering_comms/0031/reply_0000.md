@@ -1,0 +1,25 @@
+## 2022-09-19 @pdxjohnny Engineering Logs
+
+- gather and share knowledge
+- Configloaders as DataFlow as class add filename to inputs and then also allow for passing 
+  - Idea: DataFlow as Class as function invocation. This would allow you to invoke a python file with only functions. Like kwargs call wraps return of async for run
+    - import funcname from dffml.call.asyncfunc.dataflow.path
+  - Oh, were just manually working through the auto refactoring process by starting with the end state
+- policy based acceptable risk benefit of the doubt
+  - be nice, knock and the door shall be opened, karma, pay it forward
+  - except when risk analysis yields unacceptable results to umbrella/gatekeeper 
+- Rememeber, we always think in parallel N dimensional interconnected graphs over time
+  - Align reward to timeline (drop dead dates) to 
+  - Landing many planes at many airports at the same time, how do you reward work so that they all land perfectly timed?
+    - Look to cooking for insipration on how to make several supply chains some with simialr (interconnections between nodes in graph) data (ingredeiants). Run trials, stream for data retention. Add in ingrediant expiration to account for timeline slip / expiration.
+        - Is there a way we could incorperate oppertunity cost with this metaphor?
+          - Cost of food expired - schedule slip
+          - 
+      - Analyze post stream to build mermaid graphs to or some kind of visualization
+- Transparency brings us closer to speed of thought execution
+- Project management
+  - Doc Deck on rewarding alignment for DFFML community to organize
+  - Source material from thread:
+    - `grep -i align`
+    - `grep -i reward`
+- first manual taging / labeling / classification for issues, then models
