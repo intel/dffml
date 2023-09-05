@@ -19,6 +19,8 @@ on:
 jobs:
   manifest:
     runs-on: ubuntu-latest
+    # Disabled currently
+    if: false
     outputs:
       length: ${{ steps.create-manifest-instance.outputs.length }}
       manifest: ${{ steps.create-manifest-instance.outputs.github_actions_manifest }}
@@ -70,6 +72,8 @@ jobs:
   pin_downstream_pep_440:
     name: "Pin downstream to latest commit"
     runs-on: ubuntu-latest
+    # Disabled currently
+    if: false
     env:
       PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
       PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
