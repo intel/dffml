@@ -25,6 +25,7 @@ class Comment:
 
 @dataclass
 class Discussion:
+    body: str
     title: str
     comments: List[Comment]
 
@@ -39,6 +40,7 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
       repository(owner: $owner, name: $repo) {
         discussion(number: $discussionNumber) {
           title
+          body
           comments(first: 100, after: $commentsCursor) {
             pageInfo {
               hasNextPage
@@ -78,6 +80,7 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
         result = await response.json()
 
         discussion_title = result["data"]["repository"]["discussion"]["title"]
+        discussion_body = result["data"]["repository"]["discussion"]["body"]
         comments = result["data"]["repository"]["discussion"]["comments"]["nodes"]
         has_next_page = result["data"]["repository"]["discussion"]["comments"]["pageInfo"]["hasNextPage"]
         comments_cursor = result["data"]["repository"]["discussion"]["comments"]["pageInfo"]["endCursor"]
@@ -103,7 +106,7 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
 
             discussion_data.append(Comment(body=comment_body, replies=replies))
 
-    return Discussion(title=discussion_title, comments=discussion_data)
+    return Discussion(title=discussion_title, body=discussion_body, comments=discussion_data)
 
 async def main():
     parser = argparse.ArgumentParser(description="Fetch GitHub discussion data")
