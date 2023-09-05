@@ -1,65 +1,58 @@
 """
-Page scraping (to be used later to fixup internal cross references off anchor
-IDs).
-
-- First back up without edits here: b5e26e9b81b58ffe9a2dc9b39c76c1ed06cc8d20
+Usage
+*****
 
 .. code-block:: console
 
-    $ curl 'https://github.com/intel/dffml/discussions/1369/comments/2603280/threads?back_page=1&forward_page=0&anchor_id=2813540' | tee /tmp/a
-    $ curl 'https://github.com/intel/dffml/discussions/1369/comments/2603280/threads?back_page=1&forward_page=0&anchor_id=0' | tee /tmp/a.0
-    $ diff -u /tmp/a /tmp/a.0
-    $ grep 2813540 /tmp/b | grep -v '2813540&quot' | grep 2813540
-    $ curl 'https://github.com/intel/dffml/discussions/1369' | tee /tmp/b
-    $ grep '<input type="hidden" name="anchor_id"' /tmp/b
+    $ python -u scripts/dump_discussion.py --token $(gh auth token) --owner $(git remote get-url upstream | sed -e 's/.*github.com\///g' | sed -e 's/\/.*//g') --repo $(git remote get-url upstream | sed -e 's/.*\///g') --discussion-number 1406 | tee 1406.json
+"""
+import os
+import asyncio
+import aiohttp
+import json
+from dataclasses import dataclass
+from typing import List
+import argparse
 
-**intial_discussion_query.graphql**
+@dataclass
+class Reply:
+    body: str
 
-.. code-block:: graphql
+@dataclass
+class Comment:
+    body: str
+    replies: List[Reply]
 
-    fragment comment on DiscussionComment {
-      body
-      createdAt
-      userContentEdits(first: 50) {
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
-        totalCount
-        nodes {
-          diff
-          editedAt
-        }
-      }
+@dataclass
+class Discussion:
+    title: str
+    comments: List[Comment]
+
+async def fetch_discussion_data(session, token, owner, repo, discussion_number):
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
     }
-    query ($owner: String!, $repo: String!) {
+
+    query = """
+    query($owner: String!, $repo: String!, $discussionNumber: Int!, $commentsCursor: String, $repliesCursor: String) {
       repository(owner: $owner, name: $repo) {
-        pinnedDiscussions(first: 1) {
-          nodes {
-            discussion {
-              title
+        discussion(number: $discussionNumber) {
+          title
+          comments(first: 100, after: $commentsCursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
               body
-              category {
-                name
-              }
-              comments(first: 90) {
+              replies(first: 100, after: $repliesCursor) {
                 pageInfo {
-                  endCursor
                   hasNextPage
+                  endCursor
                 }
-                totalCount
                 nodes {
-                  ...comment
-                  replies(first: 100) {
-                    pageInfo {
-                      endCursor
-                      hasNextPage
-                    }
-                    totalCount
-                    nodes {
-                      ...comment
-                    }
-                  }
+                  body
                 }
               }
             }
@@ -67,128 +60,62 @@ IDs).
         }
       }
     }
+    """
 
-.. code-block:: console
+    variables = {
+        "owner": owner,
+        "repo": repo,
+        "discussionNumber": discussion_number
+    }
 
-    $ gh api graphql -F owner='intel' -F repo='dffml' -F query=@intial_discussion_query.graphql | tee output.json | python -m json.tool | tee output.json.formated.json
+    discussion_data = []
+    has_next_page = True
+    comments_cursor = None
 
-Confirm we got everything, otherwise, write pagination code (there should be some in github operations somewhere).
+    while has_next_page:
+        variables["commentsCursor"] = comments_cursor
+        response = await session.post("https://api.github.com/graphql", headers=headers, json={"query": query, "variables": variables})
+        result = await response.json()
 
-.. code-block:: console
+        discussion_title = result["data"]["repository"]["discussion"]["title"]
+        comments = result["data"]["repository"]["discussion"]["comments"]["nodes"]
+        has_next_page = result["data"]["repository"]["discussion"]["comments"]["pageInfo"]["hasNextPage"]
+        comments_cursor = result["data"]["repository"]["discussion"]["comments"]["pageInfo"]["endCursor"]
 
-    $ grep '"hasNextPage": false' < output.json.formated.json | wc -l
-    279
+        for comment in comments:
+            comment_body = comment["body"]
+            replies = []
 
-The following command returns no results if we got everything and don't need to paginate.
+            has_next_reply_page = True
+            replies_cursor = None
 
-.. code-block:: console
+            while has_next_reply_page:
+                variables["repliesCursor"] = replies_cursor
+                response = await session.post("https://api.github.com/graphql", headers=headers, json={"query": query, "variables": variables})
+                reply_result = await response.json()
 
-    $ grep '"hasNextPage": true' < output.json.formated.json
+                reply_nodes = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["nodes"]
+                has_next_reply_page = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["pageInfo"]["hasNextPage"]
+                replies_cursor = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["pageInfo"]["endCursor"]
 
-As is before this comment update
+                for reply in reply_nodes:
+                    replies.append(Reply(body=reply["body"]))
 
-.. code-block:: console
+            discussion_data.append(Comment(body=comment_body, replies=replies))
 
-    $ python3 -u dump_discussion.py | wc
-       2566   42911  285694
-
-After removing the first chapter of Alice's Adventures in Wonderland:
-
-.. code-block:: console
-
-    $ python3 -u dump_discussion.py | wc
-       2499   40571  273084
-"""
-import os
-import json
-import asyncio
-import pathlib
-import tempfile
-from typing import Callable, Type, Union, NewType
-
-import dffml
-
-
-INPUT = json.loads(pathlib.Path("output.json.formated.json").read_text())
-
-
-def title_to_filename(title_link_line: str):
-    title = title_link_line[2:]
-    if "[" in title_link_line:
-        title = title_link_line[3:]
-        title = title[: title.index("]")]
-    return title.upper().replace(":", "").replace(" ", "_").replace("-", "_")
-
-
-def current_volume(text):
-    if ": Volume" in text.split("\n")[0]:
-        return text.split(": Volume")[1].split(":")[0]
-
-
-def output_markdown(
-    graphql_query_output: dict, output_directory: pathlib.Path
-):
-    # Loop through all the pinned discussions
-    for discussion_node in graphql_query_output["data"]["repository"][
-        "pinnedDiscussions"
-    ]["nodes"]:
-        # Create the filename for the top level file
-        filename = title_to_filename(
-            discussion_node["discussion"]["body"].split("\n")[0]
-        )
-        # Data goes through azure log analytics
-        prefix = ["docs", "arch", "alice", "discussion"]
-        # prefix = ["docs", "tutorials", "alice"]
-        text = discussion_node["discussion"]["body"]
-        text = text.replace("\r", "")
-        # path.write_text(text)
-        # volume = current_volume(text)
-        path = output_directory.joinpath(
-            *[*prefix, "_".join([f"{0:04}"]), "index.md"],
-        )
-        print(path, repr(text[:100] + "..."))
-        if not path.parent.is_dir():
-            path.parent.mkdir(parents=True)
-        path.write_text(text)
-        for i, comment_node in enumerate(
-            discussion_node["discussion"]["comments"]["nodes"], start=1
-        ):
-            # Create the filename which will be joined by underscores
-            filename_parts = prefix + [f"{i:04}"]
-            """
-            if comment_node["body"].split()[:1] == ["#"]:
-                # If we are in a chapter. Create a directory
-                filename_parts += [
-                    title_to_filename(comment_node["body"].split("\n")[0])
-                ]
-            """
-            # Output a file for the comment
-            path = output_directory.joinpath(*filename_parts, "index.md")
-            text = comment_node["body"]
-            text = text.replace("\r", "")
-            print(path, repr(text[:100] + "..."))
-            if not path.parent.is_dir():
-                path.parent.mkdir(parents=True)
-            path.write_text(text)
-            replys = []
-            # Output a file for the reply
-            for j, reply_node in enumerate(comment_node["replies"]["nodes"]):
-                path = output_directory.joinpath(
-                    *[*filename_parts, "_".join(["reply", f"{j:04}"]) + ".md"],
-                )
-                text = reply_node["body"]
-                text = text.replace("\r", "")
-                replys += text
-                print(path, repr(text[:100] + "..."))
-                if not path.parent.is_dir():
-                    path.parent.mkdir(parents=True)
-                path.write_text(text)
-
+    return Discussion(title=discussion_title, comments=discussion_data)
 
 async def main():
-    output_markdown(INPUT, pathlib.Path(__file__).parents[1])
-    # os.system(f"rm -rf 'docs/tutorials/alice/'")
+    parser = argparse.ArgumentParser(description="Fetch GitHub discussion data")
+    parser.add_argument("--token", help="GitHub Access Token")
+    parser.add_argument("--owner", help="GitHub Repository Owner")
+    parser.add_argument("--repo", help="GitHub Repository Name")
+    parser.add_argument("--discussion-number", type=int, help="GitHub Discussion Number")
+    args = parser.parse_args()
 
+    async with aiohttp.ClientSession(trust_env=True) as session:
+        discussion_data = await fetch_discussion_data(session, args.token, args.owner, args.repo, args.discussion_number)
+        print(json.dumps(discussion_data, default=lambda x: x.__dict__, indent=2))
 
 if __name__ == "__main__":
     asyncio.run(main())
