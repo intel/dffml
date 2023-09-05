@@ -4,7 +4,7 @@ Usage
 
 .. code-block:: console
 
-    $ python -u scripts/dump_discussion.py --token $(gh auth token) --owner $(git remote get-url upstream | sed -e 's/.*github.com\///g' | sed -e 's/\/.*//g') --repo $(git remote get-url upstream | sed -e 's/.*\///g') --discussion-number 1406 | tee 1406.json
+    $ python -u scripts/dump_discussion.py --token $(gh auth token) --owner $(git remote get-url upstream | sed -e 's/.*github.com\///g' | sed -e 's/\/.*//g') --repo $(git remote get-url upstream | sed -e 's/\/$//g' -e 's/.*\///g') --discussion-number 1406 | tee 1406.json
 """
 import os
 import asyncio
