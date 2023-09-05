@@ -1,0 +1,1 @@
+https://datatracker.ietf.org/doc/draft-ietf-rats-architecture/

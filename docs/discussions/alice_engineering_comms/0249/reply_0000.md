@@ -1,0 +1,6 @@
+- ThreatOps (think this is already in the thread), it's also ThreadOps, because the thread is the intent is the threat model. And if you say threat and people hear thread then it doesn't matter if it's off by one.
+- https://blog.weareopen.coop/what-is-open-recognition-anyway-9f38ec1f8629
+- https://dougbelshaw.com/blog/2023/03/09/why-open-recognition-is-the-key-to-unlocking-human-potential/
+- https://dougbelshaw.com/blog/2023/04/25/federated-task-management/
+- https://docs.distributed.press/self-hosting
+  - sshd multi stage

@@ -1,0 +1,4 @@
+- https://pretalx.com/pycascades-2023/cfp
+- Vol 0: Alice is a Sign not a Cop
+  - mention conceptual cultural opamp effects of any change (wheel, ML). Information travels faster as a result of some changes.
+    - grep Wardly map alignment reward strategics plan hypothesis think

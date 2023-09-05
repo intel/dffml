@@ -1,0 +1,21 @@
+## 2023-01-10 @pdxjohnny Engineering Logs
+
+- https://every.to/superorganizers/the-end-of-organizing
+- https://docs.sigstore.dev/cosign/attestation/
+- https://cuelang.org/docs/integrations/openapi/
+- https://goharbor.io/docs/2.5.0/working-with-projects/project-configuration/create-robot-accounts/
+- Some verifiable credential examples
+  - https://github.com/Azure-Samples/active-directory-verifiable-credentials-python
+  - https://github.com/Azure-Samples/active-directory-verifiable-credentials-node
+  - https://github.com/microsoft/scitt-api-emulator
+  - https://mailarchive.ietf.org/arch/msg/scitt/WSyUQuYimFowl6plzi_TIJzjBpM/
+  - https://github.com/OR13/endor
+- https://learn.microsoft.com/en-us/graph/best-practices-concept#track-changes-delta-query-and-webhook-notifications
+  - https://learn.microsoft.com/en-us/graph/api/resources/webhooks?view=graph-rest-1.0
+- We've been trying to piece together attested workloads and so forth and alignment to VCs and DIDs with auth done via transparency log receipts seems ideal.
+  - Via "federation" parties can create scoped SCITT "chains" / logs / instances. The VCs for receipts from these instances can then be used as a "you are logged in" or "you have access to XYZ". This enables peer to peer decentralized authentication and authorization, all rooted in self sovereign key infrastructure. SCITT recipt as VC (endor) for ipvm cid
+    - https://github.com/decentralized-identity/keri/blob/master/kids/kid0009.md
+  - A SARIF produced by an entity's analysis might be interpreted as a "you are logged in".
+    - A SARIF is just a type of manifest in this case. Where the manifest's written form (eventually this will be the THREATS.md, PLANS.md: strategic plans and principles for execution of development activities over lifecycle, etc.) tells us the intent, aka interpret SARIF results for if you are logged in or not and what you have access to.
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
+  - https://scitt.io/scenarios/extending-existing-services.html

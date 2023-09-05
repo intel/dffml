@@ -1,0 +1,2 @@
+- **ACTIVITYPUB INPUTS AS POSTS + SCITT**
+  - Daniel said something about a desktop daemon for DWN connection, which means they are not looking at webrtc off the bat

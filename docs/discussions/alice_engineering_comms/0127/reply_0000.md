@@ -1,0 +1,17 @@
+- Mary Christmas! Make merry the way for Our Lady.
+  - /acc/ happiness metric
+    - #1315
+- https://mailchi.mp/themarginalian/universe-in-verse-holiday
+  - Are we watching the collective unconscious approach the collective consciousness?
+    - Given acceleration of communication between what we consider to be consciousness.
+  - Why do we have a Neural Network attacked to all our cells. Because it helps the cells work most effectively as a body. As we approach a collective consciousness via peer to peer engrained behavior over time we approach what is effectively a scaled up model of those localities consciousnesses, were the biases for each locality are time bound by speed of communication within those overlapping trains of thought or conscious states (entities, people learning from one another, people communicating)
+  - https://bigthink.com/culture-religion/does-the-mind-play-dice-with-reason/
+    - > SEPTEMBER 18, 2015
+    - This is the same thing as #1369 just more concise
+    - https://www.sciencetimes.com/articles/41510/20221222/one-quantum-theory-hypothesizes-retrocausality-where-future-influencing-past.htm
+      - Are we there yet?
+        - We’re confused until we’re not and that’s the game, that’s learning, that’s life. It’s also just whatever you decide it is, because you’re the one living it. The trick is, so is everyone else. So you all get to decide what happens next as long as you can act in truth (valid system context proposed)
+        - Since time is an illusion and when we look in the mirror we see the past light but we think of it as the present. When we see ourselves move we see our past self moving and our future self has already moved. grep quantum encoding. Only if our hypothetical next system context is valid and could be triggered by the conscious and subconscious states present within observing locality. Like with our offline edge nodes. So we just guess what they are probably going to be by their previous state and see that as if it is and therefore it becomes what it is. Seeing the future by acting into truth, believing is seeing and seeing is believing.
+- https://www.themarginalian.org/2015/10/29/the-art-of-loving-erich-fromm/
+  - Basis for value stream mapping need fir uncommon denominators during compute contract negotiation / handshake (valid system context to accelerate happiness metrics)
+    - https://mailchi.mp/themarginalian/music-love-burnout

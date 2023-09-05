@@ -1,0 +1,1 @@
+- https://github.com/CycloneDX/specification/issues/128

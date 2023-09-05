@@ -1,0 +1,5 @@
+- https://www.researchgate.net/publication/263340280_The_uneasy_transition_from_supply_chains_to_ecosystems_The_value-creationvalue-capture_dilemma
+- https://github.com/HabanaAI/Gaudi-solutions/blob/master/Gaudi_chat/docs/commands/local_cluster.md
+- https://developer.habana.ai/blog/fast-inference-on-large-language-models-bloomz-on-habana-gaudi2-accelerator/
+- https://github.com/lm-sys/FastChat#vicuna-weights
+- https://www.first.org/resources/papers/conf2023/FIRSTCON23-TLPCLEAR-Schmidt-Manion-Universal-Software-Product-Indentity.pdf

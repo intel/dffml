@@ -1,0 +1,28 @@
+## 2023-01-04 @pdxjohnny Engineering Logs
+
+- `import code; code.interact(local=locals())`
+  - https://mobile.twitter.com/karpathy/status/1610822271157022720
+- https://github.com/karpathy/nanoGPT
+- https://github.com/vwxyzjn/cleanrl
+- https://docs.ray.io/en/master/ray-core/actors.html#faq-actors-workers-and-resources
+  - https://docs.ray.io/en/master/ray-core/actors/async_api.html#asyncio-for-remote-tasks
+    - > We don’t support asyncio for remote tasks. The following snippet will fail:
+- https://github.com/ray-project/deltacat
+  - https://github.com/ray-project/deltacat/blob/main/deltacat/examples/basic.py
+- https://packaging.python.org/en/latest/guides/hosting-your-own-index/
+- https://www.chezmoi.io/comparison-table/
+  - This looks like a good base for dataflow diff of cached flows to support resumeablity (cattle as pets)
+- TODO
+  - [ ] Finish pipdeptee and output via datalfow cache dump to json
+    - #596
+    - Update packages to include main package (dffml)
+  - [ ] Build dataflows from dependency trees
+    - [ ] Container build flows for each plugin
+      - This will be the basis for the granular diamond/pyramid pattern validation
+    - [ ] Test flows take build flows as inputs `run_plugin_tests(plugin_image_container: str)` (can be overriden via dynamic context aware overlay, this also means for audit which is the more likely case)
+  - [ ] Execute "locally" via k8s job runner
+  - [ ] Synthesis to GitHub Actions workflows via templates
+  - [ ] Trigger workflows via URL request
+  - [ ] Spin runners on devcloud via webhook and validate plugins via Python 3.9 DFFML container
+    - https://github.com/intel/dffml/issues/1247#issuecomment-1371317321
+    - How clean can we make the infra and POC for VEX, SBOM, VDR base for next pytss example by Friday?

@@ -1,0 +1,33 @@
+## 2022-09-08 @pdxjohnny Engineering Logs
+
+- The Entity Analysis Trinity can help us conceptualize how to manifest realities via it's lifecycle feedback loop over time.
+  - https://twitter.com/ParissAthena/status/1567690882865926144
+- https://cwarny.medium.com/an-illustration-of-software-2-0-3937f620cea1
+  - Rajesh and I talked about how Alice is a hybrid of (what is called in the referenced blog post) "software 1.0" and "software 2.0".
+    - Alice is a hybrid of software 1.0 and 2.0. We leverage the Open Architecture and Living Threat Models to apply context aware policy to both paradigms.
+  - It’s important to do depth of field research so that one can understand discourse within a community
+    - interacting with open source communities explainer?
+- https://twitter.com/lorenc_dan/status/1567874273913585665
+  - Came across Dan's tweet
+    - Reminded me of: https://github.com/intel/dffml/issues/1315#issuecomment-1066814280
+    - ![Anarchy Elmo Says “Chaos for the Chaos God”](https://user-images.githubusercontent.com/5950433/189168046-a20c0973-b49f-41be-82b5-a66ef53f853d.jpeg)
+  - Interns having root may be a CISO’s nightmare but it’s Alice’s dream. A learning wonderland.
+  - Wondered who the chaos god is so did a search
+    - The God of Chaos is considered the one God
+      - https://greekgodsandgoddesses.net/gods/chaos/
+    - The Hebrew God, also known as the God of knowledge, is also considered the one God
+      - 110fbeeed4580b05144deea8f2fdbb6793b7f7be
+- Finally reading the Alice (#1369) discussion thread again first pass since writing it
+  - This is what I mean when I say "read the thread":
+    - `git log --reverse -p --oneline -- docs/arch/alice/discussion/`
+  - c6a0dafeae527c5e102abd3ee69189cdfb5e9450
+    - First mention of the system context was almost immediately, although it wasn't until 2148e16f11a5b5941f19353924ca92e497f81b2a we realized we'd found it
+  - 3c26ea48b
+    - > With A/B field testing of new system contexts (changes, running dev branches against dev branches). We start to see a complete picture of the fully connected dev model. We can proactively pair changes from one system context with another system context, both overlayed over a base system context. This is when you have two devs working on two feature branches and both have active PRs. They can now effectively work together because they have this translation, this transparent overlay of their respective diffs to the upstream system context (data flow or program flow in this example).
+    - https://github.com/intel/dffml/blob/3c26ea48b9d3b66648ef3d676fd015ce171a8761/docs/arch/alice/discussion/0035/reply_0010.md
+      - Hmmm, we may have stumbled onto the start of the OpenSSF use case doc
+        - Hey, `git grep` is our friend, let's look for anything talking about CVEs, VEX, vulns, and see if we can scrape together a skeleton use case doc for https://github.com/ietf-scitt/use-cases/issues/14
+  - A deal is made: 361555718b5ad589a9430efbd0ed88e7bc0582c3 & 4ef226e2ecd384560d635fa84036003b525ad399
+  - Software supply chain
+    - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0062.md
+    - 

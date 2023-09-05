@@ -1,0 +1,30 @@
+## SCITT Reference Implementation
+
+- Goal
+  - Example graph for one use case
+- Search engines auto query RDF JSONLD
+  - VCs are in RDF by default so you get the graph for free
+- Kiran from Microsoft, hardware background
+- Orie from Transmute
+- IETF goals are to define building blocks and keep it generic
+- It makes sense to have a reference implementation
+  - What level do we want?
+    - Toy
+    - Hosted
+    - Ecosystem
+- Let's build code along with the spec
+- SCITT building blocks are so far out from sandardisation pro
+- Fundamentally supply chain is about peices that interact
+  - Best hting we can do is workshop
+- Transmute is implementing examples to show SCITT will work for hardware as well
+  - Orie will have some use cases which will have payloads which will have cliams which might be SBOMs
+    - This way we both mention how SBOM would be a node in the graph so it helps us work out common use cases
+- If we had these claims? What kinds of questions could we awnser
+- How is an issuer releated to a software artifact, related to a CVe, in a couple example payload formats
+- Intent to define example payloads and places to collect them
+  - Let's have the converstatoin on the mailing list
+  - Feedback may be that Payload specifics are out of scope for the work
+  - We still what to talk about what kind of knowledge we want to represent with these opace payloads
+  - We can start and OpenSSF Use Case doc
+    - https://github.com/ietf-scitt/use-cases/issues/14
+  - John to send out email to mailing list and add ID sec threatds group with to as Mike.

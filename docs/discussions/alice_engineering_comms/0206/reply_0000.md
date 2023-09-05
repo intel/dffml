@@ -1,0 +1,2 @@
+- https://github.com/yuzutech/kroki
+- https://github.com/typpo/quickchart

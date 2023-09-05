@@ -1,0 +1,2 @@
+- https://mastodon.social/@Goffi/110348831017599581
+  - XMPP AP bridge ref last week see also AP SMTP IAMP

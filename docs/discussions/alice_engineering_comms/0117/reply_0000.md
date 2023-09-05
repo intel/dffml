@@ -1,0 +1,7 @@
+- TODO
+  - [ ] https://github.com/wolfi-dev/os/pull/268/files
+    - #1426
+  - [ ] https://www.quantamagazine.org/what-does-it-mean-to-align-ai-with-human-values-20221213/
+    - Reach out to MM (she used to be at portland state, ping bennett too)
+    - Send to Minchene and ref inverse RL as follow up to other paper recently ref’d here upside down rl as it relates to #1287, since she was passionate about solving that, go team!
+  - [ ] Update shell teaching for Alice with https://mastodon.social/@b0rk/109518552393123679

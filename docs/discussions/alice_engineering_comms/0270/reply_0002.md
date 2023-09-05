@@ -1,0 +1,46 @@
+## 2023-05-17 Ben/John
+
+- Ben's been playing with ActivityStreams
+- Ben to start web social playgroup co-op
+- http over libp2p
+  - https://codeberg.org/fediverse/fep/pulls/87/files#issuecomment-881374
+    - Has anyone played with ActivityPub browser keys added to signature validation set for server-to-server but sent directly from client to server? Would this open up direct client to client federation?
+- DIDCommv2 over libp2p
+- IETF Message Layer Security
+  - https://messaginglayersecurity.rocks/
+  - https://github.com/mlswg/mls-federation/blob/87857e99a51248615a1d107c7b398858ab93bc60/draft-ietf-mls-federation.md
+  - https://signal.org/blog/asynchronous-security/
+- IETF CBOR determinism
+- Proby trees
+  - Deterministic B trees
+    - Zig implementation
+    - Not just append only, don't need to receive events in order
+- web3.sotrage
+  - https://github.com/web3-storage/w3cli
+- KERI
+  - Duplicity detection
+- ZCAP-LD
+  - https://w3c-ccg.github.io/zcap-spec/#zcap-by-example
+- https://github.com/multiformats/multicodec/pull/261
+- Bridges
+  - ActivityPub -> truly peer to peer
+  - Relays which focus on content of message, context local relay, instance level, actor level, thread level
+    - https://mastodon.social/@bengo/110278699508517744
+- https://gitea.com/gitea/act
+  - `GOOS=js GOARCH=wasm go build .../ -o main.wasm`
+  - https://github.com/ChristopherHX/github-act-runner
+- How to listen to streams for VEX, etc.?
+  - See YAML in summary final two Bob objects [RFCv6: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays](https://github.com/ietf-scitt/use-cases/blob/b4999eb2c7bcbf8d27c5fe86be8965e89379439a/openssf_metrics.md#use-case-attestations-of-alignment-to-s2c2f-and-org-overlays)
+    - https://github.com/intel/dffml/pull/1454
+    - https://github.com/openvex/spec/issues/9
+  - https://github.com/scitt-community/scitt-api-emulator/pull/27/files?short_path=902592d#diff-902592dae6c982dcbc114dc4619188a03c4f5c5f27246b60aca5a1e1c655e1b6
+  - Following streams of policy inserts by their content address of their policy for insert
+  - Recursive trust, attested RoT, hermetic -> deterministic -> IPVM -> browser to browser forges
+    - http://fair-use.org/mind/1895/04/what-the-tortoise-said-to-achilles
+      - 🐢
+        - 🐢
+          - 🐢
+            - 🐢
+              - 🐢
+
+![such-alignment](https://user-images.githubusercontent.com/5950433/226707682-cfa8dbff-0908-4a34-8540-de729c62512f.png)

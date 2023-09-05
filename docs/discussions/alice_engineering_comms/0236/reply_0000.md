@@ -1,0 +1,5 @@
+- https://ublue.it/making-your-own/
+- https://infosec.exchange/@df_sec/110185934074044485
+  - Living off the land resources
+- https://gynvael.coldwind.pl/?lang=en&id=766
+- https://github.com/tektoncd/community/issues/435#issuecomment-1506912522

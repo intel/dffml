@@ -1,0 +1,1 @@
+- https://github.com/TBD54566975/dwn-sdk-js/issues/487

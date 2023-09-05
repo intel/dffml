@@ -1,0 +1,3 @@
+- Alice RFCv3: https://github.com/intel/dffml/tree/516d9276cd8795e8bb188fadbea10e801a4cf745/docs/tutorials/rolling_alice
+- https://canonical.com/blog/ubuntu-confidential-vms-intel-tdx-microsoft-azure-confidential-computing
+  - [RFCv6: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays](https://github.com/ietf-scitt/use-cases/blob/b4999eb2c7bcbf8d27c5fe86be8965e89379439a/openssf_metrics.md#use-case-attestations-of-alignment-to-s2c2f-and-org-overlays)

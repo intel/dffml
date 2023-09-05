@@ -1,0 +1,8 @@
+- https://github.com/facebookresearch/labgraph/blob/main/docs/cthulhu.md#streams
+- https://www.sciencealert.com/all-living-cells-could-have-the-molecular-machinery-for-a-sixth-sense
+- https://www.freethink.com/science/infrared-trpv1-neuron-control
+  - When we realized this was possible back in April 2022 was when we realized we have to go all in on train of thought hardening
+- https://youtu.be/PEVVRkd-wPM
+  - Securing bare metal at scale
+- This needs promise style error handling, then result err
+  - https://github.com/jakelazaroff/activitypub-starter-kit/blob/fcd5942485d86a66913c5554f85ae905785504e0/src/admin.ts#L54

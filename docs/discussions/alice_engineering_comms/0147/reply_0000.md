@@ -1,0 +1,21 @@
+- https://hacks.mozilla.org/2018/11/decentralizing-social-interactions-with-activitypub/
+- https://github.com/web3-storage/ucanto/
+- https://github.com/dariusk/express-activitypub
+  - plus our sbom and vex and vdr and scitt
+  - Later dwn with keri
+  - https://github.com/immers-space/activitypub-express
+    - A fork with mongodb support
+- https://docs.datadoghq.com/agent/faq/circleci-incident-impact-on-datadog-agent/
+  - > Dan Lorenc: It shows the impact of a leaked signing key, how hard it can be to recover, and really makes a compelling case for ephemeral credentials.
+- https://github.com/transmute-industries/did-transmute
+  - > Orie Steele: My favorite part of the DID Spec is that it invites you to project existing crypto or public key spaces into its identifier format for the purpose of graph analysis. This projects explores projecting JWK, JWT, JWS, JWE and OIDC representations into a DID space.
+- https://jessicawildfire.substack.com/p/youre-not-a-fearmonger-you-have-sentinel
+  - Sifting truths view reviews and attested models validating predictions across trains of thought
+  - “Unfortunately, nobody can learn from their mistakes unless they admit them.”
+    - VEX, VDR
+  - “At this point, our survival depends on our ability to overcome these psychological hangups. As a group, we have to resist the dopamine hit that comes from dismissing warnings and minimizing threats. We also have to get much better at admitting when we’re wrong, and fixing our mistakes. […] slightest suggestion of a threat sets off a cascade of denial and wishful thinking.“
+    - ref: redpill
+  - “psychologists have found that most people don’t do a great job of distinguishing bad news from the one delivering it”
+    - RZA: truth in the message dont pay attention to the messanger (very rough paraphrasing)
+  - “ We can save ourselves a lot of anguish by anticipating reactance. Calling attention to someone’s biases might prompt them to reflect a little. It’s worth a shot.”
+    - This is what our background models will do with vuln severity (later issue priority across projects) and values stream mapping

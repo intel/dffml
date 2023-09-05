@@ -1,0 +1,4 @@
+- Dont forget about the webhooks on all the repos for the central webhook server / stream of consciousness!
+- Proxy PyPi extra index to github as a workaround for dependency links?
+- https://docs.google.com/document/d/1Ku6y50fY-ZktcUegeCnXLsksEWbaJZddZUxa9z1ehgY/edit
+- Still feeling shitty

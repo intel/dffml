@@ -1,0 +1,5 @@
+# 2022-12-08 Engineering Logs
+
+> If you carry out every present task by following right reason assiduously, resolutely, and with kindness; if, rather than getting distracted by irrelevancies, you keep your guardian spirit unspoiled and steady…; if you engage with the task not with expectations or evasions, but satisfied if your current performance is in accord with nature and if what you say and express is spoken with true [Roman](https://intel.github.io/dffml/main/news/0_4_0_alpha_release.html) honesty, you’ll be living the good life. And there’s no one who can stop you doing so! [Marcus Aurelius, a Self Sovereign Individual, less so were his subjects, STAY SELF SOVEREIGN!]
+
+[![vendor-of-choice](https://user-images.githubusercontent.com/5950433/206564909-167536b6-7381-48dc-907d-29009c689dff.jpg)](https://pdxjohnny.github.io/redpill/)

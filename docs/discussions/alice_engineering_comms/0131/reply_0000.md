@@ -1,0 +1,4 @@
+- https://airlied.blogspot.com/2022/12/vulkan-video-encoding-radv-update.html
+- https://fosstodon.org/@kernellogger/109595821174369284
+  - https://lore.kernel.org/lkml/20221224000402.476079-1-qde@naccy.de/
+    - > Remember [#bpfilter](https://mastodon.social/tags/bpfilter), which uses [#BPF](https://mastodon.social/tags/BPF) to handle iptables' configuration blob parsing and code generation(¹)? Quentin Deslandes picked up development and sent a v3 of the [#linux](https://mastodon.social/tags/linux) [#kernel](https://mastodon.social/tags/kernel) patchset on Christmas eve: https://lore.kernel.org/lkml/20221224000402.476079-1-qde@naccy.de/ For the record, v2 was sent by Dmitrii Banshchikov on Sun, 29 Aug 2021: https://lore.kernel.org/all/20210829183608.2297877-1-me@ubique.spb.ru/ [#LinuxKernel](https://mastodon.social/tags/LinuxKernel) [#eBPF](https://mastodon.social/tags/eBPF) (¹) see https://lwn.net/Articles/755919/ and https://lwn.net/Articles/822744/

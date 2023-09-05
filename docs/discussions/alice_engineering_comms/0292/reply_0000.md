@@ -1,0 +1,4 @@
+- https://github.com/ossf/Diagrammers-Society/blob/main/drawings/Sterling%20Toolchain%20Patterns.svg
+- https://github.com/ossf/Diagrammers-Society/blob/main/drawings/ossf-stickers.png
+- https://github.com/intel/dffml/actions/runs/5192088769/jobs/9361162619
+- https://debconf22.debconf.org/talks/57-how-can-we-help-you-help-us-help-youhelp-ushelp-you/

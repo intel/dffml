@@ -1,0 +1,7 @@
+- https://github.com/fal-ai/isolate/releases/tag/v0.11.1
+  - For 2nd party
+- https://registry.terraform.io/namespaces/intel
+- https://github.com/intel/policy-library-intel-azure/blob/8ec4a48bfca8e7baecf7222e5df2040161e23b9a/policies/intel-azurerm-mssql-server-deny-unapproved-instance-types/testdata/mock-tfplan-success.sentinel
+- https://github.com/steiza/simplepypi/commit/b351f31c5cd26e3e8e6b50425e71b2baf7378dff
+  - OIDC publish to PyPi style registry, we'll try using this for 2nd party local registry
+- https://github.com/advanced-security/gh-sbom

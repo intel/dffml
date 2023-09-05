@@ -1,0 +1,4 @@
+- https://github.com/TBD54566975/web5-wallet-browser
+- https://www.bleepingcomputer.com/news/security/pytorch-discloses-malicious-dependency-chain-compromise-over-holidays/
+- https://www.vox.com/the-highlight/23447596/artificial-intelligence-agi-openai-gpt3-existential-risk-human-extinction
+  - All is well and will be well, just keep plodding along and putting this here for explainer to others

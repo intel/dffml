@@ -1,0 +1,45 @@
+ ## 2023-02-27 SCITT
+
+- Moved architecture repository to https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture
+- CODEOWNERS (teams usage do not provide traceability, explicitly managed within files)
+- Transparency service, TS, registry, all same words, cleaned up a bit
+  - Transparency Service is what we are going with
+  - https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/pull/16
+    - Converge claim and statement
+- Example
+  - Steve is submitting information about an ubuntu release to the TS
+  - Steve's identity used to write to TS (RBAC auth on this)
+    - eNotary is validating Canonical's Ubuntu Signature
+- The duty of the transparency service is not to detect lies
+  - It does have some registration process
+  - There can be a gatekeeper function which limits use of transparency service
+    - This is the policy which constrains what the notary can place in the service
+      - Minimum could be content type, what is allowed to write to the product line
+        - This policy engine is outside the scope of SCITT
+          - This is what facilitates trust propagation in our recursive grafted log setup
+        - https://github.com/intel/cve-bin-tool/issues/2639
+    - This could just be an admit
+      - Could be based on RBAC of the product
+        - #1400
+- Notary maintaining append only ledger
+  - Notary says identity of signature is correct
+    - The notary check the identity was valid when signature happens
+  - It's not the notaries job to say it's an incorrect contract
+    - It doesn't check that the SBOM is an accurate representation of the software
+  - Is digital signature valid?
+    - TS can decide if it wants to accept different identities or types of identities
+      - Policy on given instance could say
+        - X509 notarizations for these content types
+        - Was it revoked?
+- Receipt generator
+  - KERI Watcher
+  - https://github.com/microsoft/scitt-ccf-ledger
+    - SCITT Emulator
+  - https://transparency.dev/
+    - Centralized, SigStore
+- What happens when hardware fails? How does new logs come online
+- John: Recursive downstream policy for VEX
+  - Roy: There is an issue with propagation times
+  - John: It sounds like you have insights on the VEX use case. Is there somewhere I can find more details about what you're looking at for that propagation issue?
+- [Roy](roywill@microsoft.com)
+  - Says there is some propagation delay we need to deal with to propagate VEX

@@ -1,0 +1,37 @@
+## 2022-10-10 IETF SCITT Weekly
+
+- Previous meeting notes: [2022-09-29 IETF SCITT Technical Meeting](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3763647)
+- Charter is expected to be finalized by tomorrow
+  - We had about 4+ weeks of review (which is good, we wanted to have time for people to review)
+  - Will follow the IETF process more rigorously after initiated (we don't know all of what that entails yet :)
+    - We will then have IETF tools at our workgroups disposal
+- We are currently meeting a lot
+  - We will sawmp the upcoming meeting schdule this way
+  - We will have three interums per two weeks if we maintain our current cadence
+    - We might be overusing the meeting system
+    - Two tracks
+      - Weekly Monday
+      - Fortnightly technical
+    - working group formal chairs will do this
+    - Eliot seems unlikley to have bandwidth beyond the BoF
+- Upcomming IETF 115
+  - Will do sequency diagram hacking
+  - They will have a remote experiance so that others can feel like they are in Europe at the table via 360 degree camera
+  - Orie will be there at 1:15
+  - Goals
+    - Ensure we have a through software use case doc
+- preliminary agenda: https://datatracker.ietf.org/meeting/115/agenda/
+  - https://www.ietf.org/how/runningcode/hackathons/115-hackathon/
+  - https://wiki.ietf.org/en/meeting/115/hackathon
+  - https://datatracker.ietf.org/meeting/115/important-dates/
+    - chair logistics - Chairs 10 min  
+    - starting adoption of first I-D (architecture) - Henk 20 min  
+    - receipt definition (recap & discussion)k) - Sylvan 15 min  
+    - COSE merkle tree proofs (options, pros & cons) - Mailk 20 min  
+    - detailed use case I-D: software supply chain - Orie 25 min
+- How do we deal with SPDX no assertion on insert?
+- TODO
+  - [ ] Add self attestations to osftware use case folow chart
+    - [ ] Ensure we mention how this works with the standard github workflow and sigstore
+      - [ ] I have vetted this via code review
+      - [ ] NIST currently only cares about the presence of the SBOM as the attestation (case 0)

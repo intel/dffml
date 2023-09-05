@@ -1,0 +1,13 @@
+- https://octodon.social/@cwebber/110437106621901490
+  - Spritly Goblis OCAP protextion for must be DoS layered on
+- https://mailarchive.ietf.org/arch/msg/scitt/eKrsN97N2xywVeq0QpVRKAkuq8w/
+  - Dick mentioned Amber, John mentioned SCITT relation
+- https://www.npmjs.com/package/quadstore-comunica
+  - Orie used this for an rdf “relatively transient non-gigantic SPARQL database for public sharing/collaboration” [https://twitter.com/danbri/status/1661884060375871490]
+  - https://github.com/AtomGraph/fuseki-docker
+  - https://github.com/epoz/shmarql/pkgs/container/shmarql
+- https://github.com/openenclave/openenclave/blob/master/samples/host_verify/README.md
+  - For verification of pre-seeded VCs to shoot to N+1 TS inbox
+- https://learn.microsoft.com/en-us/azure/confidential-computing/virtual-machine-solutions-sgx#deployment-with-azure-resource-manager-arm-template
+  - We’ll use Azure Bicep to launch the VM which we use with the runs-on and communicate via redis service. This gives us a scitt all hermetic all loval version of the SLSAv3 example, we’ll vase it on build_images_containers.yml and throw inSSI service to manage VCs
+- No CSPs needed use CR0/4 pining machine with SGX and kata to do docker-in-docjer —name —restart=always —cpu=1 for in nproc/4

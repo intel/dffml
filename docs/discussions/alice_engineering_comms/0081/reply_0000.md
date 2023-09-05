@@ -1,0 +1,44 @@
+## 2022-11-09 @pdxjohnny Engineering Logs
+
+- https://github.com/w3c/websub/tree/master/implementation-reports
+  - https://github.com/marten-de-vries/Flask-WebSub
+  - Publisher client with Verifiable Credentials and Credential Manifests
+    - https://identity.foundation/credential-manifest/#credential-requirement-discovery
+    - A Verifiable Credential is then issued
+      - https://w3c-ccg.github.io/traceability-vocab/#BillOfLadingCredential
+      - https://w3c-ccg.github.io/traceability-vocab/openapi/components/schemas/credentials/BillOfLadingCredential.yml
+      - https://w3c-ccg.github.io/traceability-vocab/openapi/components/schemas/common/BillOfLading.yml
+  - QEMU, then firecracker, let's see how fast she'll roll
+- https://hub.docker.com/r/exampleorg/uni-resolver-driver-did-example
+  - https://github.com/decentralized-identity/universal-resolver/pull/100/files
+  - https://github.com/decentralized-identity/universal-resolver/blob/main/docs/driver-development.md
+  - https://github.com/decentralized-identity/universal-resolver/blob/main/docker-compose.yml
+- time is relative by locality
+  - clustering state of art / train of thought field it falls into grep twine threads
+- https://github.com/ArtracID/ArtracID-DID-ART-Method
+  - Can we combine this with didme.me / SCITT? Art world has similar data provenance supply chain fundamentals of authenticity attestations.
+  - `did:art:alice:<did merkle dag of manifest / upstream>`
+  - See "Architecting Alice: An Image"
+- https://jena.apache.org/tutorials/sparql_data.html
+- https://linkeddatafragments.org/software/#server
+- https://github.com/benj-moreau/odmtp-tpf#sparql-queries-over-github-api
+- TODO
+  - [ ] Modify BillOfLadingVC schema into something with less names and places and more DIDs.
+    - https://w3c-ccg.github.io/traceability-vocab/openapi/components/schemas/common/BillOfLading.yml
+  - [ ] Play with https://github.com/benj-moreau/odmtp-tpf#sparql-queries-over-github-api as backend and GraphQL-LD to query
+    - [2022-11-06 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
+- https://share.tube/videos/local
+  - https://joinpeertube.org/instances
+  - Does this work / exist for streaming? It seems more and more hybrid federated principles / web5 is looking like our web2 -> web5 brdige
+- https://fission.codes/blog/webnative-app-template/
+- https://octodon.social/@cwebber/109307940669755800
+- https://www.w3.org/TR/activitypub/
+  - This overview tutorial might be the right base for our POC of sharing data flow / knowledge graphs
+- TODO
+  - [ ] https://www.w3.org/TR/activitypub/ (+DERP optionally maybe tunneled over webrtc) for stream of consciousness input network on "shared" exec
+  - [ ] Fix DFFML build pipelines and build a container to submit using HTTP service data flow endpoint config as DID resolver for `did:oa:`
+  - [ ] Let's maybe mess with https://github.com/mastodon/mastodon/blob/main/docker-compose.yml and see if we can start talking to Alice via that.
+    - [ ] Then we gradually add in DID, VC, etc. to that
+  - [x] Install Linux on SSD
+  - [ ] Mouse's wheel is broken, need a new mouse
+    - It doesn't even do the drag to scroll anymore on fedora 36

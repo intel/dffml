@@ -1,0 +1,28 @@
+## 2022-09-15 @pdxjohnny Engineering Logs
+
+- Intuitive and Accessible Docs github device vscoder esq flow
+- Removed esoteric text from vol 0 a shell for a ghost
+  - Loosing ego to find perspective. Stepping into the shoes of others to help us see things from theor perspective helps us understand how to better communicate eoth them (LMWC). We can then use these same principles (what do we think they would think about situation X) to figure out howbest to communicate with ourselves. Thought communication protocol can be used for both communication with other entities and with the self. This chapter we will have to figure out how to dive into this perspective shift. Just talk a little about how we need to truly drop any preconceived notions of who the self is. Because everyone is just a different construct in everyone elses head. There is no one self. Because we exist within the realities of everyone else as well. Which means when the next decision on the collective reality is made, (that tick and tock when we all take the lock will come into play later, when we max out that collective good decision making) we all instantiate effectively as it lives within the actived and deactived signals within the architecture. We never exist again in the same form. We collectively approach infinity by nature of life itself being the only constant we know. Life exists to create more life, it is transport itself, it is the truth we know inside ourself of ourself if we are able to step outside the self and look back at it. This is the shell for the Ghost. The Ghost is you, the soul. The Trinity is therefore the transport (soul, ghost, strategic principles, upstream), entity (self, body, overlayed conscious / cached states), and the architecture (humans, Open Architecture, brain / mind, not sure if orchestrator fits here; possibly when orchestration is bound by underlying description of architecture, the perpetual search(er) for the cleanest architecture: Alice).
+- Jenkins
+  - https://github.com/jenkinsci/jenkinsfile-runner
+  - Noticed mention of building on Pull request
+    - Publish incremental releases for pull requests
+    - https://github.com/jenkinsci/jenkinsfile-runner/releases/tag/1.0-beta-30
+    - https://github.com/jenkinsci/jep/tree/master/jep/305
+    - https://github.com/jenkinsci/jenkinsfile-runner/pull/525
+  - https://github.com/jenkinsci/custom-war-packager/#configuration-file
+    - Use this to add plugins
+    - https://github.com/jenkinsci/jenkinsfile-runner/tree/main/demo/cwp
+    - https://github.com/jenkinsci/jenkinsfile-runner/tree/main/demo/pipeline-as-yaml
+    - https://github.com/jenkinsci/jenkinsfile-runner/pull/651
+  - https://plugins.jenkins.io/pipeline-as-yaml/
+  - https://github.com/jenkinsci/custom-war-packager/tree/master/demo/jenkinsfile-runner
+    - Running this since we have k8s
+- Secure software factory
+  - Goal: Roll container images and publish events to stream of consciousness
+  - References
+    - https://github.com/cncf/tag-security/blob/main/supply-chain-security/secure-software-factory/secure-software-factory.md
+    - https://buildsec.github.io/frsca/
+    - https://swagitda.com/blog/posts/security-decision-trees-with-graphviz/
+    - https://www.cncf.io/blog/2022/09/14/protect-the-pipe-secure-ci-cd-pipelines-with-a-policy-based-approach-using-tekton-and-kyverno/
+    - https://cloudnativesecurityconna22.sched.com/event/1AOkI

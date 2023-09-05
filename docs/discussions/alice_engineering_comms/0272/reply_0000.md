@@ -1,0 +1,9 @@
+- https://github.com/cardinalby/github-action-ts-run-api#test-js-action-in-a-child-node-process
+- https://try-quivr.streamlit.app/
+  - Add knowledge
+    - https://github.com/intel/dffml/raw/alice/docs/tutorials/rolling_alice/0000_architecting_alice/README.md
+    - https://raw.githubusercontent.com/intel/dffml/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+  - Q&A
+    - Who is Alice?
+      - Quivr: Alice is an architecture for code that will write and maintain itself based off of a standard description of architecture, a universal blueprint, the open architecture. Alice is both an AI software architect and the AI software's architecture itself. Additionally, Alice is the nickname for both the entity carrying out the job of maintainer and the architecture in general.
+  - Niiiiiiiiiice

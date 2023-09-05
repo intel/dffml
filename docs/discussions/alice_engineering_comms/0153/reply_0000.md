@@ -1,0 +1,51 @@
+## 2023-01-20 @pdxjohnny Engineering Logs
+
+- https://github.com/stanford-futuredata/noscope
+  - Context aware inference on video
+    - See if we can encode our software DNA to be inputs to this
+- https://github.com/ggerganov/whisper.cpp/tree/master/examples/talk.wasm
+- https://twitter.com/tgamblin/status/1616605245181939712
+  - https://reuse.software/faq/#bill-of-materials
+  - https://www.ntia.gov/files/ntia/publications/ntia_sbom_sharing_exchanging_sboms-10feb2021.pdf
+    - Mentions pubsub (DWN, or our hacky first stab via polling NVDStyle)
+      - We should really go with the traceabilty interop way…
+- https://github.com/stanford-futuredata/ColBERT
+- https://www.sbert.net/docs/quickstart.html
+  - https://www.sbert.net/docs/pretrained-models/msmarco-v3.html
+  - https://github.com/UKPLab/sentence-transformers/blob/master/examples/training/multilingual/make_multilingual.py
+- Uses of the word grafting in relation to explaining public/private/dev/test keys version of SCITT
+  - https://github.com/githubuniverseworkshops/grafting-monorepos#seedling-activity-3-graft-a-repository-20-minutes
+  - Grafting trust chains for BOM dependency maintinance and security posture analysis for `Rolling Alice: Coach Alice: Cartographer Extraordinaire`
+    - Need to finish deptree work
+- Python based markdown to HTML via sphinx build
+  - https://sphinx-book-theme.readthedocs.io/en/stable/customize/single-page.html
+- `did:web:registry:dffml-e2fa5db:localhost:run`
+  - DO Space for images
+- https://github.com/prihoda/AbNumber
+- TODO
+  - [ ] Investigate use of overlays with Common Workflow Language
+    - https://www.commonwl.org/v1.2/SchemaSalad.html#Document_graph
+    - https://www.go-fair.org/fair-principles/
+    - https://www.go-fair.org/resources/internet-fair-data-services/
+  - [ ] Ephemeral clusters on devcloud
+    - Spin k3s clusters within devcloud nodes via `qsub`
+      - Deploy GitHub Actions runner controller
+      - Deploy harbor
+      - Deploy NVDStyle
+      - Deploy Stream of Consciousness webhook endpoint using PAT (later GitHub app) to do the transform (via OA or IPVM or DWN hooks?) into `repo_dispatch`
+        - See about localhost.run `LoadBalencer`
+        - Webhook handlers
+          - harbor
+            - container push
+              - Trigger `workflow_dispatch` by looking in workflows for `workflow_dispatch`-able workflows for `on.push.paths`  
+                -  Optionally take allowlist or blocklist given as endpoint configuration or seed input
+                - Validate schema is https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.jso
+                - Look in referenced dockerfiles
+                  - Build dockerfile style pipdeptree
+                    - #596
+                  - Dispatch if relavent `FROM` (our FROM rebuild chain)
+              - Operation to upload image via boto3 (Digital Ocean Space)
+                - Ensure we have restore from the respective cache when we spin other ephemeral clusters for this context (could bootstrap image build infra, build new harbor from old harbor + cache, redeploy)
+- Future
+  - [ ] KCP for qsub/stat/etc.
+    - Validate by creating a stub version of qsub that runs QEMU for first step for local testing

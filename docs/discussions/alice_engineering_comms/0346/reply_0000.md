@@ -1,0 +1,1 @@
+- [OpenSSF Scorecard Community Roadmap](https://docs.google.com/document/d/1ttLH1U4BRZkgVukBltLxKyP7UmFSLIyPtUUe1G86Sv0/edit)

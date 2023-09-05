@@ -1,0 +1,8 @@
+- https://trendoceans.com/atuin-linux/
+- https://docs.google.com/document/d/1xfU_s1Eu51z_WGg5VYBsQtjsKcrV6_TvFXj2WxBcj90/edit
+- https://socialhub.activitypub.rocks/pub/guide-for-new-activitypub-implementers
+- https://docs.microblog.pub/
+- https://raw.githubusercontent.com/rjb4standards/REA-Products/master/jsonvrf.json
+- https://github.com/OR13/endor
+- https://github.com/w3c/vc-data-model
+- https://github.com/bluesky-social/atproto

@@ -1,0 +1,54 @@
+## 2023-03-02 SBOM, VEX, VDR, Threat Modeling, Open Architecture
+
+- 1:1 Anthony/John
+- https://github.com/anthonyharrison/sbom-manager
+  - Related: https://github.com/intel/dffml/issues/596
+- Alma and debian
+  - Firefox delta
+  - #789
+- Manager to search across modules
+- CSAIF directory so others can get them
+  - Data consistency in the wild is suboptimal
+    - Version numbers? Why can't we use PURL, etc.
+- CSAIF is doesn't look like it's about to align with Cyclone in the future
+- OpenVEX
+  - Sudden release
+  - Walled release process
+  - Doesn't have most of the information we need
+- Cylone VEX which cve-bin-tool supports
+- SPDX is stalled for their VEX
+- We need a way to say should you be worried about this vuln?
+  - THERE IS NO WAY TO MAKE THIS DECERNATION WITHOUT THE DEPLOYMENT CONTEXT!
+- Cyclone might evolve OBOM for arch links
+  - Threat model overlays
+- How could we do events of new vulns?
+  - [RFCv2: IETF SCITT: Use Case: OpenSSF Metrics: activitypub extensions for security.txt](https://github.com/ietf-scitt/use-cases/blob/22afd537180d6c6b2d5ec4db0096f0706cb2b6bc/openssf_metrics.md)
+- People started petitioning NVD to downscore CVSS
+- What are reasons for not patching?
+  - Threat model business objectives says strategic plan says out of scope
+    - Downstream propagate? No! Overlay for my context says we're running this sandboxed and it's critical, propigate affected instead of not affected to this TS
+- Hardware and infra is not all up to date in the wild!
+  - Some people MUST run Windows NT! If they don't their business stops running
+  - Upgrade paths a MUST, layered protection level / ring increase with higher level TCB
+- Users will always find interesting ways to use things, THREATS.md
+- What if we don't have a threat model from the original author?
+  - Correctness? Review system baked in, this is our `vuln is bug` type fundamentally
+  - https://forums.lutris.net/
+- Can we talk to consumers?
+  - Neither of us know what consumers of 
+  - How do you facilitate the competitive market and innovation?
+    - Open Source / Inner Source style encouragement to share?
+- Anthony has also worked on Open Architecture (different thing, same name)
+- If you submit a vuln, we should assume reported to will do nothing
+  - Unless there is reviews saying they respond to vulns, but we should wait our default period before reporting anyway
+- How can we leverage federated machine learning to do audit and analysis?
+- Focus on getting eco system working with some major projects, k8s, some OSes, you'd want a stack
+- You'll never have no vulns
+  - If you have no vulns you're a dead project
+    - Learning is growing
+    - Are the vulns getting better or worse?
+      - This is what we care about, acceleration
+      - As long as versioned learning says you're within bounds, keep going!
+- Want to enable users to make trust determinations
+- Trust levels (protection rings)
+- GitHub sounds open to partnership to make things better if we think of anything to talk to them about
