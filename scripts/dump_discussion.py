@@ -94,9 +94,9 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
                 response = await session.post("https://api.github.com/graphql", headers=headers, json={"query": query, "variables": variables})
                 reply_result = await response.json()
 
-                reply_nodes = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["nodes"]
-                has_next_reply_page = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["pageInfo"]["hasNextPage"]
-                replies_cursor = reply_result["data"]["repository"]["discussion"]["comments"]["nodes"][0]["replies"]["pageInfo"]["endCursor"]
+                reply_nodes = comment["replies"]["nodes"]
+                has_next_reply_page = comment["replies"]["pageInfo"]["hasNextPage"]
+                replies_cursor = comment["replies"]["pageInfo"]["endCursor"]
 
                 for reply in reply_nodes:
                     replies.append(Reply(body=reply["body"]))
