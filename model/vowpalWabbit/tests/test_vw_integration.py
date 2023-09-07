@@ -99,6 +99,37 @@ class TestVWModel(AsyncTestCase):
             "-source-filename",
             data_filename,
         )
+
+        # Tune model
+        await CLI.cli(
+            "tune",
+            "-model",
+            "vwmodel",
+            *features,
+            "-model-predict",
+            "true_class:int:1",
+            "-model-vwcmd",
+            "binary",
+            "True",
+            "-model-use_binary_label",
+            "-model-location",
+            model_dir,
+            "-scorer",
+            "mse",
+            "-features",
+            "true_class:int:1",
+            "-sources",
+            "train=csv",
+            "test=csv",
+            "-source-train-filename",
+            data_filename,
+            "-source-test-filename",
+            data_filename,
+            "-tuner",
+            "parameter_grid",
+            "-tuner-objective",
+            "min"
+        )
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0].export()

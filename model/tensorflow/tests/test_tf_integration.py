@@ -2,6 +2,7 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
+import os
 import csv
 import pathlib
 
@@ -188,6 +189,33 @@ class TestDNNR(AsyncTestCase):
             "-sources",
             "predict_data=csv",
             "-source-filename",
+            data_filename,
+        )
+        param_path =  os.path.join(os.path.dirname(__file__), "../examples/parameters.json")
+        # Tune model
+        await CLI.cli(
+            "accuracy",
+            "-model",
+            "tfdnnr",
+            *features,
+            "-model-predict",
+            "true_target:float:1",
+            "-model-location",
+            model_dir,
+            "-features",
+            "true_target:float:1",
+            "-scorer",
+            "mse",
+            "-tuner",
+            "parameter_grid"
+            "-tuner-parameters",
+            "@" + str(param_path),
+            "-sources",
+            "train=csv",
+            "test=csv",
+            "-source-train-filename",
+            data_filename,
+            "-source-test-filename",
             data_filename,
         )
         self.assertTrue(isinstance(results, list))

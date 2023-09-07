@@ -2,7 +2,8 @@ import random
 import tempfile
 
 from dffml.record import Record
-from dffml.high_level.ml import score
+from dffml.high_level.ml import score, tune
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Features, Feature
@@ -47,6 +48,7 @@ class TestTextClassificationModel(AsyncTestCase):
             )
         )
         cls.scorer = TextClassifierAccuracy()
+        cls.tuner = ParameterGrid(parameters={"epochs":[10,15]}, objective="max")
 
     @classmethod
     def tearDownClass(cls):
@@ -63,6 +65,7 @@ class TestTextClassificationModel(AsyncTestCase):
         )
         self.assertGreater(res, 0)
 
+
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
             target_name = model.config.predict.name
@@ -70,6 +73,12 @@ class TestTextClassificationModel(AsyncTestCase):
                 async for record in mctx.predict(sctx):
                     prediction = record.prediction(target_name).value
                     self.assertIn(prediction, ["0", "1"])
+
+    async def test_03_tune(self):
+        res = await tune(
+            self.model, self.tuner, self.scorer, Feature("X", int, 1), [self.sources], [self.sources]
+        )
+        self.assertGreater(res, 0)
 
 
 # Randomly generate sample data

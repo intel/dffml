@@ -1,0 +1,15 @@
+dffml tune \
+  -model spacyner \
+  -model-model_name en_core_web_sm \
+  -model-location temp.zip \
+  -model-n_iter 5 \
+  -scorer sner \
+  -tuner parameter_grid \
+  -tuner-parameters @parameters.json \
+  -features tag:str:1 \
+  -sources train=op test=op \
+  -source-train-opimp model.spacy.dffml_model_spacy.ner.utils:parser \
+  -source-args train.json False \
+  -source-test-opimp model.spacy.dffml_model_spacy.ner.utils:parser \
+  -source-args test.json True \
+  -log debug 

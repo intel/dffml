@@ -72,3 +72,15 @@ def list_records_to_dict(features, *args, model=None):
                 args[i] = dict(zip(features, args[i]))
         return args
     raise CannotConvertToRecord("Model does not exist!")
+
+def records_to_dict_check(ds, model, predict_feature):
+        if hasattr(model.config, "features") and any(
+            isinstance(td, list) for td in ds
+        ):
+            return list_records_to_dict(
+                [feature.name for feature in model.config.features]
+                + predict_feature,
+                *ds,
+                model=model,
+            )
+        return ds

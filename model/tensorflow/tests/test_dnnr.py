@@ -4,14 +4,16 @@ import tempfile
 
 import numpy as np
 
-from dffml import train, score, predict
+from dffml import train, score, predict, tune
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Feature, Features
+from dffml.tuner.parameter_grid import ParameterGrid
 
 from dffml_model_tensorflow.dnnr import (
     DNNRegressionModel,
@@ -98,6 +100,7 @@ class TestDNN(AsyncTestCase):
             },
         )
         target_name = self.model.config.predict.name
+        tuner = ParameterGrid(parameters={"epochs":[10,15]}, objective="min")
         scorer = MeanSquaredErrorAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
@@ -113,7 +116,11 @@ class TestDNN(AsyncTestCase):
                     location=pathlib.Path(self.model_dir.name)
                 )
                 continue
+            res_tune = await tune(
+                self.model, tuner, scorer, Feature("TARGET", float, 1), [self.sources], [self.sources]
+            )
             self.assertGreater(res, 0.0)
+            self.assertGreater(res_tune, 0.0)
             res = [
                 record
                 async for record in predict(self.model, a, keep_record=True)

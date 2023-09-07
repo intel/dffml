@@ -2,7 +2,7 @@ import random
 import pathlib
 import tempfile
 
-from dffml import train, predict, score
+from dffml import train, predict, score, tune
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -10,6 +10,7 @@ from dffml.feature import Feature, Features
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.accuracy import ClassificationAccuracy
+from dffml.tuner.parameter_grid import ParameterGrid
 
 from dffml_model_tensorflow.dnnc import (
     DNNClassifierModel,
@@ -84,6 +85,7 @@ class TestDNN(AsyncTestCase):
 
     async def test_model(self):
         scorer = ClassificationAccuracy()
+        tuner = ParameterGrid(parameters={"epochs":[20,30]}, objective="max")
         for i in range(0, 7):
             await train(self.model, self.sources)
             res = await score(
@@ -98,7 +100,11 @@ class TestDNN(AsyncTestCase):
                     location=self.model_dir.name
                 )
                 continue
+            res_tune = await tune(
+                self.model, tuner, scorer, Feature("string", str, 1), [self.sources], [self.sources]
+            )
             self.assertGreater(res, 0.9)
+            self.assertGreater(res_tune, 0.9)
             a = Record("a", data={"features": {self.feature.name: 1}})
             target_name = self.model.config.predict.name
             res = [

@@ -1,3 +1,4 @@
+from dffml.tuner.parameter_grid import ParameterGrid
 import torch.nn as nn
 import os
 import shutil
@@ -7,7 +8,8 @@ import asyncio
 from dffml.cli.cli import CLI
 from dffml.util.net import cached_download_unpack_archive
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.high_level.ml import train, score, predict
+from dffml.high_level.ml import train, score, predict, tune
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml import Features, Feature, DirectorySource
 from dffml_model_pytorch import PyTorchNeuralNetwork
 from dffml_model_pytorch.utils import CrossEntropyLossFunction
@@ -103,6 +105,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
             )
         )
         cls.scorer = PytorchAccuracy()
+        cls.tuner = ParameterGrid(parameters={"epochs":[3,5]}, objective="max")
 
     @classmethod
     def tearDownClass(cls):
@@ -149,19 +152,42 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         self.assertIn(results["value"], self.model.config.classifications)
         self.assertTrue(results["confidence"])
 
+    async def test_03_tune(self):
+        acc = await tune(
+            self.model,
+            self.tuner,
+            self.scorer,
+            Feature("label", str, 1),
+            [DirectorySource(
+                foldername=str(self.traindir) + "/rps",
+                feature="image",
+                labels=["rock", "paper", "scissors"],
+            )],
+            [DirectorySource(
+                foldername=str(self.testdir) + "/rps-test-set",
+                feature="image",
+                labels=["rock", "paper", "scissors"],
+            )],
+        )
+        self.assertGreater(acc, 0.0)
+
     async def test_shell(self):
         def clean_args(fd, directory):
             cmnd = " ".join(fd.readlines()).split("\\\n")
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-source-foldername") + 1] = directory
+            if "-source-foldername" in cmnd:
+                cmnd[cmnd.index("-source-foldername") + 1] = directory
             if "-model-epochs" in cmnd:
                 cmnd[cmnd.index("-model-epochs") + 1] = "1"
             return cmnd
 
         shutil.copy(
             sh_filepath("model.yaml"), os.path.join(os.getcwd(), "model.yaml"),
+        )
+        shutil.copy(
+            sh_filepath("parameters.json"), os.path.join(os.getcwd(), "parameters.json"),
         )
 
         with open(sh_filepath("train.sh"), "r") as f:
@@ -178,6 +204,12 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
             predict_command = clean_args(f, str(self.predictdir))
         results = await CLI.cli(*predict_command[1:-1])
 
+        with open(sh_filepath("tune.sh"), "r") as f:
+            tc = clean_args(f, str(self.predictdir))
+            tc[tc.index("-source-train-foldername") + 1] = str(self.traindir)  + "/rps"
+            tc[tc.index("-source-test-foldername") + 1] = str(self.testdir ) + "/rps-test-set"
+        acc = await CLI.cli(*tc[1:-1])
+
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
@@ -187,3 +219,4 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         self.assertIn("confidence", results)
         self.assertIn(isinstance(results["value"], str), [True])
         self.assertTrue(results["confidence"])
+        self.assertTrue(acc>=0.0)
