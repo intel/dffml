@@ -173,6 +173,7 @@ setup(
         # Tuner
         "dffml.tuner": [
             "parameter_grid = dffml.tuner.parameter_grid:ParameterGrid",
+            "random_search = dffml.tuner.random_search:RandomSearch",
         ],
     },
 )

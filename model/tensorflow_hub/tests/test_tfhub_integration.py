@@ -2,6 +2,7 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
+import os
 import csv
 import json
 import random
@@ -117,6 +118,40 @@ class TestTextClassifier(AsyncTestCase):
             "-source-filename",
             data_filename,
         )
+        param_path =  os.path.join(os.path.dirname(__file__), "../examples/tfhub_text_classifier/parameters.json")
+        # Tune model
+        await CLI.cli(
+            "tune",
+            "-model",
+            "text_classifier",
+            *features,
+            "-model-predict",
+            "sentiment:int:1",
+            "-model-location",
+            model_dir,
+            "-model-classifications",
+            "0",
+            "1",
+            "-model-clstype",
+            "int",
+            "-features",
+            "sentiment:int:1",
+            "-sources",
+            "train=csv",
+            "test=csv",
+            "-source-train-filename",
+            data_filename,
+             "-source-test-filename",
+            data_filename,
+            "-scorer",
+            "textclf",
+            "-tuner",
+            "parameter_grid",
+            "-tuner-parameters",
+            "@" + str(param_path)
+
+        )
+
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0].export()

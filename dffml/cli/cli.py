@@ -39,7 +39,7 @@ from ..base import field, config
 
 from .dataflow import Dataflow
 from .config import Config
-from .ml import Train, Accuracy, Predict
+from .ml import Train, Accuracy, Predict, Tune
 from .list import List
 
 version = VERSION
@@ -366,6 +366,7 @@ class CLI(CMD):
     train = Train
     accuracy = Accuracy
     predict = Predict
+    tune = Tune
     service = services()
     dataflow = Dataflow
     config = Config

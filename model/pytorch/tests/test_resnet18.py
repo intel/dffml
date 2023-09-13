@@ -47,6 +47,11 @@ class TestResNet18Model(AsyncTestCase):
                 sh_filepath("resnet18", "layers.yaml"),
                 os.path.join(os.getcwd(), "layers.yaml"),
             )
+            shutil.copy(
+                sh_filepath("resnet18", "parameters.json"),
+                os.path.join(os.getcwd(), "parameters.json"),
+            )
+            
 
             with open(sh_filepath("resnet18", "train.sh"), "r") as f:
                 train_command = clean_args(f, str(tempdir))
@@ -60,6 +65,10 @@ class TestResNet18Model(AsyncTestCase):
                 predict_command = clean_args(f, str(tempdir))
             results = await CLI.cli(*predict_command[1:-1])
 
+            with open(sh_filepath("resnet18", "tune.sh"), "r") as f:
+                tune_command = clean_args(f, str(tempdir))
+            acc = await CLI.cli(*tune_command[1:])
+
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
@@ -69,3 +78,4 @@ class TestResNet18Model(AsyncTestCase):
             self.assertIn("confidence", results)
             self.assertIn(isinstance(results["value"], str), [True])
             self.assertTrue(results["confidence"])
+            self.assertTrue(acc>=0.0)

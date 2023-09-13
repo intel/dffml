@@ -2,11 +2,12 @@ from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 
 from dffml import Feature, Features
-from dffml.noasync import train, score
+from dffml.noasync import train, score, tune
 from dffml_model_xgboost.xgbregressor import (
     XGBRegressorModel,
     XGBRegressorModelConfig,
 )
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.accuracy import MeanSquaredErrorAccuracy
 
 
@@ -34,6 +35,16 @@ model = XGBRegressorModel(
     )
 )
 
+tuner = ParameterGrid(
+    parameters = {
+        "learning_rate": [0.01, 0.05, 0.1],
+        "n_estimators": [20, 100, 200],
+        "max_depth": [3,5,8]
+
+    },
+    objective = "min"
+)
+
 # Train the model
 train(model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)])
 
@@ -58,3 +69,16 @@ print(
         *[{"data": x, "target": y} for x, y in zip(trainX, trainy)],
     ),
 )
+
+print("Tuning accuracy:",
+    tune(
+        model,
+        tuner,
+        scorer,
+        Feature("target", float, 1),
+        [{"data": x, "target": y} for x, y in zip(trainX, trainy)],
+        [{"data": x, "target": y} for x, y in zip(testX, testy)],
+
+    )
+)
+
