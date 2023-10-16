@@ -41,9 +41,8 @@ plans analyzed across Entity Analysis Trinity).
 
 - Allowlists as dynamic context aware policy as code over provenance of message
   content.
-  - Federate over Heartwood the SCITT API emulator by converting the dumped
-    format to Endor style Decentralized Identifier and Verifiable Credentials
-    stored in a Git version control repository.
+  - Federate over ActivityPub the SCITT API emulator.
+    - [Federation via ActivityPub scitt-community/scitt-api-emulator#37](https://github.com/scitt-community/scitt-api-emulator/pull/37)
   - GUAC collector for SCITT API emulator
     - We leverage GUAC to emit the event into the next phase tcb (2nd party
       promotion). This way we only accept the federated events into our forge
@@ -261,7 +260,7 @@ bus.receive(event)
       - prod / service batch jobs L0
         - https://github.com/ipvm-wg/spec/pull/8
 - KERI backed keys for duplicity detection to reboot web of trust off less robust revocation detection mechanisms
-  - Publish `releaseartifact.json` to DirectoryBased/Heartwood/ActivityPub security.txt/md stream
+  - Publish `releaseartifact.json` to ActivityPub security.txt/md stream
     - Others who are committing or online cloning a repo watch those streams (schema in content)
 - Setup auto prs
   - Rebuild chains based off SBOM as inventory for building cross linkage to determine downstream validation pattern / hypothesized flows and prs-to-prs required to enable execution, the dependency tree of artifacts.
