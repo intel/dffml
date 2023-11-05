@@ -122,8 +122,6 @@ if __name__ == "__main__":
 - https://github.com/ossf/wg-vulnerability-disclosures/issues/74
 - https://app.slack.com/client/T019QHUBYQ3/C05009RHCNT
   - TODO: Anyone playing with the json-ld-ness of openvex yet?
-- Lot's of kundalini today
-  - We must be getting close
 - https://github.com/in-toto/attestation/pull/192
   - Great proto regen example
 - https://github.com/in-toto/attestation/blob/3df726cfcc0528dcbdb4d45ed1597b793d1b777d/spec/predicates/scai.md
