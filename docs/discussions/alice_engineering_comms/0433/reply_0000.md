@@ -1,0 +1,1 @@
+- https://github.com/picone/picone.github.io/blob/6a3c605739da1f696b4c71e82a6c152ae314cb5b/_posts/2023-04-20-install-win11-on-kvm.md?plain=1#L40

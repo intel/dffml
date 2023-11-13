@@ -1,0 +1,20 @@
+- TODO
+  - [ ] `unittest.mock.patch` the `pycose.algorithms._Ecdsa.sign` method to attempt usage of PKCS#11 module to sign.
+  - [ ] Explore possibilities created by use of `pycose.messages.Enc0Message` as an option other than just `COSESign1` for SCITT
+    - [ ] Policy engine can evaluate validity of payload without revealing contents. Policy definition as labeled property graph plus Cedirc's upcoming change to embed a receipt for the policy used within the transparent statement (receipt) would allow clients to use the receipt to ensure that some data was what it was supposed to be, without knowing what the data is (payload or data referenced from payload)
+      - [ ] Can we sign with notary key and use an asymmetric key for encryption to destination log?
+      - [ ] Could we use symmetric keys with TIGRESS and Attestation in (OAuth Friday, Ned Smith) Dynamic Client Registration to enable the policy engine to access the symmetric key needed to verify the contents of the payload using it's policy engine?
+      - [ ] Example: We have a content addressable resource protected via OIDC auth. We can embed the address of the resource into the payload along with an OIDC token whose audience (or other claims, but with GitHub Actions not natively possible to customize, could use a separte reusable workflow to issue to, but would need to leave open until data is accessed to avoid token revokation on reusable completion), parameter ideally includes that this token will be used to access the resource which was uploaded prior to the payload of the statement being handed to the notary.
+        - [ ] If you combine this with KERI duplicity detection then you should be able to do the following example with parties Eve, Alice, and Bob:
+          - Both Eve and Alice trust Faythe to act as their intermediary for trade
+          - Both Eve and Alice do not have possession of what they want to trade, they have them in Bob's safe storage
+          - Eve has 1 Apple in Bob's storage
+          - Alice has one Immaculate Heart in Bob's storage
+          - Eve tells Alice she wishes to trade her Apple for Alice's Immaculate Heart
+          - Eve requests a receipt from Bob's storage Transparency Service with a statement saying she has at least 1 Apple
+          - Eve sends receipt to Alice
+          - Alice evaluates the registration policy used by the Transparency Service prior to receipt generation
+            - Via analysis of the policy Alice confirms that a check was done by Bob to see if Eve has at least 1 Apple in storage
+          - Eve requests a receipt from Bob's storage Transparency Service with a statement saying she has at least 1 Apple
+            - Via analysis of the policy Eve confirms that a check was done by Bob to see if Eve has at least 1 Apple in storage
+          - TODO: Resource locking across distinct instances of Bob (another character needed)

@@ -1,0 +1,21 @@
+## 2023-11-08 @pdxjohnny Engineering Logs
+
+- Application of software supply chain security practices to AI/ML models and data, recently demo'd some work at IETF 118 [SCITT](https://scitt.io/) WG meeting on federation of new (signed) statements (in AI/ML case these may be trust attestations for trust in model or data) added to Transparency Service's (TS) append only log: https://github.com/scitt-community/scitt-api-emulator/blob/72a75511d7840d4062741185ec6879b585ee8c07/docs/federation_activitypub.md#federation-via-activitypub
+  - Future downstream work of this includes ingestion of federated TS statements who's subjects may result in re-training, re-deployment, allow/denylisting of models, data, embeddings.
+- TODO
+  - [ ] Hosted SCITT API Emulator
+    - [ ] Heroku or something free
+    - [ ] `emulator.scitt.io` DNS record
+    - [ ] Add to datatracker
+    - [ ] `index.html` with some examples and links
+    - [ ] Middleware for GitHub webhook data -> statement
+      - [ ] GitHub Actions workflow for SBOM statement on release
+        - [ ] Source SBOM statement using dependabot graph
+          - [x] Looks like we can get SBOMs of repos we don't own
+            - `gh sbom -r actions/checkout`
+    - [ ] ramfs for workspace
+      - `export ramfs=$(mktemp -d) && sudo mount -t ramfs -o size=20g ramfs "${ramfs}" && sudo chown -R "${USER}:${USER}" "${ramfs}"`
+    - [ ] Periodic restart to wipe
+  - [ ] Work with A.J. to create list of to-dos for emulator updates
+    - [ ] SD-CWT
+      - [ ] Cedrics entry_id encoding stuff

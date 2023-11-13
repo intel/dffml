@@ -1,0 +1,5 @@
+- Pre OIDC rebased into federation branch from main: https://github.com/scitt-community/scitt-api-emulator/commit/ac0d45e65468309c40ad1cbfae24bd7c8ab0b448
+  - After rebase: 7ce81287dd4bf35914fdad1e321e8edabd205df9
+- SCITT Mailing list
+  - Brendan McMillan mentions MIMI (ref MIMI ActivityPub) in relation to KeyTrans, Hannes CCs SCITT for awareness
+    - > Supporting mimi-style federation: This is not explicitly mentioned / there's no guidance on how to do it, but I believe it fits fine into the architecture as-written. Namely, both KT and mimi follow a client-server architecture where the server is the Service Provider (defined in the document).
