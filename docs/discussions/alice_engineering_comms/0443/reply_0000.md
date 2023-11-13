@@ -1,0 +1,218 @@
+## 2023-11-06 IETF 118 SCITT Meeting
+
+> Lobby Level, Room: Berlin 1/2, packed room
+
+[![asciicast](https://asciinema.org/a/619517.svg)](https://asciinema.org/a/619517)
+
+- Thank God, got clean demo of federation in the nick of time to be included in the slides
+  - https://onedrive.live.com/edit.aspx?resid=13061045B2304AF8!251476&ithint=file%2cpptx&wdo=2&authkey=!ANqrQcEZ1fhMyGg
+  - https://github.com/scitt-community/scitt-api-emulator/pull/37
+- Henk Birkholz - Why SCITT is Cool
+  - Statements such as SLSA
+  - Products will move along the supply chain, we need to maintain authenticity even if the original signing certs have been rotated, etc.
+  - Minimalistic authenticity layer wrapped around supply chain statements
+  - Registration of supply chain statemetns for later audits after the fact
+  - off-line <3 verification (hermetic builds heres looking at you) receipts
+  - Issuers and TS both create signed statements
+- Henk - Recap Since IETF 117
+  - We did weekly meetings
+    - Needed to have a lot of recaps for those new to COSE and IETF structure/process
+      - Inform and knowledge transfer
+  - PRs 94,95,105,107,108,113,114,119
+    - Cleaning up references to claims (now called statements)
+    - Clarifications of Feeds to subject (reuse of CWT and COSE header parameters)
+    - Some SCITT specific metadata in envelop
+    - reg_info is still in there, but it's not the same as CWT claims, they are maybe redundant, maybe not, they are currently alternatives, but we have work to do there to understand what to do next here
+  - We have arch doc and use case docs
+    - PR4 adds versioning use case
+    - Helping you and your supply chain needs with authentic statements about supply chain products
+    - Within the hackathon we build the POC code around this
+    - Working group last call on the ongoing use case document
+- Jon and Cedric - Registration Policies
+  - Registration Policy is a simple set of rules evaluated by the transparency service to determine admissibility of a statement
+  - https://github.com/scitt-community/scitt-api-emulator/pull/27
+  - Must be payload agnostic and interoperable
+    - Exquisite interoperability for transparent payloads, everything knows what to send and how to send it regardless of what the payload is, any payload you want to send to any TS should work
+    - We can't predict all use cases or inputs
+    - This group doesn't define what acceptable insert policy is, there need to be spaces within the structures to transport what those signals policy might filter on would be
+    - General access control
+    - Anti-spamming (it's append only, need to avoid filling with random stuff)
+    - In this system you can't issue a statement to the TS without being some sort of authenticated or identifiable issuer
+      - **TODO(@pdxjohnny)** update OIDC thread with flushed out example and registration policy doc with jsonschema + CWT / JWT verification of issuer
+  - SCITT enables entities/issuers to make claims about things
+    - Built my software, tests passed, got approval for release, what's important is your software is the thing you're making claims about. We need it to be clear who's opinion is being recorded about what thing. Imagine subject: `issuer:myissuer:thing:mything` (example in GitHub Actions subject customization format)
+  - Registration policy determines if statement is admissible
+    - In a decentralized software supply chain systems may not even know they are creating statements out of order
+    - If you look back 20 years from now do you now know that the issuer had a compromised key at the time?
+      - Who was the issuer and were they valid at the time?
+      - What policy was enforced at the time?
+    - Expect to observe work on registration policy stuff
+      - > We discussed this at dinner last night as well (Steve, Cedric, John)
+- Cedric - Registration Policy
+  - Did implement the AI demo from the paper
+  - Need to know which certificates were considered acceptable at time of insert
+  - Need to know what rules were enforced at time of insert
+  - Need a way to uniquely refer to a statement at registration time
+    - https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/issues/79#issuecomment-1767570492
+  - We can create a receipt for the registration policy each time it is updated
+    - Anytime we insert, we can embed into the receipt the entry ID of the receipt of the registration policy evaluated against
+    - Verifier can then keep the receipt for the claim in question as well as the receipt for the registration policy, if it want's to verify later, it can use both receipts.
+  - We think we can make the entry ID automatic and extracted from the transparent statement
+    - Our idea from Saturday was to combine statement (aka claim) hashing with the abuse of a content type identifier, using `+` to add the hash
+- Orie - CBOR API
+  - We use the word "statement" as a generic term which is an artifact relevant to the supply chain
+  - `transparent statement` = `signed statement` with a `receipt`
+    - Composition of notaries signed statement with TS's signed statement
+  - Trust improves over time when we allow multiple entities to make statements about things
+    - Ref Alice docs: This is our review system
+  - CBOR extended disanositc notation crash course
+    - In designing the message structure learning CDDL was very helpful
+    - Working with CDDL examples, COSE sign1 , protected header, etc. those basic understandings help use understand what SCITT is trying to achive and how it uses COSE and CBOR to help it achive that.
+    - ECDSA with SHA384 is -35, if we move post quantum we'd select another alg (non-ECDSA)
+    - Content type is a useful property included in the protected header which tells us the content type of the thing we are signing
+    - (4) is a key discovery helper, like a key identifier (kid)
+      - You may also see (33) which would be a full X509 chain
+      - Usually you will not see both the shorthand and full keychain in the protected headers
+    - TBD 0 and 393 might get combined, see future mailing list discussion
+    - Issuer COSESign1
+      - Protected header, entire object in first CDDL slide
+      - Unprotected header, placeholder for contents of collection of receipts
+        - Same statement might be exposed by multiple receipts
+        - Since IETF 117 we can now include multiple receipts for the same statement
+          - **TODO(@pdxjohnny)** Update federation stuff to talk about and handle this
+        - nil, detached signature, useful for things like large ML models
+        - signature
+    - TS COSESign1
+      - Protected header (will review next)
+      - -222, proofs, binary merkele tree consistency proof and inclusion proof, consistency proof proves append only is being maintained by service provider, inclusion proof says yes this exists within the merkle tree
+        - nil, detached signature
+        - signature
+    - Recipt protected header
+      - -35, sig alg
+      - TBD 0: RFC 9162, binary merkel tree, minimal consistency and inclusion proofs, set this to 1 if you are using those proof types as described by RFC 9162
+      - TBD 1:, 1, TS issuer, 2, registration event id (subject)
+- Orie - REST API
+  - https://github.com/ietf-scitt/draft-birkholz-scitt-scrapi
+    - API was split out into it's own repo
+  - Moving those CBOR blobs around
+  - This is one way to move stuff around, there might be other ways in the future
+    - > John, Steve, Cedric talked about KERI based
+  - `POST /statements` (old endpoint was `POST /entries`)
+  - Once we have a receipt we can trust that statement more (it has been validated to some transparency services policy)
+    - > Update federation docs to explain this, `use_lro=True`
+  - `GET /receipts/urn:uuid:<statement-uuid>`
+    - If use lro is not true you'll get it back right away
+    - If it is you can request it later
+    - https://scitt-community.github.io/scitt-api-emulator/registration_policies.html
+  - Example made up command: `scitt up-transparency` (leveling up your transparency security)
+    - `statement.xml`
+    - `signed-statement.cbor`
+    - `receipt.cbor`
+      - Might get different receipts from different transparency services
+      - > With federation we might want to return from `use_lro=True` once we have receipts from a certain set of transparency services. For example: We "commit" code, push sha265 content to registry, webhook -> Alice, Alice federate to Bob and Travis, Bob and Travis have different registration policies (as if they are CI jobs), CI is effectively complete for "commit" which we have receipts from a "status checks required" set of TS/Actors we federate with.
+    - `transparent.cbor` (this usually happens in the TS)
+  - Supply chains
+    - Upstream -> raw ingredients, picked tomato, lumber harvested from forest
+      - Problems can occur at source
+    - Downstream -> processing 
+      - The more hops down stream the more problems might occur
+    - Reminder from Roman that we are doing software (yes we hope to go other places)
+      - Orie, don't worry our soup will turn into software by end of example
+    - Entity that picks only the finest ingredients to make soup (sound familiar? TODO link to Alice docs)
+      - Imagine being asked were your ingredients came from
+      - Would be easy if you could just say here's the receipts for all the things within my soup BOM, receipt for soup includes structure for upstream supply chain and is useful to my downstream consumers
+    - Magic AI generated firmware hardware device
+      - What is this things? We're terrified about everything this AI generaated in 3 seconds?
+      - What questions should we ask before we expose family, customes, anyone we care about to this new device?
+      - Is there a QR code on it we can scan to get some feed information about this device?
+      - Are there vulns that have been reported since the device was made?
+        - 5 years after release there might be new info available
+        - What if the regulatory landscape has changed?
+        - Has the product been recalled?
+        - Is there an upgrade path for the firmware?
+        - Are there any unpatched CVEs?
+      - There is something called LDevID which gets used sometimes. Might also be called IDevID, Henk made Orie write LDevID because its related to factory floor stuff. Global stuff is IDevID.
+  - Dave from AT&T: How can I create a profile or template for things that should be asked so that in the upstream there are proper receipts that will answer those questions?
+    - Could say that registration policy TS is applying might say that payload needs to be analysed to ensure that it contains all the info needed, maybe the subject is formatted correctly to find in the feed.
+    - In IETF 117 we brainstormed a relevant use case related to govt compliance
+  - Henk: There are many Transparency Services
+    - There may be different manufacturers of a device over the lifetime of a product
+  - A.J. Stein: Are we talking about setting the context of what's happened or are we talking about the current arch and SCRAPY draft?
+    - Orie: Currently recovering from last time, point is we want to get receipts related to particular topics (this would be a feed/subject). Part of the document has already been updated to reflect what we are seeing here today.
+  - We might get several things back when we ask for the feed for a device (referenced by it's LDevID, LDevID is just the example feed/subject in this case)
+    - Feeds allow downstream suppliers to subscribers to subscribe to things which are relevant to their supply chain!
+- Jon Geater - Hackathon Report
+  - Full table! Stealing chairs because we didn't have enough
+  - Spec focused, some code work
+  - Solidified the entry ID within the receipt stuff
+  - Talked about registration polices
+    - Talked about labeled properties graphs and how we might evaluate eventually using those
+  - Realized we need to expose certain service parameters
+    - https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/issues/96#issuecomment-1794364931
+  - Code Progress
+    - Showed rough consensus this hackathon
+    - Furthered work on federation
+    - Furthered work on API access control (OIDC)
+    - Breaking news from this morning: Federation POC!
+    - Proved out DID resolution and verification (Jon at RKVST)
+    - Begun collecting examples to hlep know when the building blocks satisfy the use cases
+  - John: Federation Hackathon POC Overview and Demo
+    - https://asciinema.org/a/619517
+    - https://github.com/scitt-community/scitt-api-emulator/pull/37/commits/ed2f0882b3043e0772c9c11ff376bc894b5183b0
+    - ActivityPub related demo covered at [1:29:14](https://www.youtube.com/watch?v=zEGob4oqca4&t=5354s)
+- Jon: WG Operations
+  - We're getting close we feel, will probably do more async, move to less frequent meeting schedule
+- Hannes: Has to step down as co-chair
+  - Group has made a lot of progress
+- Roman: Is our Security lesion from IETF
+  - Great job launching enthusiasm and excitement
+  - Everyone coming to IETF to work on this is exactly what we need to do
+  - Thanks to Hannes!
+  - There will be a new co-chair so Jon is not all alone
+- Jon: SCITT Drafts
+  - We have some draft use cases
+  - We have a lot of stuff to look at, we have a quality mindset in this working group
+  - Lots of changes lately, consolidating on a few consistent coherent structures
+  - Lots of interesting implications of how we are encoding things which determine what kind of technology you can or can't use for an append only log
+  - Split SCITT Reference API SCRAPI (scrapy) into it's own repo
+    - Content copy pasted from old arch doc into it's own repo
+  - Emulator is our way of proving out ideas so that if we change the spec in some way we know it will work
+  - SCITT is frosting on top of building blocks which are applicable to many domains (COSE, etc.)
+    - SCITT Receipts will be the frosting on top of the merkle tree stuff which will be in the COSE WG
+    - COSE has some timestamp stuff
+    - We might draw a little map of what we are using and were
+- Simon Friedberger: Use case doc is missing mapping of metadata to the use cases
+  - Example: We want for this product to find all the audit reports, needs mapping of what data is not opaque.
+  - Jon: Our group tries to not duplicate and re-formalized bits of CycloneDX or SPDX to be indexable, we try to make sure they are possible
+    - There is a content type for the issuer and subject, if we know the content type which is VRF+JSON, is that enough? We are debating this
+  - TODO: Add to use cases what metadata solves what use case
+- Dr. Max Pala: Are we already considering a use case to track transition to post quantum crypto?
+  - Orie: We're working on quantum safe algs, SCITT itself is designed to enable usage of those algs as they become available.
+    - From a use case perspective it would be good to follow up on this with a use case to track the software we are describing and see if they are post quantum capable
+    - Hannes: Build config might tell us what algs are compiled into a piece of software, could track with vulns
+    - Cedric: One thing to note adjacent to this is that we do not plan to support agility within the merkle tree hashing algs, since that invalidates the tree
+      - Hannes: We should look at merkle tree migration
+- Manu Fontaine: Want to suggest syemetic signature and crypto approach with SCITT to be used with TEEs
+  - Symmetric keys with HMAC sigs for performance, post quantum, attested agents, encryption possibilities
+    - > Note from John: We have TEEs mentioned within https://github.com/ietf-scitt/use-cases/pull/18
+- Henk: Confidential Computing Consortium and IETF RATS attestation results and concise evidence will play a big part here, but we haven't talked about it much yet
+  - TS could provide remote attestation results to attest to trustworthiness
+  - DID resolvers with ATLS could help
+  - TCG attestation group co-chair hat on: Some ways include symmetric crypto but it's not the only way
+- W3C there is a brief proposal to use a TS maybe SCITT for JS stuff
+  - https://www.w3.org/2023/03/secure-the-web-forward/talks/source-code-transparency.html
+- Ned Smith
+  - What did the receipt issuers do to ensure the tomato is fresh?
+    - Why should we trust the notary? Are we sure they checked?
+  - Orie: The minimal activity the notary would do is check the issuer, ensure that the issuer has key material that we can verify
+    - An advanced notary with domain expertise could look inside the payload, as descrition of TS and reg policy
+  - Cedric: You know who to blame, you can make choices based off who you know
+  - Ned: Compromise might be the type of check the receipt issuer did could be something that goes into the issuer claims
+- Peter: ETH using polyunomiocal commitment stuff, could be interesting
+  - Great reason to maintain agility of tree formats
+- Steve Lasker: If you decide to trust tomatot verifier corp, you might decidde to trust them from certain things, reg policy helps here
+- Jon: Please engage in mailing list!
+- Future
+  - How to verify statements when a payload is huge
+- References
+  - https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/issues/96#issuecomment-1794364931

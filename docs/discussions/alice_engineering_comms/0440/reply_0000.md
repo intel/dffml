@@ -1,0 +1,2 @@
+- https://docs.rs/activitypub_federation/latest/activitypub_federation/
+- https://github.com/LemmyNet/lemmy/tree/main/crates/apub

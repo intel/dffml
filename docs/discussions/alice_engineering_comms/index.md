@@ -87,7 +87,7 @@ aligned workstreams.
    - Upsert comment in thread
 - Any time (it's a game)
   - We find something we need to complete #1369 that was just completed by someone else
-    - Paste `![chaos-for-the-chaos-god](https://user-images.githubusercontent.com/5950433/220794351-4611804a-ac72-47aa-8954-cdb3c10d6a5b.jpg)`
+    - Paste `![chaos-for-the-chaos-god](https://github.com/intel/dffml/assets/5950433/636969a1-1f0f-4c96-8812-f10fa403e79c)`
     - chaos: diversity of authorship applied to clustering model run on all thoughts (dataflows) where each dataflow maps to line changed and the cluster classification is the author.
       - https://github.com/intel/dffml/issues/1315#issuecomment-1066814280
   - We accelerate a train of thought

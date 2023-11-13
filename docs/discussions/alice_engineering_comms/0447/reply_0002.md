@@ -1,0 +1,28 @@
+## 2023-11-10 IETF 118 OAuth WG Friday Meeting
+
+- https://datatracker.ietf.org/meeting/118/session/oauth/
+- https://datatracker.ietf.org/meeting/118/materials/agenda-118-oauth-03
+- Transaction Tokens – George Fletcher (20 min)
+  - https://datatracker.ietf.org/doc/draft-tulshibagwale-oauth-transaction-tokens/
+  - [IETF 118 - Transaction Tokens.pdf](https://github.com/intel/dffml/files/13319236/IETF.118.-.Transaction.Tokens.pdf)
+  - Ned Smith: Overlap with WIMSE BoF on steps 4-6
+  - Brain Campbell has concerns over erroneous OAuth usage in document. Conceptually it's good work, but the document has issues
+  - > ![transaction-tokens-overview-ietf-118-oauth-wg-friday](https://github.com/intel/dffml/assets/5950433/63e499d0-5aa6-46e2-bdd3-74b48323a11f)
+- Identity Chaining Across Trust Domains
+  - Preserving context as transactions move across trust domains
+  - Similar to some of the stuff covered in past UCAN meetings
+  - https://www.ietf.org/archive/id/draft-richer-wimse-token-container-00.html
+  - [slides-118-oauth-sessc-ietf-118-identity-chaining-final-00.pdf](https://github.com/intel/dffml/files/13319280/slides-118-oauth-sessc-ietf-118-identity-chaining-final-00.pdf)
+  - > ![image](https://github.com/intel/dffml/assets/5950433/c66b8223-b0f6-41ee-b7f0-6a8ba0cf6468)
+- Ned Smith: Attestation in Dynamic Client Registration
+  - Draft supports attestation within the registration endpoint, attestation for base client auth draft aligned
+  - Based on RATS arch in terms of terminology and concepts
+  - Describes communication patterns for background check and passport models
+  - Passport is something that says this client is within a confidential compute environment. AS policy says if the client is within a valid CCE, provision the Dynamic Client Registration information into it. Downstream servers say let's use this AS for this check (similar to TS registration policies being exported)
+  - Prototype underway
+  - > ![rats-based-workload-token-grant](https://github.com/intel/dffml/assets/5950433/20ffb82e-3cf8-4e9f-9c2d-d04fee4d3fba)
+  - John (in chat): In this model, couldn't the AS be within the client? Since we already trust it due to it's attestation result? Not always, just as an option. Or does that break some guarantees I'm not seeing
+- Aaron: Global Token Revocation RFC
+  - Sec Event Subject ID Draft dependent
+  - MUST allow for revoking refresh tokens, SHOULD revoke access tokens, MUST prevent issuing new access tokens and refresh tokens without re-authenticating the user
+  - What's the point? Terminate all existing tokens and re-authenticate the user!
