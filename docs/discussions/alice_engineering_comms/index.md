@@ -21,6 +21,7 @@ aligned workstreams.
 - Game plan
   - [Move fast, fix things](https://hbr.org/2019/01/the-era-of-move-fast-and-break-things-is-over). [Live off the land](https://www.crowdstrike.com/cybersecurity-101/living-off-the-land-attacks-lotl/). [Failure is not an option](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#the-scary-part).
 - References
+  - This thread in `git grep -i` friendly format: https://github.com/intel/dffml/tree/alice/docs/discussions/alice_engineering_comms
   - [Video: General 5 minute intro to Alice](https://www.youtube.com/watch?v=THKMfJpPt8I?t=129&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw)
   - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md
   - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md

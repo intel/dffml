@@ -151,6 +151,94 @@ skopeo copy docker://localhost:5000/ssh_public_keys/pdxjohnny dir:/tmp/ssh_publi
 ) > authorized_keys
 ```
 
+
+```python
+import os
+import json
+import asyncio
+import logging
+import pathlib
+import argparse
+import concurrent.futures
+
+import yaml
+
+
+logger = logging.getLogger(__file__)
+
+
+async def coro_for_loop_run_in_executor(loop, pool, non_async_func, *args):
+    return await loop.run_in_executor(pool, non_async_func, *args)
+
+
+async def search_sbom_for_deps_in_question(loop, tg, pool, root_dir, in_question, path):
+    sbom_as_dict = await tg.create_task(coro_for_loop_run_in_executor(loop, pool, lambda path: yaml.safe_load(pathlib.Path(path).read_text()), path))
+    if not isinstance(sbom_as_dict, dict):
+        return
+    packages = sbom_as_dict.get("packages", [])
+    if not isinstance(packages, list):
+        return
+    for package in packages.items():
+        version_info = package.get("versionInfo", None)
+        if version_info is None:
+            return
+        package_name = package.get("name", None)
+        if package_name is None:
+            continue
+        output = {
+            "path": str(path.relative_to(root_dir)),
+            "package_name": package_name,
+            "version_info": version_info,
+        }
+        logger.debug("Checking: %s", json.dumps(output))
+        if package_name in in_question:
+            print(json.dumps(output))
+
+
+async def main(
+    dir: str,
+    in_question: str,
+):
+    loop = asyncio.get_event_loop()
+
+    in_question = json.loads(pathlib.Path(in_question).read_text())
+
+    # Gather all YAML versions of SBOMs files
+    sbom_paths = list(pathlib.Path(dir).rglob("*.y[am]*l"))
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=len(os.sched_getaffinity(0)) * 4
+    ) as pool:
+        async with asyncio.TaskGroup() as tg:
+            for i, path in enumerate(sbom_paths):
+                if not path.is_file():
+                    continue
+                while len(tg._tasks) >= pool._max_workers:
+                    await asyncio.sleep(0.05)
+                tg.create_task(
+                    search_sbom_for_deps_in_question(
+                        loop, tg, pool, dir, in_question, path
+                    )
+                )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dir", required=True, help="Root directory for searching SBOMs"
+    )
+    parser.add_argument(
+        "--in_question", required=True, help="File containing deps in question"
+    )
+    parser.add_argument(
+        "--log", required=False, help="Log level"
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(level=getattr(logging, args.log.upper(), logging.DEBUG))
+
+    asyncio.run(main(**vars(args)))
+```
+
 - TODO
   - [ ] Ensure `build_arg` quoting works as intended
   - [ ] For CWT issuer derive key from SSH private key and resolve via github ssh keys endpoint
