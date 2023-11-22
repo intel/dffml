@@ -470,3 +470,57 @@ async def cleanup_git_repo(self, repo: Dict[str, str]):
         ["rm", "-rf", repo.directory], logger=self.logger,
     )
     return {}
+
+
+import asyncio
+import dataclasses
+from typing import List, Dict
+
+
+async def git_ls_remote(repo_url):
+    import aiohttp
+
+    async with aiohttp.ClientSession(trust_env=True) as session:
+        async with session.get(
+            f"{repo_url}/info/refs?service=git-upload-pack"
+        ) as response:
+            if response.status == 200:
+                refs_info = await response.text()
+                return parse_refs(refs_info)
+
+
+@dataclasses.dataclass
+class GitLsRemoteRefs:
+    metadata: Dict[str, str]
+    capabilities: List[str]
+    refs: Dict[str, str]
+
+
+def parse_refs(refs_info):
+    header, HEAD = refs_info.split("\n", maxsplit=1)
+    HEAD, lines = HEAD.split("\x00", maxsplit=1)
+    refs = {}
+    metadata = {}
+    capabilities, lines = lines.split("\n", maxsplit=1)
+    metadata_in_capabilities = []
+    capabilities = capabilities.split()
+    for cap in capabilities:
+        if "=" in cap:
+            metadata_in_capabilities.append(cap)
+            key, value = cap.split("=", maxsplit=1)
+            metadata[key] = value
+    for cap in metadata_in_capabilities:
+        del capabilities[capabilities.index(cap)]
+    lines = [HEAD[4:]] + lines.split("\n")
+    for line in lines:
+        for sep in (" ", "\t"):
+            if not line or sep not in line:
+                continue
+            hash_ref, ref = line.split(sep, maxsplit=1)
+            refs[ref] = hash_ref[4:]
+            continue
+    return GitLsRemoteRefs(
+        metadata=metadata,
+        capabilities=capabilities,
+        refs=refs,
+    )
