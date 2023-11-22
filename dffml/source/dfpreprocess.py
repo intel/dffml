@@ -21,7 +21,7 @@ class DataFlowPreprocessSourceConfig:
     features: Features = field(
         "Features to pass as definitions to each context from each "
         "record to be preprocessed",
-        default=Features(),
+        default_factory=lambda: Features(),
     )
     inputs: List[str] = field(
         "Other inputs to add under each ctx (record's key will "
@@ -47,7 +47,8 @@ class DataFlowPreprocessSourceConfig:
         "Do not exit on operation exceptions, just log errors", default=False,
     )
     orchestrator: BaseOrchestrator = field(
-        "Orchestrator", default=MemoryOrchestrator.withconfig({}),
+        "Orchestrator",
+        default_factory=lambda: MemoryOrchestrator.withconfig({}),
     )
 
 
