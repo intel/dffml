@@ -22,4 +22,4 @@
     - Credit to Matt for this idea came up with trying to make API token permission delegation more granular than what is currently supported, same role based copy user scheme.
   - Everything is terraform templates (coder, k8s), dockerfiles and actions workflows (coder setup-ssh and then do port forwarding, now you can spin up anything).
     - Those can all be described as dataflows and synthesized to
-      - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md#supply-chain-security
+      - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md#supply-chain-security

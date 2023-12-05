@@ -34,7 +34,7 @@ measurable, auditable, actionable. Data, Analysis, Control (DAC).
 
   - https://intel.github.io/dffml/main/examples/shouldi.html
   - https://intel.github.io/dffml/main/examples/dataflows.html
-  - https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#finding-data-types-to-work-with
+  - https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#finding-data-types-to-work-with
 
 - Talk snippit explaining above tutorial
 
@@ -42,7 +42,7 @@ measurable, auditable, actionable. Data, Analysis, Control (DAC).
   
 - Concuptual docs on data flow execution
 
-  - https://github.com/intel/dffml/blob/alice/docs/about.rst#what-is-key-objective-of-dataflows
+  - https://github.com/intel/dffml/blob/main/docs/about.rst#what-is-key-objective-of-dataflows
   - https://intel.github.io/dffml/main/concepts/dataflow.html
   
 - Misc. References
@@ -199,8 +199,8 @@ If you give Monty Python a computer, they’ll want to search for the Holy Grail
 ## System Context 
 
 - References
-  - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
-  - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+  - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
+  - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
   - https://github.com/microsoft/scitt-ccf-ledger/blob/main/pyscitt/pyscitt/did.py
   - https://scitt.io/distributing-with-oci-scitt.html
   - [Data Flow Execution: One possible implementation approach](#dffmls-current-working-data-flow-execution-model)
@@ -374,7 +374,7 @@ $ ./scitt-emulator.sh client verify-receipt --claim claim.cose --receipt claim.r
 - References
   - [Architecting Alice: She's Arriving When?: System Context](#system-context)
   - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/alice/entities/alice#contribute)
-  - [Coach Alice: Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
+  - [Coach Alice: Our Open Source Guide](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 
 [![asciicast](https://asciinema.org/a/537643.svg)](https://asciinema.org/a/537643)
 

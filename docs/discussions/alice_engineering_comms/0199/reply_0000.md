@@ -5,10 +5,10 @@
 - Cleaned up random forks used for testing
 - Investigating existing activitypub code within forgejo
   - To facilitate comms (Continuous Delivery of Living Threat Models) as part of Alice's Stream of Consciousness
-    - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
-- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md?plain=1
+    - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+- https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md?plain=1
 
-[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
+[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 ```console
 $ git status

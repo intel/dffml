@@ -319,14 +319,14 @@ $ curl -v http://localhost:3000/
   - [ ] Mastodon / ActivityPub as Intentory (see PR) ala meta package repo / stream of consciousness/ release notification’s and metadata (our ATProto precursor)
   - [ ] Figure out how to do periodic follow on scanning with CVE-Bin-Tool
     - Could just be ensureing there are github actions workflows on schedule to scan
-    - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0022.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0022.md
       - > Create first distinct ancestor of Alice by creating ongoing validation flows to re check cves when new vulns come in. Show how tjisbis trival by adding those contexts to the chain whoch are picked ip and executed by agents. Agents just look for any contexts that have been issused but not executed. Prioritizer also prioritizes “reminder threads whoch remind prioritizater to re broadcast train of thought on periodic cycle if not scheduled for execution with frequency based on priority. Agents ckning online need inly look at chain for tasks
   - [ ] Put "I'm a sign not a cop" somewhere, seems like there is content to be organized
-    - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0022.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0022.md
   - [ ] Find a place for more background on the mental model and perhaps tie in the InnerSource example as how we determine if Alice is working on the right stuff (aligned with her strategic principles) when she is the org, and she's running multiple engagements. (system context? or is that overloaded, probably the tie in with the innersource stuff here becomes it's own tutorial).
-    - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0062.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0062.md
     - https://github.com/intel/dffml/issues/1287
-  - [ ] Work on teaching Alice to use the shell / capture context https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md
+  - [ ] Work on teaching Alice to use the shell / capture context https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md
     - Future
       - [ ] Reference current content on capturing shell commands and context might be better off in Coach Alice where we want to record analyze and detect failure patterns across sessions / devs so that we can not work down known bad paths.
       - Revisit dataflows from bash line analysis tie in with consoletest (that refactor stalled out :grimacing:)

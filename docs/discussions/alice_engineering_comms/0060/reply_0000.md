@@ -269,7 +269,7 @@ didResolutionMetadata:
     - `new(ecdsapb.EcdsaPrivateKey)`
     - `new(ed25519pb.Ed25519PrivateKey)`
       - `ed25519.NewKeyFromSeed(privKey.GetKeyValue())`
-      - https://github.com/intel/dffml/blob/alice/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst
+      - https://github.com/intel/dffml/blob/main/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst
       - https://twitter.com/pdxjohnny/status/1524535483396632576
       - https://twitter.com/pdxjohnny/status/1524870665764909056?s=20&t=z12dn9tVREZzK7huX6hsSg
   - By having fulcio also issue a DID for the attestation we can create dyanmic roots of trust associated with each manifest bom item queried later (at time of use)

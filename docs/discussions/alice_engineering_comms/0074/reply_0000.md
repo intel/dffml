@@ -14,7 +14,7 @@
       - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice
   - > The [W3C Cognitive AI Community Group](https://www.w3.org/community/cogai/) is seeking to incubate ideas that combine symbolic information (graphs) with sub-symbolic information (statistics), rules and high performance graph algorithms. This combination enables machine learning and reasoning in the presence of uncertainty, incompleteness and inconsistencies. The starting point has been the development of the [chunks and rules format](https://github.com/w3c/cogai/blob/master/chunks-and-rules.md) as an amalgam of RDF and Property Graphs. A [series of demos](https://github.com/w3c/cogai/blob/master/demos/README.md) are being developed to explore different aspects, using an open source JavaScript library.
     - **ALIGNED**
-      - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+      - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
 - https://www.w3.org/2002/mmi/
 - https://www.w3.org/WAI/APA/
 - https://web.archive.org/web/20200926173320/http://webinos.org/2011/06/09/webinos-whitepaper/

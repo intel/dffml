@@ -25,7 +25,7 @@
       - [ ] Versioned Learning to help communicate best practices and understand how well our trains of thought are preforming (intent alignment, strategic plans and principles alignment, behavioral/goal alignment for different tasks like during debug or pursuing some new plan goal while modifying software DNA/arch/LTM)
         - [All You Need Is Supervised Learning: From Imitation Learning to Meta-RL With Upside Down RL](https://arxiv.org/abs/2202.11960)
         - [Multi-agent versioned learning](https://github.com/jetnew/SlimeRL)
-        - [DFFML Manifest Schema ADR](https://github.com/intel/dffml/blob/alice/docs/arch/0010-Schema.rst)
+        - [DFFML Manifest Schema ADR](https://github.com/intel/dffml/blob/main/docs/arch/0010-Schema.rst)
   - [ ] https://intel.github.io/dffml/main/examples/webhook/webhook.html#webhook-dataflow
     - kcp -> k8s -> cf push -> webhook service -> dataflow to create activitypub event -> dwn-cli send -> webrtc -> dwn-cli recv -> `alice threats listen activitypub -stdin` -> `alice shouldi contribute` -> `alice please contribute` -> soft-serve/github repo pull request -> webhook service
     - https://www.youtube.com/watch?v=TMlC_iAK3Rg&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&t=2064s

@@ -9,4 +9,4 @@
   - [ ] Update with some of the very spotty wording above and try to flush it out with more conceptual meat now that the tone is established / future John has an example to work with.
     - https://github.com/intel/dffml/commit/9aeb7f19e541e66fc945c931801215560a8206d7
   - [ ] Update somewhere else in Vol 1 to include from
-    - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0015/reply_0002.md

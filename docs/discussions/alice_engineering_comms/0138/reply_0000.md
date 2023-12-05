@@ -2,7 +2,7 @@
 
 > @agalvare: we also need a voting mechanism, and a way for other to train it
 
-https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0022.md this plus the ATProto means we are piggybacking off of "social network". This way humans and AI and work together.
+https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0022.md this plus the ATProto means we are piggybacking off of "social network". This way humans and AI and work together.
 
 > The smart contract is able to make its own decisions based on learned experience (models) so as to continue to operate until its strategic goals are meet. As measured by oracle data ordained from trusted parties as is applicable to context. Where chains of trust are established via Peer DIDs between entities and data for provenance. Leveraging verifiable credentials (opencert) for review system to measure risk in absence of attestation.
 

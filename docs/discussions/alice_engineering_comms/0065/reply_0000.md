@@ -1,6 +1,6 @@
 # Rolling Alice: Architecting Alice: An Image
 
-> Moved to: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
+> Moved to: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
 
 - In relation to the manifest encoded as a "screenshot as universal API"
   - https://twitter.com/mattrickard/status/1577321709350268928

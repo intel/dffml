@@ -1,4 +1,4 @@
-# [Rolling Alice: Forward](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md)
+# [Rolling Alice: Forward](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md)
 
 > Copy pastable bits for getting others involved in the project.
 
@@ -27,7 +27,7 @@ Alice is a methodology for secureing rolling releases.
 
 ## Elevator Pitch
 
-We are writing a tutorial for an open source project on how we build an AI to work on the open source project as if she were a remote developer. Bit of a self fulfilling prophecy, but who doesn't love an infinite loop now and again. These are the draft plans: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/ ~~first draft: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280~~
+We are writing a tutorial for an open source project on how we build an AI to work on the open source project as if she were a remote developer. Bit of a self fulfilling prophecy, but who doesn't love an infinite loop now and again. These are the draft plans: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/ ~~first draft: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280~~
 
 Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server), provenance and attestation, and automl with feature engineering for a distributed data, analysis, control loop. We'll grow contributors into mentors, and mentors into maintainers, and Alice will grow along with us.
 
@@ -91,7 +91,7 @@ Anything accessible via the Open Architecture methodology as a proxy can be used
 
 Holistic context aware risk analysis requires an understanding of a system's architecture, behavoir, and deployment relavent policy.
 
-The [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst) effort is looking at software description via manifests and data flows (DAGs) with additional metadata added for deployment threat modeling. Dynamic context aware overlays are then used to enable deployment specific analysis, synthesis, and runtime evaluation.
+The [Open Architecture](https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst) effort is looking at software description via manifests and data flows (DAGs) with additional metadata added for deployment threat modeling. Dynamic context aware overlays are then used to enable deployment specific analysis, synthesis, and runtime evaluation.
 
 Leveraging the Open Architecture methodology we decouple the description of the system from the underlying execution environment. In the context of discussion around distributed compute we leverage holsitic risk analaysis during compute contract proposal and negotiation.
 

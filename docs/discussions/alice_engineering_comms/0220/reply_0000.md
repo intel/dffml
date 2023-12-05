@@ -168,7 +168,7 @@ $ curl 'http://127.0.0.1:2000/user/sign_up' \
   - Maybe we can just disable CSRF to avoid having to double request every time
     - Update: It doesn't look like there is a way to do this across multiple handlers without recompiling
 
-[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
+[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 ```console
 $ git grep -i disablecsrf

@@ -18,7 +18,7 @@
     - VEX/VDR, does this effect this component within the architecture?
     - You need the call graphs, chaining, coverage
 - Meta analysis of OSS usage of libraries to understand what the call graphs are
-- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md#plan
+- https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md#plan
   - Talked about CVE Bin Tool triage process
 - Input validation on trust boundries
   - What is I/O for top level system context?

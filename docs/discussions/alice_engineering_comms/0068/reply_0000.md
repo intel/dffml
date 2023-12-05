@@ -8,7 +8,7 @@
   - There is some stuff in this thread about teaching alice to use the shell.
     - consoletest commands to graph nueral network markov chains?
       - https://github.com/pdxjohnny/consoletest
-    - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md
+    - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md
     - Maybe we do this as a future tutorial to Architecting Alice: A Shell for A Ghost
 - https://threadreaderapp.com/thread/1584623497284026368
   - https://indieweb.org/Micropub

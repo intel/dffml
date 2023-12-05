@@ -15,4 +15,4 @@
 - https://spdx.swinslow.net/p/spdx-defects-minutes
 - https://github.com/ossf/wg-vulnerability-disclosures/discussions/127#discussioncomment-5271718
 - https://observer.com/2023/03/meta-is-reportedly-the-latest-social-media-company-to-embrace-activitypub-technology/
-- https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+- https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md

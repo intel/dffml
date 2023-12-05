@@ -10,7 +10,7 @@
     > - Cardinality of destinations: A source object may propagate to many thousands of destinations. ​ 
   - Released 3-4 days ago? Chaos smiles on us again :)
   - Perfect for EDEN (vol 0: traveler of the edge)
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md#volume-0-architecting-alice
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md#volume-0-architecting-alice
   - We want to bridge KCP edge-mc with 
 - https://sohl-dickstein.github.io/2022/11/06/strong-Goodhart.html
 - System Context

@@ -10,7 +10,7 @@
 [![asciicast](https://asciinema.org/a/539495.svg)](https://asciinema.org/a/539495)
 
 - https://github.com/OR13/didme.me/issues/18
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
 - https://twitter.com/tlodderstedt/status/1592641414504280064
   - https://openid.net/openid4vc/
     - OpenID for Verifiable Credentials (OpenID4VC)
@@ -25,7 +25,7 @@
         - [DID + HSM Supply Chain Security Mitigation Option](https://github.com/intel/dffml/tree/alice/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst)
         - https://www.youtube.com/clip/Ugkxf-HtFY6sR_-EnGGksIik8eyAKQACE0_n?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
           - Vision: Reducing Overhead via Thought Communication Protocol
-            - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+            - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
             - [2022-10-15 Engineering Logs: Rolling Alice: Architecting Alice: Thought Communication Protocol Case Study: DFFML](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3883683)
           - The video this was clipped from was linked in the commit message https://github.com/intel/dffml/commit/fc42d5bc756b96c36d14e7f620f9d37bc5e4a7fd
           - Found the previous stream of consciousness aligned with this. I had been meaning to look for it, we'll be back in this train of thought when we get to didme.me "An Image" python implementation.
@@ -42,7 +42,7 @@ When End-Users apply to open a banking account online, in most countries, they a
 - https://cloud.hasura.io/public/graphiql?header=content-type:application/json&endpoint=https://api.graphql.jobs
 - We're working on fixing the CI right now
   - The vuln serving `NVDStyle` is our base for comms right now (think manifests)
-    - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
     - This is how we will be facilitating Continuous Delivery.
       - Open source projects will implement vuln stream handling, we are
         hopefully piggy backing our `FROM` rebuild chain and so forth on top,

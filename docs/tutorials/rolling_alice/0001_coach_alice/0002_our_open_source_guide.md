@@ -26,7 +26,7 @@ have one already.
 ## Setup
 
 We need to get setup for contribing to Alice first
-see https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
+see https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
 for more details.
 
 ```console
@@ -145,7 +145,7 @@ You can now edit the code in
 
 For tutorials which will help you extend further see the "Data Flow Programming"
 section of the Alice CONTRIBUTING docs.
-https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#data-flow-programming
+https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#data-flow-programming
 
 ## Debugging
 

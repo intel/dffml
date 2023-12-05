@@ -5,8 +5,8 @@
   - He will be in town but offline until 2022-08-29
 - Rolling Alice: 2022 Progress Reports: July Activities Recap: https://youtu.be/JDh2DARl8os
 - Alice is ready for contribution
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
-  - https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
+  - https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
   - Self fulfilling prophecy again! We can even automate our contributions to her even if we wanted to! She will eventually! :P
 - IETF
   - Joined SCITT WG, will rejoin in September, others please do as well!

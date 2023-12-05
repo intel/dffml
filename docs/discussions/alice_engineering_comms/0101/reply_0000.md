@@ -33,7 +33,7 @@
   - Attacks over time
     - https://www.zdnet.com/article/sha-1-collision-attacks-are-now-actually-practical-and-a-looming-danger/
 - Saw article about Alex Hanna quitting due to ethical concerns, previously reached out to Blake Lemoine
-  - Twitter direct message to Blake: [Rolling Alice: Forward: The Consciousness Folks](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md#the-consciousness-folks)
+  - Twitter direct message to Blake: [Rolling Alice: Forward: The Consciousness Folks](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md#the-consciousness-folks)
   - Reaching out to DAIR
     - https://dair.ai/
       - > DAIR.AI aims to democratize Artificial Intelligence (AI) research, education, and technologies.
@@ -41,8 +41,8 @@
       - Whooooooaaa there buddy, This guy works for Facebook! Ruh Rough! Missalignement detected!
         - Hmmm
 - Need to submit to PyCascades
-  - [If You Give A Python A Computer](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#if-you-give-a-python-a-computer)
-    - Fuck ya [Whisper](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
+  - [If You Give A Python A Computer](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#if-you-give-a-python-a-computer)
+    - Fuck ya [Whisper](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
 
 ```console
 $ PS1="alice@wonderland # "
@@ -125,7 +125,7 @@ usage: alice [-h] [-log LOG] {please,shouldi,threats,version} ...
 
     Alice's source code: https://github.com/intel/dffml/tree/alice/entities/alice
     How we built Alice: https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice
-    How to extend Alice: https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
+    How to extend Alice: https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
     Comment to get involved: https://github.com/intel/dffml/discussions/1406
     
 
@@ -148,7 +148,7 @@ options:
 
 ```console
 $ gh api graphql -F owner='intel' -F repo='dffml' -F query=@intial_discussion_query.graphql | tee output.json | python -m json.tool | tee output.json.formated.json
-$ gh gist create -p -d "$(date): https://github.com/intel/dffml/discussions/1406?sort=new https://github.com/intel/dffml/blob/alice/scripts/dump_discussion.py" output.json.formated.json scripts/dump_discussion.py
+$ gh gist create -p -d "$(date): https://github.com/intel/dffml/discussions/1406?sort=new https://github.com/intel/dffml/blob/main/scripts/dump_discussion.py" output.json.formated.json scripts/dump_discussion.py
 ```
 
 - TODO
@@ -167,7 +167,7 @@ $ gh gist create -p -d "$(date): https://github.com/intel/dffml/discussions/1406
     - [ ] Photo
     - [ ] Bio
     - [x] Enter the 36 chambers! It's the link I was looking for! (found randomly clicking on OA stuff)
-      - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0067.md
+      - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0067.md
   - [ ] https://katherinedruckman.com/an-optimistic-open-source-security-qa-with-christopher-crob-robinson
   - [ ] Can we fix the CI and get Alice on here? Respond to Kate! https://www.intel.com/content/www/us/en/research/responsible-ai-publications.html
   - [ ] https://github.com/chainguard-dev/melange/pull/184/files CHADIG
