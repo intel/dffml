@@ -1,4 +1,4 @@
-# [Volume 0: Chapter 8: Transport Acquisition](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
+# [Volume 0: Chapter 8: Transport Acquisition](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
 
 [![asciicast](https://asciinema.org/a/572766.svg)](https://asciinema.org/a/572766)
 

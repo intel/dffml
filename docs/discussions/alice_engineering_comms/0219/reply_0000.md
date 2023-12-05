@@ -4,7 +4,7 @@
 - https://github.com/CycloneDX/specification/pull/199
 - https://github.com/CycloneDX/specification/pull/194
   - ❤️❤️❤️ FUCK YES FUCK YES FUCK YES MOTHERFUCKER FUCK YEAH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Rust orchestrator?
-    - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#volume-0-chapter-2-shes-ariving-when
+    - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#volume-0-chapter-2-shes-ariving-when
     - https://github.com/intel/dffml/issues/44
   - I wonder if this (authentication:true) might be a place where the https://identity.foundation/presentation-exchange/ spec could be used to specify the requirements around authentication. We could imagine a world where scorecard probes are hosted as microservices executed as an IPVM affect. Just spitballin here. In our hypothetical example we’d be looking at a CycloneDX dataflow of scorecard itself, attempting to execute the probes via IPVM.
   - Pulled Brooklyn and Laurent into the same thread. SBOM, OpenSSF, IPVM. We could even invoke probes via vuln submitted schema / protobuf

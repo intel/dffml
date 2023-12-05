@@ -132,7 +132,7 @@
       - We upload `alice shouldi contribute` dataflow to SCITT and get a receipt!
         - Friends, today is a great day. :railway_track:
         - Next stop, serialization / federation with Alice / Open Architecture serialization data flow as SCITT service.
-          - Started with mermaid added in https://github.com/intel/dffml/commit/fbcbc86b5c52932bccf4cd6321f4e79f60ad3023 to https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
+          - Started with mermaid added in https://github.com/intel/dffml/commit/fbcbc86b5c52932bccf4cd6321f4e79f60ad3023 to https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
   - [ ] Use case documents
     - [ ] OpenSSF Metrics
       - Use Microsoft SCITT API Emulator (MIT) as upstream / reference

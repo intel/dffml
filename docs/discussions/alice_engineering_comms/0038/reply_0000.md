@@ -49,7 +49,7 @@ untagged:
     - https://pydantic-docs.helpmanual.io/usage/schema/#schema-customization
   - Initial commit: 168a3e26c62d7e0c8dd92b1761ec5fad273fb9c6
   - Added `$schema` to make output schema a valid Manifest schema per ADR requirements
-    - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+    - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
 - KERI
   - https://keri.one
   - https://humancolossus.foundation/blog/thinking-of-did-keri-on/keri-resources/

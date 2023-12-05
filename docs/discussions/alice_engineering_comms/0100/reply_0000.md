@@ -1,7 +1,7 @@
 ## 2022-11-28 @pdxjohnny Engineering Logs
 
 - https://github.com/pdxjohnny/use-cases/commit/36b4578a8ae7978f55c10e4e0a2eabd88788da27
-- Reminder (on/off chain smart contracts! ref: https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst it sounds block chainy but it's just a cyptographiclly linked list created ad-hoc with your neighbors! [grand scale speaking ;])
+- Reminder (on/off chain smart contracts! ref: https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst it sounds block chainy but it's just a cyptographiclly linked list created ad-hoc with your neighbors! [grand scale speaking ;])
   - https://github.com/intel/dffml/blob/c7dc8985fdde61459017d3fb39cb19de1f7ece2b/docs/arch/0009-Open-Architecture.rst#L32-L36
 - From 2022-11-17 Mark Foster on Twitter https://twitter.com/mfosterio/status/1593094082838290433
   - > Proof of Trust On The Internet (https://futureinternet.io)
@@ -44,7 +44,7 @@
     - CD and cross plugin/project analysis is dependent on this as a dependency of our
       standard interface / documentation aka manifests. Also the vuln updating (goes with
       the teritory, this is what we are using to ride on top of as comms channel).
-      - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+      - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
   - [ ] UCAN/IPVM need to review :eyes:
     - [ ] https://github.com/ipvm-wg/spec/pull/8#issuecomment-1328355077
       - https://github.com/ipvm-wg/spec/blob/initial-job-spec/README.md
@@ -64,7 +64,7 @@
         of record data. Might be useful for when `record.data.key` needs changing such
         as when a `GitHubRepoID` is the key and it should be `record.feature("repo_url")`
         or something similar.
-    - https://github.com/intel/dffml/blob/alice/entities/alice/alice/shouldi/contribute/cicd.py
+    - https://github.com/intel/dffml/blob/main/entities/alice/alice/shouldi/contribute/cicd.py
       - 90d5c52f4dd64f046a2e2469d001e32ec2d53966
       - The instructions unfortunately I don't think work from this commit message, because it's the same main package, we need to setup the lightweight package stuff as was done here
         - https://github.com/intel/dffml/blob/1513484a4bf829b86675dfb654408674495687d3/dffml/operation/stackstorm.py#L306-L368

@@ -1,4 +1,4 @@
-# [Rolling Alice: Preface](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md)
+# [Rolling Alice: Preface](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md)
 
 > Planning for our tutorial series, Volumes 1 through 6, which will run from June 2022 through June 2029. Planned completion date for Volume 6 ends then (added a year for buffer). We will write volumes in parallel and target completion of one each year. Volume 0 will be updated frequently throughout. This effort also include ADRs and plans (vol 0) and should be considered living documents. Contributions from all are welcome. Alice will be a maintainer who works across 2nd/3rd party plugins (extensable to any mono or poly repo setup). She’ll act as a coach to other developers and do work herself (think dependabot PRs). She’ll act like an intelligent context aware set of CI jobs that learns with you and your orgs.
 
@@ -39,15 +39,15 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 > Our living document containing our plans and groundwork for all our tutorials.
 
-- [Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/)
-- [Peace at Last](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
-- [She's Arriving When?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
-- [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
-- [Writing the Wave](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
-- [Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
-- [OS DecentrAlice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
-- [An Image](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
-- [Transport Acquisition](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
+- [Introduction and Context](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/)
+- [Peace at Last](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
+- [She's Arriving When?](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
+- [A Shell for a Ghost](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
+- [Writing the Wave](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
+- [Stream of Consciousness](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
+- [OS DecentrAlice](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
+- [An Image](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
+- [Transport Acquisition](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
   - Operational / Abstract Compute Architecture
 - [Traveler of the Edge](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4068656)
 - Internet of Alice
@@ -61,20 +61,20 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 > We build Alice the Software Architect. The context aware pile of CI jobs that learns with you and your organizations. She helps us communicate and coaches us on how we can use our assets, our knowledge, our hardware, our time to maximize the breadth, depth, and pace of our impact on our and our organizations strategic principles.
 
-- [Introduction](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0000_introduction.md)
-- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
-- [Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
-- [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
-- [You are what you EAT](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_you_are_what_you_EAT.md)
-- [In the Lab](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_in_the_lab.md)
+- [Introduction](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0000_introduction.md)
+- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
+- [Our Open Source Guide](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
+- [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
+- [You are what you EAT](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0004_you_are_what_you_EAT.md)
+- [In the Lab](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0004_in_the_lab.md)
   - We execute the dataflows we've thought up from Entering Wonderland.
   - These flows are hypothesized CI/CD flows (GitHub Actions, Jenkins, etc.)
      - We execute them and submit them as PRs if they make sense
      - This way we could go around offering people cve-bin-tools services on each PR they run for C using Python projects.
-- [An Open Book](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0005_ask_alice.md)
+- [An Open Book](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0005_ask_alice.md)
   - Alice uses what she learned in Writing the Wave to train models which understand how she was built, this will work for any video series
     we can extract text from. This helps us aggregate data into the knowledge graph for training / query.
-- [Cartographer Extraordinaire](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0005_cartography.md)
+- [Cartographer Extraordinaire](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0005_cartography.md)
   - We teach Alice to detect threats in our `THREATS.md`. We'll be looking to analyize for weakpoints in our skycastles which apear *over time*.
     https://xkcd.com/2347/ is what we're looking to turn into a riskyness feedback here. If your project's architectural skycastle is dependent
     on a small unmaintained project with a high likelyhood of having CVEs then your project's "map" will show a weakpoint there.
@@ -203,7 +203,7 @@ This thread is a central place for everyone interested to participate and collab
 
 ## References
 
-- Open Architecture: https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+- Open Architecture: https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
 - Alice Date 0 = Gregorian Calendar Date 2022-04-16
 - First Name: Alice
 - Middle Name: O

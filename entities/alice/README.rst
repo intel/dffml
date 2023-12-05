@@ -49,7 +49,7 @@ First make sure you have the latest versions of ``pip``, ``setuptools``, and
 ``wheel``. Some ML libraries require them to be up-to-date.
 
 If you want to contribute please see
-https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
+https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
 
 You may want to first create a virtual environment to avoid any permissions
 issues when running ``pip install``.
@@ -106,7 +106,7 @@ recommend community standards
 
 .. note::
 
-    Tutorial on how we made this: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
+    Tutorial on how we made this: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
 
 Create a new git repo and add some contents
 
@@ -156,7 +156,7 @@ shouldi
 
 .. note::
 
-    Tutorial on how we made this: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
+    Tutorial on how we made this: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
 
 Alice's initial functionality is based around
 https://intel.github.io/dffml/main/shouldi.html

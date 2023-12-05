@@ -10,7 +10,7 @@
   - https://api.did.actor/v/eJylkluTmjAAhf9L9lVuQRHy1PVa1hV1FW-dTidA0CgCkiDqjv-9Qbfu5a3tDC-QMyfnfIdX8M1PYk6OHKAfYM15ypCiFEUhF7qcZCsFqpqp-BkJSMwpjphy0EDlXajT4Co7-FJGDomPOU1iKaKMS1CFaqn-WQE0AAjkWYzynAZIgx7ENQNKej2sSlWz6kkWVLFkaoFp-pDU61gXd_BTSspQU5LRkGIvIs17jKspYznJhHEgPLfkhM5Gf8vp-LzvWNt9EbjmdBs0esea0V6c52G6ip2h-9g9xyn1HToLY3DzwLFPWpiLu4Aoq0qqJp6JZiGoI1hdCtV7_THHPGcAvd4q_cGAUyqLFDL2eZIpX0AwRZM3LIkf1Hsp8HKXPAtFSerNuQKyT0d2HJAjQOrX7x9Q_GUMcPlUKPc2xOf3RiVLcsS7NCJiJ70Up1mShKXgLXs7gLWaZo3pKhaRM1L-ITdIAmJwpQihJEBq5gRCpBqoapYUD9cdb4n6hK-T4D-2e_iHsa9FhnmWJqzsgRkj2YcwFbApxLSAnJ7WXtenA_rUWbZfJqOxzeydDZ2mbSx3HeZDV7w7Jzwf0UHE6GKzUO1Is2R519nXnPHam-xC95dUJaQlhaee1js0u43mqWX2oNtsuI5r9fXFLHkeH767Z1Lf14c5nLoR59Cw54O6ZzT0Ge8VZDRtF_PHEbhcfgMlFDfZ
   - https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
 
-[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
+[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 ```console
 $ git clone https://github.com/OR13/didme.me
@@ -216,7 +216,7 @@ Node.js version: 18.11.0
       - DID method
         - Applicability with content addressable hybrid off chain execution via services endpoints?
 - What groups to be aware of?
-- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md
+- https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md
   - Updated from engineering logs: [2022-10-13 Rolling Alice: Architecting Alice: OS DecentrAlice: Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3870218)
   - Next steps
     - https://www.packer.io/plugins/builders/qemu

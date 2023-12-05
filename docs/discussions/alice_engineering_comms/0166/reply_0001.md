@@ -2,7 +2,7 @@
 
 - 1:1 Pankaj/John
 - Update 2023-02-15: This became https://github.com/intel/dffml/commit/15c9c245add1fae5a0b1767ed77973d9dbdd4899
-- https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#writing-an-overlay
+- https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#writing-an-overlay
 - https://docs.groovy-lang.org/latest/html/api/org/apache/groovy/parser/antlr4/package-summary.html
   - https://docs.groovy-lang.org/latest/html/api/org/apache/groovy/parser/antlr4/GroovyLangParser.html
   - https://www.graalvm.org/

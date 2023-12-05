@@ -130,7 +130,7 @@ pdxjohnny@fedora-s-4vcpu-8gb-sfo3-01 ~ $
 
 ![image](https://user-images.githubusercontent.com/5950433/195766172-7898c5ce-de9a-48cc-a2d4-331a7e614dd3.png)
 
-[![mindset-security](https://img.shields.io/badge/mindset-security-critical)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#mindset-security-)
+[![mindset-security](https://img.shields.io/badge/mindset-security-critical)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#mindset-security-)
 
 - Why it's a time traveling Python 3.10.7! It says it's from the UNIX epoch!
   - This is due to trying to make builds reproducable, meaning "bit for bit" if rebuilt later.

@@ -381,8 +381,8 @@ $ jq '.[].features | {repo_url: .git_repository_checked_out[0].URL, community_he
 ]
 ```
 
-- https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
-- https://github.com/intel/dffml/blob/alice/docs/arch/0010-Schema.rst
+- https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
+- https://github.com/intel/dffml/blob/main/docs/arch/0010-Schema.rst
 
 ```console
 $ jsonschema --instance <(jq '.[].features | {repo_url: .git_repository_checked_out[0].URL, community_health_check: {has_support: (if .FileSupportPresent then .FileSupportPresent[0] else false end)}}' dffml_list_records_stdout.json | jq -s | jq '.[0]') 0.0.0.schema.json
@@ -393,7 +393,7 @@ False: False is not one of [True]
 
 - We can leverage the GitHub CLI webhook proxy to bypass static registration
   - We can have periodically scheduled jobs on runners we add which just sit and translate
-  - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
+  - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
 - https://stackoverflow.com/questions/22429744/how-to-setup-route-for-websocket-server-in-express
   - Looking to decouple listening for events via websocket
   - https://github.com/vi/websocat

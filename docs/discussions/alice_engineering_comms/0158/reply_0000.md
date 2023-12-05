@@ -17,7 +17,7 @@
   - `cargo install --git https://github.com/mpalmer/action-validator --rev a21476343a2def79d16a924cedc194d19a4c2ec1`
 - TODO
   - [x] Create `schema/` directory ADR
-    - https://github.com/intel/dffml/blob/alice/docs/arch/0010-schema.rst
+    - https://github.com/intel/dffml/blob/main/docs/arch/0010-schema.rst
   - [ ] 2nd party FROM rebuild chains
     - https://github.com/w3c-ccg/traceability-interop/tree/main/environment-setup
   - [ ] https://asdf-vm.com/

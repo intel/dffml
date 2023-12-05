@@ -1,2 +1,2 @@
 - https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio/-/releases/v35-
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md

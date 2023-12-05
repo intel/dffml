@@ -81,7 +81,7 @@
     - url(Brent), url(understands), url(CBOR)
     - Now this issue is that you can resolve the url to a different thing every time, this is a bug says Orie, feature says rest of W3C WG, TODO find this at context issue/pr thread from a while back
   - John: What if we combined with receipts?
-    - [2023-04-19 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/blob/alice/docs/discussions/alice_engineering_comms/0243/reply_0000.md)
+    - [2023-04-19 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/blob/main/docs/discussions/alice_engineering_comms/0243/reply_0000.md)
   - Henk Birkholz gives example of VEX and different parties saying something is a vuln or not within different contexts, USGov says no, GreenPeace says yes.
     - RDFStart is equivilant to labeled property graph, let's you put nodes on the edges
   - RATs versifiers use this.

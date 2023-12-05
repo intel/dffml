@@ -11,7 +11,7 @@ Accepted
 Context
 -------
 
-We have accepted the `Manifest ADR <https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md>`_.
+We have accepted the `Manifest ADR <https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md>`_.
 
 This document describes how we will implement versioned learning for
 continuous improvement.

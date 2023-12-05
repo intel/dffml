@@ -17,5 +17,5 @@
     - https://github.com/decentralized-identity/keri/blob/master/kids/kid0009.md
   - A SARIF produced by an entity's analysis might be interpreted as a "you are logged in".
     - A SARIF is just a type of manifest in this case. Where the manifest's written form (eventually this will be the THREATS.md, PLANS.md: strategic plans and principles for execution of development activities over lifecycle, etc.) tells us the intent, aka interpret SARIF results for if you are logged in or not and what you have access to.
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
   - https://scitt.io/scenarios/extending-existing-services.html

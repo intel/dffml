@@ -23,8 +23,8 @@ aligned workstreams.
 - References
   - This thread in `git grep -i` friendly format: https://github.com/intel/dffml/tree/alice/docs/discussions/alice_engineering_comms
   - [Video: General 5 minute intro to Alice](https://www.youtube.com/watch?v=THKMfJpPt8I?t=129&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw)
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md
   - https://gist.github.com/07b8c7b4a9e05579921aa3cc8aed4866
     - Progress Report Transcripts
   - https://github.com/intel/dffml/tree/alice/entities/alice/

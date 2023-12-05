@@ -48,8 +48,8 @@ it does not manipulate us in ways we don't even understand.
   - https://medium.com/future-literacy/my-goal-alignment-problem-d90e0c14b717
     - > There are many versions of you constantly competing for dominance in achieving their own goals. Frequently opposing one another. The texture of their goals varies according to the time of day, what you last ate, and how you slept the night before, among other things. Trying to accurately predict the goals of your future selves is elusive at best. Meanwhile, you do your best to smooth over these differences and pretend as though there is a singular unified you with fixed goals. We all do.
       - Our parallel conscious states
-        - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md#rolling-alice
-        - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
+        - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md#rolling-alice
+        - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
   - https://medium.com/future-literacy/autonomous-self-fe2dfa755b74
     - > Why I Care: The Future of Intelligent Life
       >
@@ -72,7 +72,7 @@ it does not manipulate us in ways we don't even understand.
 - TODO
   - [ ] Circle back with Harsh
     - [ ] Integrate old shouldi code for him to build off
-  - [ ] Update [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
+  - [ ] Update [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
     - [ ] Do the NVD Style with pytss (mock the vulns if you have to, swap the `Source`),
       - [ ] Source (OpSource?) for static file defining all VEX
       - [ ] CVE Binary Tool update to output VEX
@@ -84,7 +84,7 @@ it does not manipulate us in ways we don't even understand.
           into CI/CD specific to our GitHub Actions setup.
       - This is our POC of downstream validation between projects (our
         stream of consciousness, our continuous delivery).
-        - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+        - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
       - This is also what helps enable us to declare "2nd party plugins",
         our "ordained" sets of plugins which meet some qualifications.
   - [ ] [2022-04-18 1:1 John/John - LTM and DFFML: Andersen to implement caching](https://github.com/intel/dffml/discussions/1368#discussioncomment-2599017) :grimacing:

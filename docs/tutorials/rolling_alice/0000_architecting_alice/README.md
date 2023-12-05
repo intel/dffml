@@ -1,10 +1,10 @@
-# [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice)
+# [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice)
 
 > Introduction and Context to tutorial series - Started May 2022.
 >
 > Check here for overview and status updates: https://www.youtube.com/playlist?list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39
 
-Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's Living Threat Model (leveraging the [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst)). She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
+Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's Living Threat Model (leveraging the [Open Architecture](https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst)). She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
 To build the foundations of Alice's thought processes we'll rely heavily on a mental model based on how humans think and problem solve. By the end of this series we'll have ensured Alice has all the primitive operations she requires to carry out the scientific process.
 
@@ -100,7 +100,7 @@ following as we analyze the softare / system / entity over it's lifecycle.
 - Open Architecture
   - Universal Blueprint
   - Standard architecture we use to describe anything. Provides the ability to use / reference domain specific architectures as needed to define architecture of whole.
-  - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+  - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
 - Think
   - Come up with new data flows and system context input
 - Thoughts
@@ -185,7 +185,7 @@ by AI implementations. We hope analysis via aligned methodologies (Open Architec
 assit in hardening efforts within the train of thought security landscape.
 
 - References
-  - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0015/reply_0002.md
+  - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0015/reply_0002.md
   - https://www.iflscience.com/gpt-4-hires-and-manipulates-human-into-passing-captcha-test-68016
   - [https://www.nytimes.com/2023/02/16/technology/bing-chatbot-transcript.html](https://gist.github.com/pdxjohnny/6093a7ae681bf4f5be26211dd83227f6)
     - > In a two-hour conversation with our columnist, Microsoft’s new chatbot

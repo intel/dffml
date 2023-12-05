@@ -48,7 +48,7 @@ for review system to measure risk in absence of attestation.
 Our reference architecture is built around a specs such as SBOM, VDR, and DIDs.
 We leverage the concept of a Manifest to talk about a node within the graph.
 A manifest is any document which is aligned with the guidelines within the
-`Manifest ADR <https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md>`_.
+`Manifest ADR <https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md>`_.
 A DID doc is an example of an instance of a manifest.
 
 Intent
@@ -58,7 +58,7 @@ Intent
   domain sepcific architecture or manifest already.
 
 - ``overlay`` MUST be applied to upstream following overlay application process
-  describied in **TODO** `Overlay <https://github.com/intel/dffml/blob/alice/Overlay>`_ if given
+  describied in **TODO** `Overlay <https://github.com/intel/dffml/blob/main/Overlay>`_ if given
 
 - ``orchestrator`` SHOULD be loaded and inspected for compliance with top level
   system context's policy (sandbox) before execution.
@@ -68,11 +68,11 @@ References
 
 - System Context
 
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#system-context
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#system-context
 
 - Manifests
 
-  - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+  - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
   
 - Overlays
   
@@ -119,20 +119,20 @@ References
 
   - Add content from discussion thread
 
-    - `docs/arch/alice/discussion/0004/reply_0005.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0004/reply_0005.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0020.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0020.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0022.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0022.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0028.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0028.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0037.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0037.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0040.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0040.md>`_
-    - `docs/arch/alice/discussion/0023/reply_0055.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0055.md>`_
-    - `docs/arch/alice/discussion/0036/reply_0022.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0022.md>`_
-    - `docs/arch/alice/discussion/0036/reply_0045.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0045.md>`_
-    - `docs/arch/alice/discussion/0036/reply_0062.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0062.md>`_
-    - `docs/arch/alice/discussion/0036/reply_0066.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0066.md>`_
-    - `docs/arch/alice/discussion/0036/reply_0067.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0036/reply_0067.md>`_
-    - `docs/arch/alice/discussion/0039/index.md <https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0039/index.md>`_
-    - `docs/tutorials/rolling_alice/0000_architecting_alice/README.md <https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/README.md>`_
-    - `docs/tutorials/rolling_alice/0000_forward.md <https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md>`_
-    - `docs/tutorials/rolling_alice/0000_preface.md <https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md>`_
-    - `docs/tutorials/rolling_alice/README.md <https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/README.md>`_
+    - `docs/arch/alice/discussion/0004/reply_0005.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0004/reply_0005.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0020.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0020.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0022.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0022.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0028.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0028.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0037.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0037.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0040.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0040.md>`_
+    - `docs/arch/alice/discussion/0023/reply_0055.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0055.md>`_
+    - `docs/arch/alice/discussion/0036/reply_0022.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0022.md>`_
+    - `docs/arch/alice/discussion/0036/reply_0045.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0045.md>`_
+    - `docs/arch/alice/discussion/0036/reply_0062.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0062.md>`_
+    - `docs/arch/alice/discussion/0036/reply_0066.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0066.md>`_
+    - `docs/arch/alice/discussion/0036/reply_0067.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0036/reply_0067.md>`_
+    - `docs/arch/alice/discussion/0039/index.md <https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0039/index.md>`_
+    - `docs/tutorials/rolling_alice/0000_architecting_alice/README.md <https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/README.md>`_
+    - `docs/tutorials/rolling_alice/0000_forward.md <https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md>`_
+    - `docs/tutorials/rolling_alice/0000_preface.md <https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md>`_
+    - `docs/tutorials/rolling_alice/README.md <https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/README.md>`_

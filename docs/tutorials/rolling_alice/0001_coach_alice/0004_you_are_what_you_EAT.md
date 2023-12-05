@@ -19,7 +19,7 @@ threat model `alice threats` / `THREATS.md`.
 
 - References
   - https://github.com/johnlwhiteman/living-threat-models
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
   - https://cloud.google.com/blog/products/devops-sre/dora-2022-accelerate-state-of-devops-report-now-out
     - DORA metrics
     - Culture

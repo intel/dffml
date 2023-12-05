@@ -2,7 +2,7 @@
 
 - Something about the pinning #906
   - [Rolling Alice: Architecting Alice: Introduction and Context](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#rolling-alice-volume-0-introduction-and-context)
-    - Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. *Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's living threat model* (leveraging the [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst)). *She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible.* We'll interact with her as we would any other remote developer.
+    - Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. *Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's living threat model* (leveraging the [Open Architecture](https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst)). *She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible.* We'll interact with her as we would any other remote developer.
   - Fork
   - Work
   - PR to upstream with pin
@@ -50,7 +50,7 @@ index 49426b5..9277df0 100644
 - **HUZZAH!** IT WORKED!
 - https://github.com/intel/dffml/issues/1440
 - TODO
-  - [ ] [Rolling Alice: Coach Alice: Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
+  - [ ] [Rolling Alice: Coach Alice: Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
     - https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+sort%3Arelevance-desc+repo%3Aintel%2Fdffml+author%3Aaliceoa
     - https://github.com/TomWright/mermaid-server
       - For static dumps

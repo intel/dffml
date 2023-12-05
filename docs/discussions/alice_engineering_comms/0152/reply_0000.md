@@ -3,7 +3,7 @@
 - Ask terri if cve-bin-tool got integrated into [Trivy](https://github.com/aquasecurity/trivy)
 - Soon we'll be able to talk to Alice like a ⁠[rubber duck](https://en.wikipedia.org/wiki/Rubber_duck_debugging) @mepsheehan
   - https://github.com/enhuiz/vall-e
-  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md
+  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md
 - https://github.com/facebookresearch/esm#quickstart
   - For our software DNA
 - https://learn.microsoft.com/en-us/windows/wsl/wsl-config#systemd-support
