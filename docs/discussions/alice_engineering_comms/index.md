@@ -1,5 +1,5 @@
 These are the engineering logs of entities working on Alice. If you
-work on [Alice](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice) please use this thread as a way to communicate to others
+work on [Alice](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice) please use this thread as a way to communicate to others
 what you are working on. Each day has a log entry. Comment with your
 thoughts, activities, planning, etc. related to the development of
 Alice, our open source artificial general intelligence.
@@ -19,16 +19,16 @@ and facilitate sync with potential users / other communities /
 aligned workstreams.
 
 - Game plan
-  - [Move fast, fix things](https://hbr.org/2019/01/the-era-of-move-fast-and-break-things-is-over). [Live off the land](https://www.crowdstrike.com/cybersecurity-101/living-off-the-land-attacks-lotl/). [Failure is not an option](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#the-scary-part).
+  - [Move fast, fix things](https://hbr.org/2019/01/the-era-of-move-fast-and-break-things-is-over). [Live off the land](https://www.crowdstrike.com/cybersecurity-101/living-off-the-land-attacks-lotl/). [Failure is not an option](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#the-scary-part).
 - References
-  - This thread in `git grep -i` friendly format: https://github.com/intel/dffml/tree/alice/docs/discussions/alice_engineering_comms
+  - This thread in `git grep -i` friendly format: https://github.com/intel/dffml/tree/main/docs/discussions/alice_engineering_comms
   - [Video: General 5 minute intro to Alice](https://www.youtube.com/watch?v=THKMfJpPt8I?t=129&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw)
   - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_forward.md
   - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_preface.md
   - https://gist.github.com/07b8c7b4a9e05579921aa3cc8aed4866
     - Progress Report Transcripts
-  - https://github.com/intel/dffml/tree/alice/entities/alice/
-  - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
+  - https://github.com/intel/dffml/tree/main/entities/alice/
+  - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
   - https://github.com/intel/dffml/pull/1401
     - https://github.com/intel/dffml/pull/1207
     - https://github.com/intel/dffml/pull/1061

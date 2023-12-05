@@ -87,7 +87,7 @@
     - [ ] Have NVDStyle server take source as input/config so that we can point it at the discovered vulns
   - [ ] Track https://github.com/intel/cve-bin-tool/issues/2320#issuecomment-1303174689
         in relation to `policy.yml`
-    - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
+    - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
   - [ ] `alice please log todos -source static=json dynamic=nvdstyle`
     - [ ] Implement source for reading from NVDSytle API (op source for single function prototype?)
     - [ ] Enable creation of TODOs by overlaying operations which take the feature data as inputs (use dfpreprocess?)

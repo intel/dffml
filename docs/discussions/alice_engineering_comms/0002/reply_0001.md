@@ -91,7 +91,7 @@
     when we upload reviews.
   - Feedback always welcome.
 - John: Collection of metric / Alpha-Omega data into shared DB
-  - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice
+  - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice
   - https://datatracker.ietf.org/doc/html/draft-birkholz-scitt-architecture
   - https://www.w3.org/2022/07/pressrelease-did-rec.html.en
   - https://docs.microsoft.com/en-us/azure/confidential-ledger/architecture

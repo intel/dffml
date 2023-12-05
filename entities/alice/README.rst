@@ -4,7 +4,7 @@ Alice
 For more information on who / what Alice is, her architecture, strategic principles,
 and conceptual foundations, please reference the tutorial series on how we built
 her and how you can extend her:
-`Rolling Alice: Architecting Alice: Introduction and Context <https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice>`_.
+`Rolling Alice: Architecting Alice: Introduction and Context <https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice>`_.
 
 Alice is a work in progress. Here is the most recent 5 minute
 `Status Update <https://www.youtube.com/watch?v=THKMfJpPt8I&list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39>`_

@@ -6,7 +6,7 @@
 
 ### Table Of Contents
 
-- [Upstream](https://github.com/intel/dffml/tree/alice/entities/alice)
+- [Upstream](https://github.com/intel/dffml/tree/main/entities/alice)
 
 #### Volume 0: Architecting Alice
 

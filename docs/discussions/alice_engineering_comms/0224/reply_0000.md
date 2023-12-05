@@ -3,7 +3,7 @@
 - https://phoenixnap.com/kb/kubernetes-kind
 - Future
   - New events into DMZ KCP via ingress plugin
-- https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine
+- https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine
 - https://github.com/pixelfed/pixelfed/blob/dev/.github/workflows/build-docker.yml
   - https://didme.me
 - https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/using-openid-connect-with-reusable-workflows#defining-the-trust-conditions

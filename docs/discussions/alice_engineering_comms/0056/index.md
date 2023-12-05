@@ -35,6 +35,6 @@
              alignment with your strategic principles / values. She's a trustworthy
              messenger, the Ghost in the shell.
            - See discussion thread (or the thread dump in `docs/arch/alice/discussion`)
-             - https://github.com/intel/dffml/tree/alice/docs/arch/alice/discussion
+             - https://github.com/intel/dffml/tree/main/docs/arch/alice/discussion
                - `$ git log -p --reverse -p -- docs/arch/alice/discussion`
              - https://github.com/intel/dffml/discussions/1369

@@ -22,7 +22,7 @@
       to push data to `data.chadig|nahdig.com` and then to the OpenSSF.
       - Ideally our data structures are self identifying and authing (UCAN, ATP, etc.)
       - We still need bridges into existing identity and auth infra
-        - [DID + HSM Supply Chain Security Mitigation Option](https://github.com/intel/dffml/tree/alice/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst)
+        - [DID + HSM Supply Chain Security Mitigation Option](https://github.com/intel/dffml/tree/main/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst)
         - https://www.youtube.com/clip/Ugkxf-HtFY6sR_-EnGGksIik8eyAKQACE0_n?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
           - Vision: Reducing Overhead via Thought Communication Protocol
             - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md

@@ -34,7 +34,7 @@ start playing around and writing code immediatly.
 **NOTE** Not sure what state gitpod is in, pretty sure there
 was some sort of issue we need to move a file around or something.
 
-https://gitpod.io/#github.com/intel/dffml/tree/alice
+https://gitpod.io/#github.com/intel/dffml/tree/main
 
 Cloning the Repo
 ****************

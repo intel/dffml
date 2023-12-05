@@ -1,7 +1,7 @@
 ## 2023-02-24 @pdxjohnny Engineering Logs
 
 - Something about the pinning #906
-  - [Rolling Alice: Architecting Alice: Introduction and Context](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#rolling-alice-volume-0-introduction-and-context)
+  - [Rolling Alice: Architecting Alice: Introduction and Context](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#rolling-alice-volume-0-introduction-and-context)
     - Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. *Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's living threat model* (leveraging the [Open Architecture](https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst)). *She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible.* We'll interact with her as we would any other remote developer.
   - Fork
   - Work

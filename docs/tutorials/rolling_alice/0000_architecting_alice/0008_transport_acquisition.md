@@ -87,7 +87,7 @@ graph TD
   - Fail safe conclusion
     - Add to vetted set via insertion of correct `Content-Type` to transparency service
       - `application/credential+ld+json`
-- [`kind-config.yml`](https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine)
+- [`kind-config.yml`](https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine)
 
 ```console
 $ kind create cluster --name=nodes-test --config=https://github.com/intel/dffml/raw/alice/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine/kind-config.yml

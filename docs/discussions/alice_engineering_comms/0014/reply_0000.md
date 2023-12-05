@@ -46,7 +46,7 @@
   - Date: 2022-08-30 10:00 UTC -7
 - Docs we are following
   - https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
-  - https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards
+  - https://github.com/intel/dffml/tree/main/entities/alice#recommend-community-standards
   - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
 
 ### How to Contribute an Alice Overlay
