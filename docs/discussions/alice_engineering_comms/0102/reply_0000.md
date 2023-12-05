@@ -33,7 +33,7 @@
   - Recurse with no overlay or orchestrator
 - Overlay
   - Populate JSON Source with a record with a repo name and records
-    - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/alice/entities/alice/#contribute)
+    - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/main/entities/alice/#contribute)
     - Overlay
       - `-sources dev=json -source-dev-filename .tools/open-architecture/innersource/repos.json -source-dev-readwrite -source-dev-allowempty`
       - Dataflow to read project name and associated repos from config file

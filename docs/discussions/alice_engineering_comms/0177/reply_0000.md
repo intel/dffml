@@ -279,7 +279,7 @@ $ export IMAGE="registry.example.org/dffml"; export NEW_HASH=""; sed -i -r -e "s
   - [ ] Disable server stop on any exceptions, just keep on serving
   - [ ] `websocat --exit-on-eof --basic-auth alice:$(cat ../password) ws://localhost:8000/listen/websocket | tee staging_tempfile_for_testing | alice threats listen stdin activitypub`
     - We're about to start rolling very slowly (eventually we'll gain enough acceleration that the answer to Alice are you Rolling? will be YES!, however what we currently have is just the tippy top of the iceburg of what's needed for that, which is why that's volume 6)
-      - Ref Entity Analysis Trinity: https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
+      - Ref Entity Analysis Trinity: https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
   - [x] Make it through the day
 - Future
   - [ ] Put `/webhook` should be `/admin/webhook`

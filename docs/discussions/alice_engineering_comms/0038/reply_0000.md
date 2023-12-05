@@ -4,7 +4,7 @@
   - State of the art updated to 98335d941116e76bbf4e07422adc2b5061e47934
   - Overlay of CI/CD library detection example: https://github.com/intel/dffml/commit/90d5c52f4dd64f046a2e2469d001e32ec2d53966
 
-Install Alice: https://github.com/intel/dffml/tree/alice/entities/alice/
+Install Alice: https://github.com/intel/dffml/tree/main/entities/alice/
 
 ```console
 $ python -m venv .venv

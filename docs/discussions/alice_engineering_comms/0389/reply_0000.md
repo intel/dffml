@@ -5,8 +5,8 @@
     - https://zoom-lfx.platform.linuxfoundation.org/meeting/96297611656?password=f030337b-dc4d-43d4-ac55-26db510f3d1c
     - https://docs.google.com/document/d/1moVFPn5pLi-uGs840_YBCrwdpHajU0ptFmlL4F9GryQ/edit
   - https://github.com/ietf-scitt/use-cases/pull/18
-    - [Alice Engineering Comms: 2023-03-02 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/tree/alice/docs/discussions/alice_engineering_comms/0194/reply_0000.md)
-    - [Alice: 2022-05-25 UCAN Community Meeting](https://github.com/intel/dffml/tree/alice/docs/arch/alice/discussion/0023/reply_0050.md)
+    - [Alice Engineering Comms: 2023-03-02 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/tree/main/docs/discussions/alice_engineering_comms/0194/reply_0000.md)
+    - [Alice: 2022-05-25 UCAN Community Meeting](https://github.com/intel/dffml/tree/main/docs/arch/alice/discussion/0023/reply_0050.md)
 - Michael Liberman
   - S2C2F is a set of practices that as a consumer of an artifact can help you understand how to evaluate provenance. Helps you better understand provenance of things that don't have SLSA attestation and what you should do from a dependency evaluation and trust evaluation perspective to help you understand what you should be doing to satisfy your risk tolerance.
 - Isaac Hepworth

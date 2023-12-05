@@ -6,14 +6,14 @@ She will attempt to contribute helpful community files
 so as to provide value as soon as possible to the community.
 
 - Context
-  - This tutorial is how we extend the [`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards)
+  - This tutorial is how we extend the [`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/main/entities/alice#recommend-community-standards)
 command.
 - Goals
   - We want to be able to ask Alice to contribute a new kind of
 [recommended community standard](https://opensource.guide/) to our projects.
 - Actions
   - We're going to extend the existing
-[`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards)
+[`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/main/entities/alice#recommend-community-standards)
 functionality to provide a `CODE_OF_CONDUCT.md` file to a repo if it doesn't
 have one already.
 - References

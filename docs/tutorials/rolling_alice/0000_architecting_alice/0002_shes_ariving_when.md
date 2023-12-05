@@ -204,7 +204,7 @@ If you give Monty Python a computer, they’ll want to search for the Holy Grail
   - https://github.com/microsoft/scitt-ccf-ledger/blob/main/pyscitt/pyscitt/did.py
   - https://scitt.io/distributing-with-oci-scitt.html
   - [Data Flow Execution: One possible implementation approach](#dffmls-current-working-data-flow-execution-model)
-  - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
+  - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
 
 ```mermaid
 graph TD
@@ -373,7 +373,7 @@ $ ./scitt-emulator.sh client verify-receipt --claim claim.cose --receipt claim.r
   - Next stop, serialization / federation with Alice / Open Architecture serialization data flow as SCITT service.
 - References
   - [Architecting Alice: She's Arriving When?: System Context](#system-context)
-  - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/alice/entities/alice#contribute)
+  - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/main/entities/alice#contribute)
   - [Coach Alice: Our Open Source Guide](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 
 [![asciicast](https://asciinema.org/a/537643.svg)](https://asciinema.org/a/537643)

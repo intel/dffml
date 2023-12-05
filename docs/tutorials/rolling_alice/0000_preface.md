@@ -6,7 +6,7 @@
 
 ### Table Of Contents
 
-- [Upstream](https://github.com/intel/dffml/tree/alice/entities/alice)
+- [Upstream](https://github.com/intel/dffml/tree/main/entities/alice)
 - [Rolling Alice](./)
 - [Forward](0000_forward.md)
 - [Preface](0000_preface.md)

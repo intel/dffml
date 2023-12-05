@@ -1,6 +1,6 @@
 ## 2023-09-27 @pdxjohnny Engineering Logs
 
-- We need to build the dependency graph, KCP is our API layer for Alice. Federated events from SCITT will be transformed into `kubectl apply` YAMLs. GUAC query + evented graph exec + SCITT acts as a firewall for an instance of Alice. KCP, GUAC, forgego all compile to WASM, with the dependency graph of the projects a dev (Alice, Bob, a human, etc.) is working on we can make decisions on what we want to federate to their environment. We want to be able to run a forge in browser. WASM + WebML would make for sweet [EAT](https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity).
+- We need to build the dependency graph, KCP is our API layer for Alice. Federated events from SCITT will be transformed into `kubectl apply` YAMLs. GUAC query + evented graph exec + SCITT acts as a firewall for an instance of Alice. KCP, GUAC, forgego all compile to WASM, with the dependency graph of the projects a dev (Alice, Bob, a human, etc.) is working on we can make decisions on what we want to federate to their environment. We want to be able to run a forge in browser. WASM + WebML would make for sweet [EAT](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity).
   - > [What’s in a controller?](https://book.kubebuilder.io/cronjob-tutorial/controller-overview#whats-in-a-controller)
     > Controllers are the core of Kubernetes, and of any operator.
     >

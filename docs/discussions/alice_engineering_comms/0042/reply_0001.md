@@ -24,7 +24,7 @@
 
 - Alignment
   - The iterative process of ML development
-    - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
+    - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
     - Intent / Train model
       - Establish correlations between threat model intent and collected data / errors (telemetry or static analysis, policy, failures)
     - Dynamic analysis / Improve data

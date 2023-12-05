@@ -123,8 +123,8 @@ usage: alice [-h] [-log LOG] {please,shouldi,threats,version} ...
 
              Dynamic Analysis          Static Analysis
 
-    Alice's source code: https://github.com/intel/dffml/tree/alice/entities/alice
-    How we built Alice: https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice
+    Alice's source code: https://github.com/intel/dffml/tree/main/entities/alice
+    How we built Alice: https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice
     How to extend Alice: https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst
     Comment to get involved: https://github.com/intel/dffml/discussions/1406
     

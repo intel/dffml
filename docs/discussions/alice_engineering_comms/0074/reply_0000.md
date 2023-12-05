@@ -11,7 +11,7 @@
 - https://www.w3.org/People/Raggett/
   - > My current focus is on how to build **AI systems that mimic human reasoning** inspired by decades of advances in the cognitive sciences, and hundreds of millions of years of evolution of the brain. This is a major paradigm shift compared to the Semantic Web which is steeped in the Aristotelian tradition of mathematical logic and formal semantics. This will enable the **Sentient Web** as the combination of sensing, actuation and cognition federated across the Web in support of markets of services based upon open standards.
     - **ALIGNED**
-      - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice
+      - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice
   - > The [W3C Cognitive AI Community Group](https://www.w3.org/community/cogai/) is seeking to incubate ideas that combine symbolic information (graphs) with sub-symbolic information (statistics), rules and high performance graph algorithms. This combination enables machine learning and reasoning in the presence of uncertainty, incompleteness and inconsistencies. The starting point has been the development of the [chunks and rules format](https://github.com/w3c/cogai/blob/master/chunks-and-rules.md) as an amalgam of RDF and Property Graphs. A [series of demos](https://github.com/w3c/cogai/blob/master/demos/README.md) are being developed to explore different aspects, using an open source JavaScript library.
     - **ALIGNED**
       - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst

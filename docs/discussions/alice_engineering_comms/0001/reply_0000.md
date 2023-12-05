@@ -58,7 +58,7 @@ Hi Mike,
 
 Hope you’ve been well. It’s John from Intel. Thanks again to you and the team for welcoming me to the Identifying Security Threats working group meeting [2021-02-18](https://docs.google.com/document/d/1AfI0S6VjBCO0ZkULCYZGHuzzW8TPqO3zYxRjzmKvUB4/edit#heading=h.mfw2bj5svu9u) last year. We talked a bit about how Intel had a similar effort. I then changed roles hoping to get more involved with OpenSSF but then ended up getting told to be uninvolved. Now I switched roles again and involvement is in scope! Sorry for the lapse in communications.
 
-I periodically check the minutes so I joined today and asked about the "Alpha-Omega" project from last week’s minutes which I then did some research on. We just started what looks to me to be an aligned project, coincidentally named Alice Omega Alpha: https://github.com/intel/dffml/tree/alice/entities/alice
+I periodically check the minutes so I joined today and asked about the "Alpha-Omega" project from last week’s minutes which I then did some research on. We just started what looks to me to be an aligned project, coincidentally named Alice Omega Alpha: https://github.com/intel/dffml/tree/main/entities/alice
 
 It looks to me like Alice's mission to proactively enable developers and organizations to deliver organizationally context aware, adaptive secure by default best practices to teams aligns with project Alpha-Omega’s goals.
 
@@ -75,7 +75,7 @@ comment on the press release that the SCITT working group has an SCITT
 Architecture which DID's might be suitable for.
 
 The DFFML community is working on a project called Alice
-https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice
+https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice
 she is intended to be a developer helper. She's also the way we data mine
 source repositories (etc.).
 

@@ -103,7 +103,7 @@ graph TD
 **WARNING: THIS IS A WORK IN PROGRESS AND PROVIDES NO SECURITY GUARANTEES**
 
 - References
-  - [`docker-compose.yml`](https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob)
+  - [`docker-compose.yml`](https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/federated_forge/alice_and_bob)
 
 ```console
 $ git clone https://github.com/intel/dffml -b alice
@@ -382,6 +382,6 @@ dependencies. Registration involves plugin based configurable callbacks.
              alignment with your strategic principles / values. She's a trustworthy
              messenger, the Ghost in the shell.
            - See discussion thread (or the thread dump in `docs/arch/alice/discussion`)
-             - https://github.com/intel/dffml/tree/alice/docs/arch/alice/discussion
+             - https://github.com/intel/dffml/tree/main/docs/arch/alice/discussion
                - `$ git log -p --reverse -p -- docs/arch/alice/discussion`
              - https://github.com/intel/dffml/discussions/1369

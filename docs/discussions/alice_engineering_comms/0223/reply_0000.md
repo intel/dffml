@@ -53,7 +53,7 @@ make install
 - We're close, I can feel it
 - heartwood --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
   - scitt and endor later keri tied via ccf
-- https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob
+- https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/federated_forge/alice_and_bob
 - https://github.com/go-yaml/yaml
 - https://docs.python.org/3/library/urllib.parse.html#module-urllib.parse
 - Need to convert the configs back from YAML

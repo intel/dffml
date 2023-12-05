@@ -7,7 +7,7 @@
 - Semantic Versioning
   - Ray would like to see this included in software use case.
   - Policy around update
-    - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice
+    - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice
 - Facilitate post instance creation labeling
   - Notary adds to transparency infrastructure at a later point, how do we ensure others have access to that?
     - They should go query those notaries or require up to date receipts from them.

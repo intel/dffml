@@ -9,7 +9,7 @@ on:
       manifest:
         required: true
         type: string
-        description: "https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.json"
+        description: "https://github.com/intel/dffml/tree/main/schema/dffml/image/container/build/0.0.1.schema.json"
 
 jobs:
   manifest:

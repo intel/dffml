@@ -32,7 +32,7 @@ operations/innersource/dffml_operations_innersource/npm_groovy_lint.py
 - https://universeodon.com/@georgetakei/109824609861703097
   - https://github.com/intel/dffml/commit/4ef226e2ecd384560d635fa84036003b525ad399 [💊](https://pdxjohnny.github.io/redpill/)
   - https://mastodon.social/@pdxjohnny/109456014313438341
-  - https://github.com/intel/dffml/tree/alice/docs/arch/alice/discussion/0001/reply_0006.md
+  - https://github.com/intel/dffml/tree/main/docs/arch/alice/discussion/0001/reply_0006.md
   - > Someone asked ChapGPt to come up with 10 Commandments for the modern world. I could be guided by these principles. Perhaps a new religion is in order?
     > ![9e3ac5f3049ee319](https://user-images.githubusercontent.com/5950433/217577363-83e0bcc8-6886-4d01-bce5-dc48d8a31651.png)
 - https://intel.github.io/dffml/main/plugins/service/http/cli.html#sources
