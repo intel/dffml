@@ -29,7 +29,7 @@ class AccuracyCMDConfig:
     scorer: AccuracyScorer = field(
         "Method to use to score accuracy", required=True
     )
-    features: Features = field("Predict Feature(s)", default=Features())
+    features: Features = field("Predict Feature(s)", default_factory=Features)
     sources: Sources = FIELD_SOURCES
 
 
