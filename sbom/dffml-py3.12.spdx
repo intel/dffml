@@ -1,0 +1,27 @@
+SPDXVersion: SPDX-2.3
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: Python-dffml
+DocumentNamespace: http://spdx.org/spdxdocs/Python-dffml-d412cbaf-e2c4-45c6-b5e6-4f2d1c3b0d1f
+LicenseListVersion: 3.22
+Creator: Tool: sbom4python-0.10.1
+Created: 2023-12-13T16:35:02Z
+CreatorComment: <text>This document has been automatically generated.</text>
+##### 
+
+PackageName: dffml
+SPDXID: SPDXRef-Package-1-dffml
+PackageVersion: 0.4.0
+PrimaryPackagePurpose: APPLICATION
+PackageSupplier: Person: John Andersen (john.s.andersen@intel.com)
+PackageDownloadLocation: https://pypi.org/project/dffml/0.4.0
+FilesAnalyzed: false
+PackageLicenseDeclared: MIT
+PackageLicenseConcluded: MIT
+PackageCopyrightText: NOASSERTION
+PackageSummary: <text>Data Flow Facilitator for Machine Learning</text>
+ExternalRef: PACKAGE-MANAGER purl pkg:pypi/dffml@0.4.0
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:john_andersen:dffml:0.4.0:*:*:*:*:*:*:*
+##### 
+
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-Package-1-dffml
