@@ -36,7 +36,8 @@ spec.loader.exec_module(plugins)
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
 
-REQUIREMENTS_DEV_TXT_PATH = pathlib.Path("requirements-dev.txt")
+DEV_REQUIRES = []
+REQUIREMENTS_DEV_TXT_PATH = pathlib.Path(__file__).parent.joinpath("requirements-dev.txt")
 if REQUIREMENTS_DEV_TXT_PATH.is_file():
     DEV_REQUIRES = list(
         map(
