@@ -1,0 +1,72 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:b374cb1b-4c8d-4eb2-a1bf-f85529ffc06a",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-12-13T16:35:03Z",
+    "tools": {
+      "components": [
+        {
+          "name": "sbom4python",
+          "version": "0.10.1",
+          "type": "application"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "CDXRef-DOCUMENT",
+      "name": "Python-dffml"
+    }
+  },
+  "components": [
+    {
+      "type": "application",
+      "bom-ref": "1-dffml",
+      "name": "dffml",
+      "version": "0.4.0",
+      "supplier": {
+        "name": "John Andersen",
+        "contact": [
+          {
+            "email": "john.s.andersen@intel.com"
+          }
+        ]
+      },
+      "cpe": "cpe:2.3:a:john_andersen:dffml:0.4.0:*:*:*:*:*:*:*",
+      "description": "Data Flow Facilitator for Machine Learning",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "url": "https://pypi.org/project/dffml/0.4.0",
+          "type": "distribution",
+          "comment": "Download location for component"
+        }
+      ],
+      "purl": "pkg:pypi/dffml@0.4.0",
+      "properties": [
+        {
+          "name": "language",
+          "value": "Python"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "CDXRef-DOCUMENT",
+      "dependsOn": [
+        "1-dffml"
+      ]
+    }
+  ]
+}
