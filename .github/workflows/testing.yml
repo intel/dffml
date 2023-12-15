@@ -122,9 +122,6 @@ jobs:
         payload: ${{ steps.in-toto-cyclonedx.outputs.attestation }}
         private-key-pem: private-key.pem
         scitt-url: https://scitt.unstable.chadig.com
-    - name: Remove private key used in keypair to sign SCITT statement
-      run: |
-        rm -v private-key.pem
     - name: Create Pull Request
       if: ${{ steps.generate-sbom.outputs.changed }}
       uses: peter-evans/create-pull-request@v5.0.2
@@ -149,6 +146,9 @@ jobs:
         payload: ${{ steps.vexctl.outputs.openvex }}
         private-key-pem: private-key.pem
         scitt-url: https://scitt.unstable.chadig.com
+    - name: Remove private key used in keypair to sign SCITT statement
+      run: |
+        rm -v private-key.pem
 
   lint:
     runs-on: ubuntu-latest
