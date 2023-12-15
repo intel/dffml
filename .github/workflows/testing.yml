@@ -107,9 +107,11 @@ jobs:
         set +e
         found=1
         while [ ${found} -eq 1 ]; do
+          rm -f authorized_keys
           curl -vfL https://raw.githubusercontent.com/${{ github.repository }}/public-keys/authorized_keys | tee authorized_keys
           grep "$(cat ../ssh-private.pub | awk '{print $NF}')" authorized_keys
           found=$?
+          sleep 0.1s
         done
     - name: Submit SBOM to SCITT
       id: scitt-submit-sbom
