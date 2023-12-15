@@ -48,7 +48,7 @@ jobs:
         python -m build .
     - name: Generate SBOM
       id: generate-sbom
-      uses: pdxjohnny/sbom4python@github-action
+      uses: anthonyharrison/sbom4python@5b458354df89357bf0253e62ea4567b1807120e2
       with:
         python-version: ${{ matrix.python-version }}
         module-name: dffml
@@ -133,6 +133,20 @@ jobs:
         delete-branch: true
         author: GitHub Actions <actions@github.com>
         add-paths: sbom
+    - uses: openvex/generate-vex@159b7ee4845fb48f1991395ce8501d6263407360
+      name: Run vexctl
+      id: vexctl
+      with:
+        product: pkg:github/${{ github.repository }}@${{ github.sha }}
+    - name: Submit OpenVEX to SCITT
+      id: scitt-submit-openvex
+      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
+      with:
+        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:authorized_keys
+        subject: pkg:github/${{ github.repository }}@${{ github.sha }}
+        payload: ${{ steps.vexctl.outputs.openvex }}
+        private-key-pem: private-key.pem
+        scitt-url: https://scitt.unstable.chadig.com
 
   lint:
     runs-on: ubuntu-latest
