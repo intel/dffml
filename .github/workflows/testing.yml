@@ -115,7 +115,7 @@ jobs:
         done
     - name: Submit SBOM to SCITT
       id: scitt-submit-sbom
-      uses: pdxjohnny/scitt-api-emulator@github-action
+      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
       with:
         issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:authorized_keys
         subject: pkg:github/${{ github.repository }}@${{ github.sha }}
