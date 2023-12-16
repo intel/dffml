@@ -101,7 +101,7 @@ jobs:
         import datetime
         import pathlib
 
-        key = jwk.JWK.from_pem(pathlib.Path("private-key.pem"))
+        key = jwk.JWK.from_pem(pathlib.Path("private-key.pem").read_bytes())
         rsa_public_key = jwk.JWK.from_json(key.export_public())
 
         # Convert the JWK to a public key
