@@ -99,6 +99,7 @@ jobs:
         from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
         from jwcrypto import jwk, jws
         import datetime
+        import pathlib
 
         key = jwk.JWK.from_pem(pathlib.Path("private-key.pem"))
         rsa_public_key = jwk.JWK.from_json(key.export_public())
