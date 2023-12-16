@@ -136,7 +136,7 @@ jobs:
         # Display or save the PEM encoded certificate
         contents = b""
         try:
-            pathlib.Path("public-keys", "x509").read_bytes()
+            contents = pathlib.Path("public-keys", "x509").read_bytes()
         except:
             pass
         pathlib.Path("public-keys", "x509").write_bytes(contents + b"\n" + cert_pem)
