@@ -87,7 +87,60 @@ jobs:
       run: |
         ssh-keygen -q -f ssh-private -t ecdsa -b 384 -N '' -C "$(head -n 100 /dev/urandom | sha384sum | awk '{print $1}')" -I "$(date -Iseconds)" <<<y
         cat ssh-private | python -c 'import sys; from cryptography.hazmat.primitives import serialization; print(serialization.load_ssh_private_key(sys.stdin.buffer.read(), password=None).private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption()).decode().rstrip())' > private-key.pem
-        cat ssh-private.pub | tee -a public-keys/authorized_keys
+        # cat ssh-private.pub | tee -a public-keys/x509
+    - name: SSH key as x509
+      shell: python -u {0}
+      run: |
+        from cryptography import x509
+        from cryptography.x509.oid import NameOID
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.backends import default_backend
+        from cryptography.hazmat.primitives.asymmetric import rsa
+        from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+        from jwcrypto import jwk, jws
+        import datetime
+
+        key = jwk.JWK.from_pem(pathlib.Path("private-key.pem"))
+        rsa_public_key = jwk.JWK.from_json(key.export_public())
+
+        # Convert the JWK to a public key
+        public_key = rsa_public_key.get_op_key('verify')
+
+        # Create a builder for the X.509 certificate
+        subject = issuer = x509.Name([
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Oregon"),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, "Portland"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "SCITT Emulator"),
+            x509.NameAttribute(NameOID.COMMON_NAME, "example.com"),
+        ])
+
+        cert_builder = x509.CertificateBuilder(
+            subject_name=subject,
+            issuer_name=issuer,
+            public_key=public_key,
+            serial_number=x509.random_serial_number(),
+            not_valid_before=datetime.datetime.utcnow(),
+            not_valid_after=datetime.datetime.utcnow() + datetime.timedelta(days=1),  # Certificate valid for 1 day
+            extensions=[]
+        )
+
+        # Self-sign the certificate with the private key
+        private_key_op = key.get_op_key('sign')
+        cert = cert_builder.sign(private_key=private_key_op, algorithm=hashes.SHA256(), backend=default_backend())
+
+        # Serialize the certificate
+        cert_pem = cert.public_bytes(encoding=Encoding.PEM)
+
+        # Display or save the PEM encoded certificate
+        contents = b""
+        try:
+            pathlib.Path("public-keys", "x509").read_bytes()
+        except:
+            pass
+        pathlib.Path("public-keys", "x509").write_bytes(contents + b"\n" + cert_pem)
+    - name: Remove ssh private
+      run: |
         rm -v ssh-private
     - name: Push new public key
       env:
@@ -104,20 +157,13 @@ jobs:
         git commit -sm "Snapshot" || exit 0
         git push -uf origin "HEAD:public-keys"
         # Wait for propagation
-        set +e
-        found=1
-        while [ ${found} -eq 1 ]; do
-          rm -f authorized_keys
-          curl -vfL https://raw.githubusercontent.com/${{ github.repository }}/public-keys/authorized_keys | tee authorized_keys
-          grep "$(cat ../ssh-private.pub | awk '{print $NF}')" authorized_keys
-          found=$?
-          sleep 0.1s
-        done
+        # TODO x509 style polling?
+        sleep 10s
     - name: Submit SBOM to SCITT
       id: scitt-submit-sbom
       uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
       with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:authorized_keys
+        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
         subject: pkg:github/${{ github.repository }}@${{ github.sha }}
         payload: ${{ steps.in-toto-cyclonedx.outputs.attestation }}
         private-key-pem: private-key.pem
@@ -141,7 +187,7 @@ jobs:
       id: scitt-submit-openvex
       uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
       with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:authorized_keys
+        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
         subject: pkg:github/${{ github.repository }}@${{ github.sha }}
         payload: ${{ steps.vexctl.outputs.openvex }}
         private-key-pem: private-key.pem
