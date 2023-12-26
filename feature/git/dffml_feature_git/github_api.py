@@ -145,7 +145,119 @@ async def fetch_files(client, owner, repo_name, pr_url, file_cursor):
         return page_info, files
 
 
+import github
+from github import Github
+from github import GithubException
+
+import snoop
+
+
+def sync_fork(upstream, fork, branch):
+    try:
+        print(f"Successfully synced {fork} branch {branch} with {upstream}")
+    except Exception as error:
+        raise Exception(
+            f"Unable to sync {fork} with {upstream} due to {error}"
+        ) from error
+
+
+@snoop
+def make_github_operations(
+    token, repo_urls, new_branch_name, transform_file_content
+):
+    g = Github(token)
+    user = g.get_user()
+
+    for repo_url in repo_urls:
+        try:
+            # Fork the repository
+            org, repo_name = repo_url.split("/")[-2:]
+            repo = g.get_repo(f"{org}/{repo_name}")
+            fork = user.create_fork(repo)
+
+            # Create a new branch from the default branch
+            fork_default_branch = fork.get_branch(fork.default_branch)
+            try:
+                fork.create_git_ref(
+                    ref="refs/heads/" + new_branch_name,
+                    sha=fork_default_branch.commit.sha,
+                )
+            except github.GithubException as error:
+                if "Reference already exists" not in str(error):
+                    raise
+
+            # Get the sha of the last commit to the branch in the upstream repo
+            upstream_default_branch_sha = repo.get_branch(
+                repo.default_branch
+            ).commit.sha
+
+            # Get the git ref of the branch in the forked repo
+            new_branch_ref = fork.get_git_ref(f"heads/{new_branch_name}")
+
+            # Update the git ref to point to the new sha
+            new_branch_ref.edit(upstream_default_branch_sha, force=True)
+
+            # Update the contents of testing.yml
+            file_path = ".github/workflows/testing.yml"
+            try:
+                pygithub_fileobj = fork.get_contents(
+                    file_path, ref=new_branch_name
+                )
+            except GithubException as error:
+                raise Exception(
+                    f"{file_path} does not exist in {repo_url}, unable to update."
+                ) from error
+
+            # Transform the content
+            content = transform_file_content(pygithub_fileobj.decoded_content)
+
+            # Update file content
+            fork.update_file(
+                pygithub_fileobj.path,
+                "Update testing.yml",
+                content,
+                pygithub_fileobj.sha,
+                branch=new_branch_name,
+            )
+
+            # Create Pull request
+            base_repo = repo
+            snoop.pp(fork)
+            base = base_repo.default_branch
+            head = f"{user.login}:{fork.name}:{new_branch_name}"
+            base_repo.create_pull(
+                title="Update testing.yml", body="", head=head, base=base
+            )
+
+        except GithubException as e:
+            print(
+                f"Unable to complete operations for {repo_url} due to {str(e)}"
+            )
+
+
+import pathlib
+
+
+repo_urls = list(["/".join(["https://github.com", *repo]) for repo in REPOS])
+token = TOKEN
+new_branch_name = "update-testing-workflow"
+file_content = (
+    pathlib.Path(__file__)
+    .parents[3]
+    .joinpath(
+        ".github",
+        "workflows",
+        "testing.yml",
+    )
+    .read_text()
+)
+
+
 async def main(repos, file_name):
+    make_github_operations(
+        token, repo_urls, new_branch_name, lambda content: content.upper()
+    )
+    return
     async with aiohttp.ClientSession(trust_env=True) as client:
         tasks = [
             fetch_pull_requests(client, owner, repo, file_name)
