@@ -1,7 +1,11 @@
 import os
 import json
 import asyncio
+import logging
+
 import aiohttp
+
+logger = logging.getLogger(__name__)
 
 # Your personal access token
 # TOKEN = "your_github_access_token"
@@ -163,7 +167,11 @@ def sync_fork(upstream, fork, branch):
 
 @snoop
 def make_github_operations(
-    token, repo_urls, new_branch_name, transform_file_content
+    token,
+    repo_urls,
+    new_branch_name,
+    transform_file_content,
+    fail_on_not_present: bool = True,
 ):
     g = Github(token)
     user = g.get_user()
@@ -198,27 +206,39 @@ def make_github_operations(
             new_branch_ref.edit(upstream_default_branch_sha, force=True)
 
             # Update the contents of testing.yml
-            file_path = ".github/workflows/testing.yml"
+            file_path = ".github/workflows/pin_downstream.yml"
+            old_content = None
             try:
                 pygithub_fileobj = fork.get_contents(
                     file_path, ref=new_branch_name
                 )
+                old_content = pygithub_fileobj.decoded_content
             except GithubException as error:
-                raise Exception(
-                    f"{file_path} does not exist in {repo_url}, unable to update."
-                ) from error
+                msg = f"{file_path} does not exist in {repo_url}"
+                if fail_on_not_present:
+                    raise Exception(f"{msg}, unable to update.") from error
+                else:
+                    logger.info(msg)
 
             # Transform the content
-            content = transform_file_content(pygithub_fileobj.decoded_content)
+            content = transform_file_content(old_content)
 
             # Update file content
-            fork.update_file(
-                pygithub_fileobj.path,
-                "Update testing.yml",
-                content,
-                pygithub_fileobj.sha,
-                branch=new_branch_name,
-            )
+            if old_content:
+                fork.update_file(
+                    pygithub_fileobj.path,
+                    "Update testing.yml",
+                    content,
+                    pygithub_fileobj.sha,
+                    branch=new_branch_name,
+                )
+            else:
+                fork.create_file(
+                    pygithub_fileobj.path,
+                    "Update testing.yml",
+                    content,
+                    branch=new_branch_name,
+                )
 
             # Create Pull request
             base_repo = repo
@@ -247,7 +267,7 @@ file_content = (
     .joinpath(
         ".github",
         "workflows",
-        "testing.yml",
+        "pin_downstream.yml",
     )
     .read_text()
 )
@@ -255,7 +275,13 @@ file_content = (
 
 async def main(repos, file_name):
     make_github_operations(
-        token, repo_urls, new_branch_name, lambda content: content.upper()
+        token,
+        repo_urls,
+        new_branch_name,
+        lambda content: content.upper()
+        if content is not None
+        else file_content,
+        fail_on_not_present=False,
     )
     return
     async with aiohttp.ClientSession(trust_env=True) as client:
