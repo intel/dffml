@@ -156,20 +156,13 @@ from github import GithubException
 import snoop
 
 
-def sync_fork(upstream, fork, branch):
-    try:
-        print(f"Successfully synced {fork} branch {branch} with {upstream}")
-    except Exception as error:
-        raise Exception(
-            f"Unable to sync {fork} with {upstream} due to {error}"
-        ) from error
-
-
 @snoop
 def make_github_operations(
     token,
     repo_urls,
     new_branch_name,
+    make_commit_message,
+    make_pull_request_body,
     transform_file_content,
     fail_on_not_present: bool = True,
 ):
@@ -182,6 +175,9 @@ def make_github_operations(
             org, repo_name = repo_url.split("/")[-2:]
             repo = g.get_repo(f"{org}/{repo_name}")
             fork = user.create_fork(repo)
+
+            commit_message = make_commit_message(repo, fork)
+            pull_request_body = make_pull_request_body(repo, fork)
 
             # Create a new branch from the default branch
             fork_default_branch = fork.get_branch(fork.default_branch)
@@ -216,7 +212,7 @@ def make_github_operations(
             except GithubException as error:
                 msg = f"{file_path} does not exist in {repo_url}"
                 if fail_on_not_present:
-                    raise Exception(f"{msg}, unable to update.") from error
+                    raise Exception(f"{msg}, unable to update") from error
                 else:
                     logger.info(msg)
 
@@ -227,7 +223,7 @@ def make_github_operations(
             if old_content:
                 fork.update_file(
                     pygithub_fileobj.path,
-                    "Update testing.yml",
+                    commit_message,
                     content,
                     pygithub_fileobj.sha,
                     branch=new_branch_name,
@@ -235,7 +231,7 @@ def make_github_operations(
             else:
                 fork.create_file(
                     pygithub_fileobj.path,
-                    "Update testing.yml",
+                    commit_message,
                     content,
                     branch=new_branch_name,
                 )
@@ -246,13 +242,16 @@ def make_github_operations(
             base = base_repo.default_branch
             head = f"{user.login}:{fork.name}:{new_branch_name}"
             base_repo.create_pull(
-                title="Update testing.yml", body="", head=head, base=base
+                title=commit_message,
+                body=pull_request_body,
+                head=head,
+                base=base,
             )
 
-        except GithubException as e:
-            print(
-                f"Unable to complete operations for {repo_url} due to {str(e)}"
-            )
+        except GithubException as error:
+            raise Exception(
+                f"Unable to complete operations for {repo_url} due to {e}"
+            ) from error
 
 
 import pathlib
@@ -274,10 +273,16 @@ file_content = (
 
 
 async def main(repos, file_name):
+    commit_message = os.environ["COMMIT_MESSAGE"]
+    pull_request_body = os.environ["PULL_REQUEST_BODY"]
     make_github_operations(
         token,
         repo_urls,
         new_branch_name,
+        lambda _upstream, fork: commit_message,
+        lambda _upstream, fork: pull_request_body.replace(
+            "REPO_ORG/REPO_NAME", fork.full_name
+        ),
         lambda content: content.upper()
         if content is not None
         else file_content,
