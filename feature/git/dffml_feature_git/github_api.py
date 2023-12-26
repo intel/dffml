@@ -222,7 +222,7 @@ def make_github_operations(
             # Update file content
             if old_content:
                 fork.update_file(
-                    pygithub_fileobj.path,
+                    file_path,
                     commit_message,
                     content,
                     pygithub_fileobj.sha,
@@ -230,7 +230,7 @@ def make_github_operations(
                 )
             else:
                 fork.create_file(
-                    pygithub_fileobj.path,
+                    file_path,
                     commit_message,
                     content,
                     branch=new_branch_name,
@@ -250,7 +250,7 @@ def make_github_operations(
 
         except GithubException as error:
             raise Exception(
-                f"Unable to complete operations for {repo_url} due to {e}"
+                f"Unable to complete operations for {repo_url} due to {error}"
             ) from error
 
 
