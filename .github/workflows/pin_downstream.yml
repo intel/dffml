@@ -1,149 +1,149 @@
-name: "Pin: Downstream: 2nd party"
+NAME: "PIN: DOWNSTREAM: 2ND PARTY"
 
-# TODO 3rd party will be based off ActivityPub
-# - References
-#   - RFCv5.1: IETF SCITT: Use Case: Attestations of alignment to S2C2F and org Overlays: https://github.com/ietf-scitt/use-cases/blob/a832905e3c428fd54b1c08d4851801383eac91a6/openssf_metrics.md#use-case-attestations-of-alignment-to-s2c2f-and-org-overlays
+# TODO 3RD PARTY WILL BE BASED OFF ACTIVITYPUB
+# - REFERENCES
+#   - RFCV5.1: IETF SCITT: USE CASE: ATTESTATIONS OF ALIGNMENT TO S2C2F AND ORG OVERLAYS: HTTPS://GITHUB.COM/IETF-SCITT/USE-CASES/BLOB/A832905E3C428FD54B1C08D4851801383EAC91A6/OPENSSF_METRICS.MD#USE-CASE-ATTESTATIONS-OF-ALIGNMENT-TO-S2C2F-AND-ORG-OVERLAYS
 
-on:
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    branches:
-      - main
-  push:
-    branches:
-      - main
+ON:
+  PULL_REQUEST_TARGET:
+    TYPES:
+      - OPENED
+      - SYNCHRONIZE
+      - REOPENED
+    BRANCHES:
+      - MAIN
+  PUSH:
+    BRANCHES:
+      - MAIN
 
-jobs:
-  manifest:
-    runs-on: ubuntu-latest
-    # Disabled currently
-    if: false
-    outputs:
-      length: ${{ steps.create-manifest-instance.outputs.length }}
-      manifest: ${{ steps.create-manifest-instance.outputs.github_actions_manifest }}
-    steps:
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-      - uses: actions/checkout@v3
-      - name: Build manifest from plugins.json from pull request
-        id: create-manifest-instance
-        env:
-          PLUGINS_JSON: "dffml/plugins.json"
-          SCHEMA: "TODO-dffml-2ndparty-pin"
+JOBS:
+  MANIFEST:
+    RUNS-ON: UBUNTU-LATEST
+    # DISABLED CURRENTLY
+    IF: FALSE
+    OUTPUTS:
+      LENGTH: ${{ STEPS.CREATE-MANIFEST-INSTANCE.OUTPUTS.LENGTH }}
+      MANIFEST: ${{ STEPS.CREATE-MANIFEST-INSTANCE.OUTPUTS.GITHUB_ACTIONS_MANIFEST }}
+    STEPS:
+      - NAME: SET UP PYTHON
+        USES: ACTIONS/SETUP-PYTHON@V4
+        WITH:
+          PYTHON-VERSION: "3.11"
+      - USES: ACTIONS/CHECKOUT@V3
+      - NAME: BUILD MANIFEST FROM PLUGINS.JSON FROM PULL REQUEST
+        ID: CREATE-MANIFEST-INSTANCE
+        ENV:
+          PLUGINS_JSON: "DFFML/PLUGINS.JSON"
+          SCHEMA: "TODO-DFFML-2NDPARTY-PIN"
           JSON_INDENT: "    "
-        shell: python -u {0}
-        run: |
-          import os
-          import json
-          import pathlib
+        SHELL: PYTHON -U {0}
+        RUN: |
+          IMPORT OS
+          IMPORT JSON
+          IMPORT PATHLIB
 
-          plugins = json.loads(pathlib.Path(os.environ["PLUGINS_JSON"]).read_text())
-          manifest = plugins["plugins"]["parties"]["2nd"]
+          PLUGINS = JSON.LOADS(PATHLIB.PATH(OS.ENVIRON["PLUGINS_JSON"]).READ_TEXT())
+          MANIFEST = PLUGINS["PLUGINS"]["PARTIES"]["2ND"]
           
-          # SECURITY Allowlist of 2nd party orgs to pin
-          for downstream in manifest:
-              if not downstream["source_url"].startswith("https://github.com/dffml/"):
-                  raise ValueError(f"source_url not in allowed org: {downstream!r}")
+          # SECURITY ALLOWLIST OF 2ND PARTY ORGS TO PIN
+          FOR DOWNSTREAM IN MANIFEST:
+              IF NOT DOWNSTREAM["SOURCE_URL"].STARTSWITH("HTTPS://GITHUB.COM/DFFML/"):
+                  RAISE VALUEERROR(F"SOURCE_URL NOT IN ALLOWED ORG: {DOWNSTREAM!R}")
 
-          github_actions_manifest = {
-              "include": manifest,
+          GITHUB_ACTIONS_MANIFEST = {
+              "INCLUDE": MANIFEST,
           }
-          json_ld_manifest = {
-              "@context": {
-                  "@vocab": os.environ["SCHEMA"],
+          JSON_LD_MANIFEST = {
+              "@CONTEXT": {
+                  "@VOCAB": OS.ENVIRON["SCHEMA"],
               },
-              **github_actions_manifest,
+              **GITHUB_ACTIONS_MANIFEST,
           }
-          print(json.dumps(json_ld_manifest, sort_keys=True, indent=os.environ.get("JSON_INDENT", None)))
+          PRINT(JSON.DUMPS(JSON_LD_MANIFEST, SORT_KEYS=TRUE, INDENT=OS.ENVIRON.GET("JSON_INDENT", NONE)))
 
-          if "GITHUB_OUTPUT" in os.environ:
-              with open(os.environ["GITHUB_OUTPUT"], "a") as fileobj:
-                  fileobj.write(f'length={len(manifest)}\n')
-                  fileobj.write(f"manifest={json.dumps(manifest, sort_keys=True)}\n")
-                  fileobj.write(f'github_actions_manifest={json.dumps(github_actions_manifest, sort_keys=True)}\n')
-                  fileobj.write(f'json_ld_manifest={json.dumps(json_ld_manifest, sort_keys=True)}\n')
+          IF "GITHUB_OUTPUT" IN OS.ENVIRON:
+              WITH OPEN(OS.ENVIRON["GITHUB_OUTPUT"], "A") AS FILEOBJ:
+                  FILEOBJ.WRITE(F'LENGTH={LEN(MANIFEST)}\N')
+                  FILEOBJ.WRITE(F"MANIFEST={JSON.DUMPS(MANIFEST, SORT_KEYS=TRUE)}\N")
+                  FILEOBJ.WRITE(F'GITHUB_ACTIONS_MANIFEST={JSON.DUMPS(GITHUB_ACTIONS_MANIFEST, SORT_KEYS=TRUE)}\N')
+                  FILEOBJ.WRITE(F'JSON_LD_MANIFEST={JSON.DUMPS(JSON_LD_MANIFEST, SORT_KEYS=TRUE)}\N')
 
   
-  pin_downstream_pep_440:
-    name: "Pin downstream to latest commit"
-    runs-on: ubuntu-latest
-    # Disabled currently
-    if: false
-    env:
-      PIN_PULL_REQUEST_EMAIL: 'alice.omega.alpha@outlook.com'
-      PIN_PULL_REQUEST_NAME: 'Alice Alchemy'
-      GH_ACCESS_TOKEN: ${{ secrets.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN }}
-      PIN_TO_COMMIT: ${{ github.event.after || github.event.pull_request.head.sha }}
-      UPSTREAM_PACKAGE_NAME: 'dffml'
-      BUMP_DEP: "dffml @ https://github.com/intel/dffml/archive/"
-    needs:
-    - manifest
-    strategy:
-      fail-fast: false
-      max-parallel: 100
-      matrix: ${{ fromJSON(needs.manifest.outputs.manifest) }}
-    steps:
-      - name: Checkout downstream
-        env:
-          # TODO Pull requests on pull requests, probably from renovate/dependabot
-          # https://github.com/intel/dffml/pull/1061#pullrequestreview-1281885921
-          TARGET_REPO_URL: ${{ matrix.source_url }}
-          TARGET_BRANCH: ${{ matrix.branch }}
-          TARGET_COMMIT: ${{ matrix.branch }}
-        run: |
-          set -x
-          git init
-          git remote add origin "${TARGET_REPO_URL}"
-          git fetch origin "${TARGET_BRANCH}" --depth 1
-          git fetch origin "${TARGET_COMMIT}" --depth 1
-          git reset --hard "origin/${TARGET_COMMIT}"
-      - name: Find repo local dependent files
-        id: repo-local-downstream
-        run: |
-          set -x
-          get_files() {
-            git grep "${BUMP_DEP}" | sed -e 's/:.*//g' | sort | uniq
+  PIN_DOWNSTREAM_PEP_440:
+    NAME: "PIN DOWNSTREAM TO LATEST COMMIT"
+    RUNS-ON: UBUNTU-LATEST
+    # DISABLED CURRENTLY
+    IF: FALSE
+    ENV:
+      PIN_PULL_REQUEST_EMAIL: 'ALICE.OMEGA.ALPHA@OUTLOOK.COM'
+      PIN_PULL_REQUEST_NAME: 'ALICE ALCHEMY'
+      GH_ACCESS_TOKEN: ${{ SECRETS.PIN_DOWNSTREAM_2ND_PARTY_GH_ACCESS_TOKEN }}
+      PIN_TO_COMMIT: ${{ GITHUB.EVENT.AFTER || GITHUB.EVENT.PULL_REQUEST.HEAD.SHA }}
+      UPSTREAM_PACKAGE_NAME: 'DFFML'
+      BUMP_DEP: "DFFML @ HTTPS://GITHUB.COM/INTEL/DFFML/ARCHIVE/"
+    NEEDS:
+    - MANIFEST
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MAX-PARALLEL: 100
+      MATRIX: ${{ FROMJSON(NEEDS.MANIFEST.OUTPUTS.MANIFEST) }}
+    STEPS:
+      - NAME: CHECKOUT DOWNSTREAM
+        ENV:
+          # TODO PULL REQUESTS ON PULL REQUESTS, PROBABLY FROM RENOVATE/DEPENDABOT
+          # HTTPS://GITHUB.COM/INTEL/DFFML/PULL/1061#PULLREQUESTREVIEW-1281885921
+          TARGET_REPO_URL: ${{ MATRIX.SOURCE_URL }}
+          TARGET_BRANCH: ${{ MATRIX.BRANCH }}
+          TARGET_COMMIT: ${{ MATRIX.BRANCH }}
+        RUN: |
+          SET -X
+          GIT INIT
+          GIT REMOTE ADD ORIGIN "${TARGET_REPO_URL}"
+          GIT FETCH ORIGIN "${TARGET_BRANCH}" --DEPTH 1
+          GIT FETCH ORIGIN "${TARGET_COMMIT}" --DEPTH 1
+          GIT RESET --HARD "ORIGIN/${TARGET_COMMIT}"
+      - NAME: FIND REPO LOCAL DEPENDENT FILES
+        ID: REPO-LOCAL-DOWNSTREAM
+        RUN: |
+          SET -X
+          GET_FILES() {
+            GIT GREP "${BUMP_DEP}" | SED -E 'S/:.*//G' | SORT | UNIQ
           }
-          echo files_length=$(get_files | wc -l) >> $GITHUB_OUTPUT
-      - name: Update pinning of upstream within downstream
-        if: ${{ fromJSON(steps.repo-local-downstream.outputs.files_length) > 0 }}
-        id: create-pull-request
-        env:
-          NEW_HASH: ${{ env.PIN_TO_COMMIT }}
-          COMMIT_MESSAGE: "setup: Pin ${{ env.UPSTREAM_PACKAGE_NAME }} to ${{ env.PIN_TO_COMMIT }}\n${{ github.event.pull_request.html_url }}\n${{ github.server_url }}/${{ github.repository }}/commit/${{ env.PIN_TO_COMMIT }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          NEW_BRANCH_WITH_PIN: "pin/pep_440/${{ github.repository }}/${{ env.PIN_TO_COMMIT }}"
-          FILES: ${{ toJSON(steps.repo-local-downstream.outputs.files) }}
-          BASE: ${{ matrix.branch }}
-        run: |
-          set -x
-          get_files() {
-            git grep "${BUMP_DEP}" | sed -e 's/:.*//g' | sort | uniq
+          ECHO FILES_LENGTH=$(GET_FILES | WC -L) >> $GITHUB_OUTPUT
+      - NAME: UPDATE PINNING OF UPSTREAM WITHIN DOWNSTREAM
+        IF: ${{ FROMJSON(STEPS.REPO-LOCAL-DOWNSTREAM.OUTPUTS.FILES_LENGTH) > 0 }}
+        ID: CREATE-PULL-REQUEST
+        ENV:
+          NEW_HASH: ${{ ENV.PIN_TO_COMMIT }}
+          COMMIT_MESSAGE: "SETUP: PIN ${{ ENV.UPSTREAM_PACKAGE_NAME }} TO ${{ ENV.PIN_TO_COMMIT }}\N${{ GITHUB.EVENT.PULL_REQUEST.HTML_URL }}\N${{ GITHUB.SERVER_URL }}/${{ GITHUB.REPOSITORY }}/COMMIT/${{ ENV.PIN_TO_COMMIT }}\N${{ GITHUB.SERVER_URL }}/${{ GITHUB.REPOSITORY }}/ACTIONS/RUNS/${{ GITHUB.RUN_ID }}"
+          NEW_BRANCH_WITH_PIN: "PIN/PEP_440/${{ GITHUB.REPOSITORY }}/${{ ENV.PIN_TO_COMMIT }}"
+          FILES: ${{ TOJSON(STEPS.REPO-LOCAL-DOWNSTREAM.OUTPUTS.FILES) }}
+          BASE: ${{ MATRIX.BRANCH }}
+        RUN: |
+          SET -X
+          GET_FILES() {
+            GIT GREP "${BUMP_DEP}" | SED -E 'S/:.*//G' | SORT | UNIQ
           }
-          # https://github.com/dffml/dffml-model-transformers/blob/898af4a51d9b5d70d58ce80ba2c508f3afa82400/setup.cfg#L6
-          sed -i -r -e "s#${BUMP_DEP}[A-Fa-f0-9]{40}#${BUMP_DEP}${NEW_HASH}#g" $(get_files)
-          git checkout -b "${NEW_BRANCH_WITH_PIN}"
-          git config user.email "${PIN_PULL_REQUEST_EMAIL}"
-          git config user.name "${PIN_PULL_REQUEST_NAME}"
-          git commit -sam "${COMMIT_MESSAGE}"
-          git log -n 1 -p
+          # HTTPS://GITHUB.COM/DFFML/DFFML-MODEL-TRANSFORMERS/BLOB/898AF4A51D9B5D70D58CE80BA2C508F3AFA82400/SETUP.CFG#L6
+          SED -I -R -E "S#${BUMP_DEP}[A-FA-F0-9]{40}#${BUMP_DEP}${NEW_HASH}#G" $(GET_FILES)
+          GIT CHECKOUT -B "${NEW_BRANCH_WITH_PIN}"
+          GIT CONFIG USER.EMAIL "${PIN_PULL_REQUEST_EMAIL}"
+          GIT CONFIG USER.NAME "${PIN_PULL_REQUEST_NAME}"
+          GIT COMMIT -SAM "${COMMIT_MESSAGE}"
+          GIT LOG -N 1 -P
 
-          mkdir -p ~/.config/gh/
-          echo "github.com:" > ~/.config/gh/hosts.yml
-          echo "    oauth_token: ${GH_ACCESS_TOKEN}" >> ~/.config/gh/hosts.yml
-          echo "    user: token" >> ~/.config/gh/hosts.yml
-          echo "    git_protocol: https" >> ~/.config/gh/hosts.yml
-          gh auth setup-git
+          MKDIR -P ~/.CONFIG/GH/
+          ECHO "GITHUB.COM:" > ~/.CONFIG/GH/HOSTS.YML
+          ECHO "    OAUTH_TOKEN: ${GH_ACCESS_TOKEN}" >> ~/.CONFIG/GH/HOSTS.YML
+          ECHO "    USER: TOKEN" >> ~/.CONFIG/GH/HOSTS.YML
+          ECHO "    GIT_PROTOCOL: HTTPS" >> ~/.CONFIG/GH/HOSTS.YML
+          GH AUTH SETUP-GIT
 
-          git push -u origin -f "${NEW_BRANCH_WITH_PIN}"
-          gh pr create --base "${BASE}" --head "${NEW_BRANCH_WITH_PIN}" --title "${COMMIT_MESSAGE}" --body "" | tee pull-request-url
-          PULL_REQUEST_URL="$(cat pull-request-url)"
-          if [[ "x${PULL_REQUEST_URL}" == "x" ]]; then
-            echo "No pull request URL" 1>&2
-            exit 1
-          fi
-          echo "url=${PULL_REQUEST_URL}" | tee -a $GITHUB_OUTPUT
+          GIT PUSH -U ORIGIN -F "${NEW_BRANCH_WITH_PIN}"
+          GH PR CREATE --BASE "${BASE}" --HEAD "${NEW_BRANCH_WITH_PIN}" --TITLE "${COMMIT_MESSAGE}" --BODY "" | TEE PULL-REQUEST-URL
+          PULL_REQUEST_URL="$(CAT PULL-REQUEST-URL)"
+          IF [[ "X${PULL_REQUEST_URL}" == "X" ]]; THEN
+            ECHO "NO PULL REQUEST URL" 1>&2
+            EXIT 1
+          FI
+          ECHO "URL=${PULL_REQUEST_URL}" | TEE -A $GITHUB_OUTPUT
