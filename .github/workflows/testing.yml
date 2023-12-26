@@ -1,486 +1,486 @@
-name: Tests
+NAME: TESTS
 
-on:
-  workflow_dispatch: null
-  push:
-    branches:
-    - main
-    paths-ignore:
-    - 'docs/arch/**'
-  pull_request:
-    paths-ignore:
-    - 'docs/arch/**'
+ON:
+  WORKFLOW_DISPATCH: NULL
+  PUSH:
+    BRANCHES:
+    - MAIN
+    PATHS-IGNORE:
+    - 'DOCS/ARCH/**'
+  PULL_REQUEST:
+    PATHS-IGNORE:
+    - 'DOCS/ARCH/**'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version:
+JOBS:
+  BUILD:
+    RUNS-ON: UBUNTU-LATEST
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MATRIX:
+        PYTHON-VERSION:
         - "3.12"
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.cfg') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Install dev dependencies
-      run: |
-        pip install -U pip setuptools wheel build
-        pip install -U sbom4python
-        pip install -U https://github.com/scitt-community/scitt-api-emulator/archive/e89a60584fa717382f279ae24b8a1a93d458bb4d.zip
-        pip install -e .[dev]
-        python -m pip freeze
-    - name: Build
-      run: |
-        python -m build .
-    - name: Generate SBOM
-      id: generate-sbom
-      uses: anthonyharrison/sbom4python@5b458354df89357bf0253e62ea4567b1807120e2
-      with:
-        python-version: ${{ matrix.python-version }}
-        module-name: dffml
-        output-directory: sbom
-    - name: in-toto attestation for cyclonedx SBOM
-      id: in-toto-cyclonedx
-      env:
-        MODULE_NAME: dffml
-      run: |
-        echo "attestation<<GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
-        (python -m json.tool --sort-keys | tee -a $GITHUB_OUTPUT) <<EOF
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: SET UP PYTHON ${{ MATRIX.PYTHON-VERSION }}
+      USES: ACTIONS/SETUP-PYTHON@V2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+    - NAME: GET PIP CACHE
+      ID: PIP-CACHE
+      RUN: |
+        PYTHON -C "FROM PIP._INTERNAL.LOCATIONS IMPORT USER_CACHE_DIR; PRINT('::SET-OUTPUT NAME=DIR::' + USER_CACHE_DIR)"
+    - NAME: PIP CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: ${{ STEPS.PIP-CACHE.OUTPUTS.DIR }}
+        KEY: ${{ RUNNER.OS }}-PIP-${{ HASHFILES('**/SETUP.CFG') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-PIP-
+    - NAME: INSTALL DEV DEPENDENCIES
+      RUN: |
+        PIP INSTALL -U PIP SETUPTOOLS WHEEL BUILD
+        PIP INSTALL -U SBOM4PYTHON
+        PIP INSTALL -U HTTPS://GITHUB.COM/SCITT-COMMUNITY/SCITT-API-EMULATOR/ARCHIVE/E89A60584FA717382F279AE24B8A1A93D458BB4D.ZIP
+        PIP INSTALL -E .[DEV]
+        PYTHON -M PIP FREEZE
+    - NAME: BUILD
+      RUN: |
+        PYTHON -M BUILD .
+    - NAME: GENERATE SBOM
+      ID: GENERATE-SBOM
+      USES: ANTHONYHARRISON/SBOM4PYTHON@5B458354DF89357BF0253E62EA4567B1807120E2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+        MODULE-NAME: DFFML
+        OUTPUT-DIRECTORY: SBOM
+    - NAME: IN-TOTO ATTESTATION FOR CYCLONEDX SBOM
+      ID: IN-TOTO-CYCLONEDX
+      ENV:
+        MODULE_NAME: DFFML
+      RUN: |
+        ECHO "ATTESTATION<<GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
+        (PYTHON -M JSON.TOOL --SORT-KEYS | TEE -A $GITHUB_OUTPUT) <<EOF
         {
-          "_type": "https://in-toto.io/Statement/v0.1",
-          "subject": [
+          "_TYPE": "HTTPS://IN-TOTO.IO/STATEMENT/V0.1",
+          "SUBJECT": [
             {
-              "name": "$(cd dist/ && echo *.tar.gz)",
-              "digest": {"sha256": "$(cd dist/ && sha256sum $(echo *.tar.gz) | awk '{print $1}')"}
+              "NAME": "$(CD DIST/ && ECHO *.TAR.GZ)",
+              "DIGEST": {"SHA256": "$(CD DIST/ && SHA256SUM $(ECHO *.TAR.GZ) | AWK '{PRINT $1}')"}
             },
             {
-              "name": "$(cd dist/ && echo *.whl)",
-              "digest": {"sha256": "$(cd dist/ && sha256sum $(echo *.whl) | awk '{print $1}')"}
+              "NAME": "$(CD DIST/ && ECHO *.WHL)",
+              "DIGEST": {"SHA256": "$(CD DIST/ && SHA256SUM $(ECHO *.WHL) | AWK '{PRINT $1}')"}
             }
           ],
-          "predicateType": "https://cyclonedx.org/bom/v1.4",
-          "predicate": $(cat "${MODULE_NAME}-py${{ matrix.python-version }}.json")
+          "PREDICATETYPE": "HTTPS://CYCLONEDX.ORG/BOM/V1.4",
+          "PREDICATE": $(CAT "${MODULE_NAME}-PY${{ MATRIX.PYTHON-VERSION }}.JSON")
         }
         EOF
-        echo "GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
-    - name: Checkout public-keys branch
-      uses: actions/checkout@v4
-      with:
-        ref: public-keys
-        path: public-keys
-    - name: Generate keypair to sign SCITT statement
-      id: scitt-gen-keypair
-      run: |
-        ssh-keygen -q -f ssh-private -t ecdsa -b 384 -N '' -C "$(head -n 100 /dev/urandom | sha384sum | awk '{print $1}')" -I "$(date -Iseconds)" <<<y
-        cat ssh-private | python -c 'import sys; from cryptography.hazmat.primitives import serialization; print(serialization.load_ssh_private_key(sys.stdin.buffer.read(), password=None).private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption()).decode().rstrip())' > private-key.pem
-        # cat ssh-private.pub | tee -a public-keys/x509
-    - name: SSH key as x509
-      shell: python -u {0}
-      run: |
-        from cryptography import x509
-        from cryptography.x509.oid import NameOID
-        from cryptography.hazmat.primitives import hashes
-        from cryptography.hazmat.backends import default_backend
-        from cryptography.hazmat.primitives.asymmetric import rsa
-        from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
-        from jwcrypto import jwk, jws
-        import datetime
-        import pathlib
+        ECHO "GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
+    - NAME: CHECKOUT PUBLIC-KEYS BRANCH
+      USES: ACTIONS/CHECKOUT@V4
+      WITH:
+        REF: PUBLIC-KEYS
+        PATH: PUBLIC-KEYS
+    - NAME: GENERATE KEYPAIR TO SIGN SCITT STATEMENT
+      ID: SCITT-GEN-KEYPAIR
+      RUN: |
+        SSH-KEYGEN -Q -F SSH-PRIVATE -T ECDSA -B 384 -N '' -C "$(HEAD -N 100 /DEV/URANDOM | SHA384SUM | AWK '{PRINT $1}')" -I "$(DATE -ISECONDS)" <<<Y
+        CAT SSH-PRIVATE | PYTHON -C 'IMPORT SYS; FROM CRYPTOGRAPHY.HAZMAT.PRIMITIVES IMPORT SERIALIZATION; PRINT(SERIALIZATION.LOAD_SSH_PRIVATE_KEY(SYS.STDIN.BUFFER.READ(), PASSWORD=NONE).PRIVATE_BYTES(ENCODING=SERIALIZATION.ENCODING.PEM, FORMAT=SERIALIZATION.PRIVATEFORMAT.PKCS8, ENCRYPTION_ALGORITHM=SERIALIZATION.NOENCRYPTION()).DECODE().RSTRIP())' > PRIVATE-KEY.PEM
+        # CAT SSH-PRIVATE.PUB | TEE -A PUBLIC-KEYS/X509
+    - NAME: SSH KEY AS X509
+      SHELL: PYTHON -U {0}
+      RUN: |
+        FROM CRYPTOGRAPHY IMPORT X509
+        FROM CRYPTOGRAPHY.X509.OID IMPORT NAMEOID
+        FROM CRYPTOGRAPHY.HAZMAT.PRIMITIVES IMPORT HASHES
+        FROM CRYPTOGRAPHY.HAZMAT.BACKENDS IMPORT DEFAULT_BACKEND
+        FROM CRYPTOGRAPHY.HAZMAT.PRIMITIVES.ASYMMETRIC IMPORT RSA
+        FROM CRYPTOGRAPHY.HAZMAT.PRIMITIVES.SERIALIZATION IMPORT ENCODING, PUBLICFORMAT
+        FROM JWCRYPTO IMPORT JWK, JWS
+        IMPORT DATETIME
+        IMPORT PATHLIB
 
-        key = jwk.JWK.from_pem(pathlib.Path("private-key.pem").read_bytes())
-        rsa_public_key = jwk.JWK.from_json(key.export_public())
+        KEY = JWK.JWK.FROM_PEM(PATHLIB.PATH("PRIVATE-KEY.PEM").READ_BYTES())
+        RSA_PUBLIC_KEY = JWK.JWK.FROM_JSON(KEY.EXPORT_PUBLIC())
 
-        # Convert the JWK to a public key
-        public_key = rsa_public_key.get_op_key('verify')
+        # CONVERT THE JWK TO A PUBLIC KEY
+        PUBLIC_KEY = RSA_PUBLIC_KEY.GET_OP_KEY('VERIFY')
 
-        # Create a builder for the X.509 certificate
-        subject = issuer = x509.Name([
-            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
-            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Oregon"),
-            x509.NameAttribute(NameOID.LOCALITY_NAME, "Portland"),
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "SCITT Emulator"),
-            x509.NameAttribute(NameOID.COMMON_NAME, "example.com"),
+        # CREATE A BUILDER FOR THE X.509 CERTIFICATE
+        SUBJECT = ISSUER = X509.NAME([
+            X509.NAMEATTRIBUTE(NAMEOID.COUNTRY_NAME, "US"),
+            X509.NAMEATTRIBUTE(NAMEOID.STATE_OR_PROVINCE_NAME, "OREGON"),
+            X509.NAMEATTRIBUTE(NAMEOID.LOCALITY_NAME, "PORTLAND"),
+            X509.NAMEATTRIBUTE(NAMEOID.ORGANIZATION_NAME, "SCITT EMULATOR"),
+            X509.NAMEATTRIBUTE(NAMEOID.COMMON_NAME, "EXAMPLE.COM"),
         ])
 
-        cert_builder = x509.CertificateBuilder(
-            subject_name=subject,
-            issuer_name=issuer,
-            public_key=public_key,
-            serial_number=x509.random_serial_number(),
-            not_valid_before=datetime.datetime.utcnow(),
-            not_valid_after=datetime.datetime.utcnow() + datetime.timedelta(days=1),  # Certificate valid for 1 day
-            extensions=[]
+        CERT_BUILDER = X509.CERTIFICATEBUILDER(
+            SUBJECT_NAME=SUBJECT,
+            ISSUER_NAME=ISSUER,
+            PUBLIC_KEY=PUBLIC_KEY,
+            SERIAL_NUMBER=X509.RANDOM_SERIAL_NUMBER(),
+            NOT_VALID_BEFORE=DATETIME.DATETIME.UTCNOW(),
+            NOT_VALID_AFTER=DATETIME.DATETIME.UTCNOW() + DATETIME.TIMEDELTA(DAYS=1),  # CERTIFICATE VALID FOR 1 DAY
+            EXTENSIONS=[]
         )
 
-        # Self-sign the certificate with the private key
-        private_key_op = key.get_op_key('sign')
-        cert = cert_builder.sign(private_key=private_key_op, algorithm=hashes.SHA256(), backend=default_backend())
+        # SELF-SIGN THE CERTIFICATE WITH THE PRIVATE KEY
+        PRIVATE_KEY_OP = KEY.GET_OP_KEY('SIGN')
+        CERT = CERT_BUILDER.SIGN(PRIVATE_KEY=PRIVATE_KEY_OP, ALGORITHM=HASHES.SHA256(), BACKEND=DEFAULT_BACKEND())
 
-        # Serialize the certificate
-        cert_pem = cert.public_bytes(encoding=Encoding.PEM)
+        # SERIALIZE THE CERTIFICATE
+        CERT_PEM = CERT.PUBLIC_BYTES(ENCODING=ENCODING.PEM)
 
-        # Display or save the PEM encoded certificate
-        contents = b""
-        try:
-            pathlib.Path("public-keys", "x509").read_bytes()
-        except:
-            pass
-        pathlib.Path("public-keys", "x509").write_bytes(contents + b"\n" + cert_pem)
-    - name: Remove ssh private
-      run: |
-        rm -v ssh-private
-    - name: Push new public key
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        set -xe
-        cd public-keys
-        gh auth setup-git
-        git config --global --add safe.directory "${PWD}"
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        git add -A
-        # If no delta clean exit
-        git commit -sm "Snapshot" || exit 0
-        git push -uf origin "HEAD:public-keys"
-        # Wait for propagation
-        # TODO x509 style polling?
-        sleep 10s
-    - name: Submit SBOM to SCITT
-      id: scitt-submit-sbom
-      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
-      with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
-        subject: pkg:github/${{ github.repository }}@${{ github.sha }}
-        payload: ${{ steps.in-toto-cyclonedx.outputs.attestation }}
-        private-key-pem: private-key.pem
-        scitt-url: https://scitt.unstable.chadig.com
-    - name: Create Pull Request
-      if: ${{ steps.generate-sbom.outputs.changed }}
-      uses: peter-evans/create-pull-request@v5.0.2
-      with:
-        commit-message: "chore: update SBOM for Python ${{ matrix.python-version }}"
-        title: "chore: update SBOM for Python ${{ matrix.python-version }}"
-        branch: chore-sbom-py${{ matrix.python-version }}
-        delete-branch: true
-        author: GitHub Actions <actions@github.com>
-        add-paths: sbom
-    - uses: openvex/generate-vex@159b7ee4845fb48f1991395ce8501d6263407360
-      name: Run vexctl
-      id: vexctl
-      with:
-        product: pkg:github/${{ github.repository }}@${{ github.sha }}
-    - name: Submit OpenVEX to SCITT
-      id: scitt-submit-openvex
-      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
-      with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
-        subject: pkg:github/${{ github.repository }}@${{ github.sha }}
-        payload: ${{ steps.vexctl.outputs.openvex }}
-        private-key-pem: private-key.pem
-        scitt-url: https://scitt.unstable.chadig.com
-    - name: Remove private key used in keypair to sign SCITT statement
-      run: |
-        rm -v private-key.pem
+        # DISPLAY OR SAVE THE PEM ENCODED CERTIFICATE
+        CONTENTS = B""
+        TRY:
+            PATHLIB.PATH("PUBLIC-KEYS", "X509").READ_BYTES()
+        EXCEPT:
+            PASS
+        PATHLIB.PATH("PUBLIC-KEYS", "X509").WRITE_BYTES(CONTENTS + B"\N" + CERT_PEM)
+    - NAME: REMOVE SSH PRIVATE
+      RUN: |
+        RM -V SSH-PRIVATE
+    - NAME: PUSH NEW PUBLIC KEY
+      ENV:
+        GH_TOKEN: ${{ GITHUB.TOKEN }}
+      RUN: |
+        SET -XE
+        CD PUBLIC-KEYS
+        GH AUTH SETUP-GIT
+        GIT CONFIG --GLOBAL --ADD SAFE.DIRECTORY "${PWD}"
+        GIT CONFIG --GLOBAL USER.EMAIL "ACTIONS@GITHUB.COM"
+        GIT CONFIG --GLOBAL USER.NAME "GITHUB ACTIONS"
+        GIT ADD -A
+        # IF NO DELTA CLEAN EXIT
+        GIT COMMIT -SM "SNAPSHOT" || EXIT 0
+        GIT PUSH -UF ORIGIN "HEAD:PUBLIC-KEYS"
+        # WAIT FOR PROPAGATION
+        # TODO X509 STYLE POLLING?
+        SLEEP 10S
+    - NAME: SUBMIT SBOM TO SCITT
+      ID: SCITT-SUBMIT-SBOM
+      USES: SCITT-COMMUNITY/SCITT-API-EMULATOR@F1F5C16630A28511E970B6903FBC4C0DB6C07654
+      WITH:
+        ISSUER: DID:WEB:RAW.GITHUBUSERCONTENT.COM:INTEL:DFFML:PUBLIC-KEYS:X509
+        SUBJECT: PKG:GITHUB/${{ GITHUB.REPOSITORY }}@${{ GITHUB.SHA }}
+        PAYLOAD: ${{ STEPS.IN-TOTO-CYCLONEDX.OUTPUTS.ATTESTATION }}
+        PRIVATE-KEY-PEM: PRIVATE-KEY.PEM
+        SCITT-URL: HTTPS://SCITT.UNSTABLE.CHADIG.COM
+    - NAME: CREATE PULL REQUEST
+      IF: ${{ STEPS.GENERATE-SBOM.OUTPUTS.CHANGED }}
+      USES: PETER-EVANS/CREATE-PULL-REQUEST@V5.0.2
+      WITH:
+        COMMIT-MESSAGE: "CHORE: UPDATE SBOM FOR PYTHON ${{ MATRIX.PYTHON-VERSION }}"
+        TITLE: "CHORE: UPDATE SBOM FOR PYTHON ${{ MATRIX.PYTHON-VERSION }}"
+        BRANCH: CHORE-SBOM-PY${{ MATRIX.PYTHON-VERSION }}
+        DELETE-BRANCH: TRUE
+        AUTHOR: GITHUB ACTIONS <ACTIONS@GITHUB.COM>
+        ADD-PATHS: SBOM
+    - USES: OPENVEX/GENERATE-VEX@159B7EE4845FB48F1991395CE8501D6263407360
+      NAME: RUN VEXCTL
+      ID: VEXCTL
+      WITH:
+        PRODUCT: PKG:GITHUB/${{ GITHUB.REPOSITORY }}@${{ GITHUB.SHA }}
+    - NAME: SUBMIT OPENVEX TO SCITT
+      ID: SCITT-SUBMIT-OPENVEX
+      USES: SCITT-COMMUNITY/SCITT-API-EMULATOR@F1F5C16630A28511E970B6903FBC4C0DB6C07654
+      WITH:
+        ISSUER: DID:WEB:RAW.GITHUBUSERCONTENT.COM:INTEL:DFFML:PUBLIC-KEYS:X509
+        SUBJECT: PKG:GITHUB/${{ GITHUB.REPOSITORY }}@${{ GITHUB.SHA }}
+        PAYLOAD: ${{ STEPS.VEXCTL.OUTPUTS.OPENVEX }}
+        PRIVATE-KEY-PEM: PRIVATE-KEY.PEM
+        SCITT-URL: HTTPS://SCITT.UNSTABLE.CHADIG.COM
+    - NAME: REMOVE PRIVATE KEY USED IN KEYPAIR TO SIGN SCITT STATEMENT
+      RUN: |
+        RM -V PRIVATE-KEY.PEM
 
-  lint:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 40
-      matrix:
-        check: [changelog, whitespace, commit, lines]
-        python-version: [3.7]
-        node-version: [12.x]
+  LINT:
+    RUNS-ON: UBUNTU-LATEST
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MAX-PARALLEL: 40
+      MATRIX:
+        CHECK: [CHANGELOG, WHITESPACE, COMMIT, LINES]
+        PYTHON-VERSION: [3.7]
+        NODE-VERSION: [12.X]
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout full upstream repo
-      run: |
-        git remote set-url origin https://github.com/intel/dffml
-        git fetch --prune --unshallow
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        git config --global user.email "dffml@intel.com"
-        git config --global user.name "DFFML CI/CD"
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        set -x
-        ./.ci/deps.sh ${{ matrix.check }}
-    - name: Run check
-      run: |
-        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        SSH_DFFML_GH_PAGES=${{ secrets.SSH_DFFML_GH_PAGES }} ./.ci/run.sh ${{ matrix.check }}
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: CHECKOUT FULL UPSTREAM REPO
+      RUN: |
+        GIT REMOTE SET-URL ORIGIN HTTPS://GITHUB.COM/INTEL/DFFML
+        GIT FETCH --PRUNE --UNSHALLOW
+        GIT FETCH --DEPTH=1 ORIGIN +REFS/TAGS/*:REFS/TAGS/*
+        GIT CONFIG --GLOBAL USER.EMAIL "DFFML@INTEL.COM"
+        GIT CONFIG --GLOBAL USER.NAME "DFFML CI/CD"
+    - NAME: SET UP PYTHON ${{ MATRIX.PYTHON-VERSION }}
+      USES: ACTIONS/SETUP-PYTHON@V2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+    - NAME: USE NODE.JS ${{ MATRIX.NODE-VERSION }}
+      USES: ACTIONS/SETUP-NODE@V1
+      WITH:
+        NODE-VERSION: ${{ MATRIX.NODE-VERSION }}
+    - NAME: GET PIP CACHE
+      ID: PIP-CACHE
+      RUN: |
+        PYTHON -C "FROM PIP._INTERNAL.LOCATIONS IMPORT USER_CACHE_DIR; PRINT('::SET-OUTPUT NAME=DIR::' + USER_CACHE_DIR)"
+    - NAME: PIP CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: ${{ STEPS.PIP-CACHE.OUTPUTS.DIR }}
+        KEY: ${{ RUNNER.OS }}-PIP-${{ HASHFILES('**/SETUP.PY') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-PIP-
+    - NAME: INSTALL DEPENDENCIES
+      RUN: |
+        SET -X
+        ./.CI/DEPS.SH ${{ MATRIX.CHECK }}
+    - NAME: RUN CHECK
+      RUN: |
+        EXPORT GITHUB_TOKEN=${{ SECRETS.GITHUB_TOKEN }}
+        SSH_DFFML_GH_PAGES=${{ SECRETS.SSH_DFFML_GH_PAGES }} ./.CI/RUN.SH ${{ MATRIX.CHECK }}
 
-  container:
-    runs-on: ubuntu-latest
+  CONTAINER:
+    RUNS-ON: UBUNTU-LATEST
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        set -x
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    - name: Run check
-      run: |
-        ./.ci/run.sh container
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: INSTALL DEPENDENCIES
+      RUN: |
+        SET -X
+        CURL -FSSL HTTPS://DOWNLOAD.DOCKER.COM/LINUX/UBUNTU/GPG | SUDO APT-KEY ADD -
+        SUDO ADD-APT-REPOSITORY "DEB [ARCH=AMD64] HTTPS://DOWNLOAD.DOCKER.COM/LINUX/UBUNTU $(LSB_RELEASE -CS) STABLE"
+        SUDO APT-GET UPDATE && SUDO APT-GET INSTALL -Y DOCKER-CE DOCKER-CE-CLI CONTAINERD.IO
+    - NAME: RUN CHECK
+      RUN: |
+        ./.CI/RUN.SH CONTAINER
 
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 100
-      matrix:
-        plugin:
-        - model/daal4py
-        - model/tensorflow
-        - model/scratch
-        - model/scikit
-        - model/vowpalWabbit
-        - model/autosklearn
-        - model/xgboost
-        - operations/binsec
-        - operations/data
-        - operations/deploy
-        - operations/image
-        - operations/nlp
-        - source/mysql
-        - feature/git
-        - feature/auth
-        - service/http
-        - configloader/yaml
-        - configloader/image
-        - source/mongodb
-        - entities/alice
-        python-version:
+  TEST:
+    RUNS-ON: UBUNTU-LATEST
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MAX-PARALLEL: 100
+      MATRIX:
+        PLUGIN:
+        - MODEL/DAAL4PY
+        - MODEL/TENSORFLOW
+        - MODEL/SCRATCH
+        - MODEL/SCIKIT
+        - MODEL/VOWPALWABBIT
+        - MODEL/AUTOSKLEARN
+        - MODEL/XGBOOST
+        - OPERATIONS/BINSEC
+        - OPERATIONS/DATA
+        - OPERATIONS/DEPLOY
+        - OPERATIONS/IMAGE
+        - OPERATIONS/NLP
+        - SOURCE/MYSQL
+        - FEATURE/GIT
+        - FEATURE/AUTH
+        - SERVICE/HTTP
+        - CONFIGLOADER/YAML
+        - CONFIGLOADER/IMAGE
+        - SOURCE/MONGODB
+        - ENTITIES/ALICE
+        PYTHON-VERSION:
         - "3.12"
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout full upstream repo
-      run: |
-        git remote set-url origin https://github.com/intel/dffml
-        git fetch --prune --unshallow
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        git config --global user.email "dffml@intel.com"
-        git config --global user.name "DFFML CI/CD"
-    - name: Remove unused software
-      run: |
-        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: shouldi test binary cache
-      uses: actions/cache@v1
-      with:
-        path: examples/shouldi/tests/downloads
-        key: ${{ hashFiles('examples/shouldi/tests/binaries.py') }}
-        restore-keys: |
-          ${{ runner.os }}-shouldi-test-binaries-
-    - name: Install dependencies
-      run: |
-        set -x
-        ./.ci/deps.sh ${{ matrix.plugin }}
-    - name: Test
-      run: |
-        set -x
-        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export PYTHON=python${{ matrix.python-version }}
-        export PLUGIN=${{ matrix.plugin }}
-        export LOGGING=debug
-        export PATH="${HOME}/.local/bin:${PATH}"
-        export PYPI_TOKENS=$(mktemp)
-        cat > ${PYPI_TOKENS} <<EOF
-        examples/shouldi=${{ secrets.PYPI_SHOULDI }}
-        model/daal4py=${{ secrets.PYPI_MODEL_DAAL4PY }}
-        model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
-        model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
-        model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
-        model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
-        model/spacy=${{ secrets.PYPI_MODEL_SPACY }}
-        model/vowpalWabbit=${{ secrets.PYPI_MODEL_VOWPALWABBIT }}
-        model/autosklearn=${{ secrets.PYPI_MODEL_AUTOSKLEARN }}
-        model/pytorch=${{ secrets.PYPI_MODEL_PYTORCH }}
-        model/xgboost=${{ secrets.PYPI_MODEL_XGBOOST }}
-        source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
-        source/mongodb=${{ secrets.PYPI_SOURCE_MONGODB }}
-        feature/git=${{ secrets.PYPI_FEATURE_GIT }}
-        feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
-        operations/binsec=${{ secrets.PYPI_OPERATIONS_BINSEC }}
-        operations/data=${{ secrets.PYPI_OPERATIONS_DATA }}
-        operations/deploy=${{ secrets.PYPI_OPERATIONS_DEPLOY }}
-        operations/image=${{ secrets.PYPI_OPERATIONS_IMAGE }}
-        operations/nlp=${{ secrets.PYPI_OPERATIONS_NLP }}
-        service/http=${{ secrets.PYPI_SERVICE_HTTP }}
-        configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
-        configloader/image=${{ secrets.PYPI_CONFIG_IMAGE }}
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: CHECKOUT FULL UPSTREAM REPO
+      RUN: |
+        GIT REMOTE SET-URL ORIGIN HTTPS://GITHUB.COM/INTEL/DFFML
+        GIT FETCH --PRUNE --UNSHALLOW
+        GIT FETCH --DEPTH=1 ORIGIN +REFS/TAGS/*:REFS/TAGS/*
+        GIT CONFIG --GLOBAL USER.EMAIL "DFFML@INTEL.COM"
+        GIT CONFIG --GLOBAL USER.NAME "DFFML CI/CD"
+    - NAME: REMOVE UNUSED SOFTWARE
+      RUN: |
+        SUDO RM -RF /USR/SHARE/DOTNET /USR/LOCAL/LIB/ANDROID /OPT/GHC
+    - NAME: SET UP PYTHON ${{ MATRIX.PYTHON-VERSION }}
+      USES: ACTIONS/SETUP-PYTHON@V2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+    - NAME: GET PIP CACHE
+      ID: PIP-CACHE
+      RUN: |
+        PYTHON -C "FROM PIP._INTERNAL.LOCATIONS IMPORT USER_CACHE_DIR; PRINT('::SET-OUTPUT NAME=DIR::' + USER_CACHE_DIR)"
+    - NAME: PIP CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: ${{ STEPS.PIP-CACHE.OUTPUTS.DIR }}
+        KEY: ${{ RUNNER.OS }}-PIP-${{ HASHFILES('**/SETUP.PY') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-PIP-
+    - NAME: SHOULDI TEST BINARY CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: EXAMPLES/SHOULDI/TESTS/DOWNLOADS
+        KEY: ${{ HASHFILES('EXAMPLES/SHOULDI/TESTS/BINARIES.PY') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-SHOULDI-TEST-BINARIES-
+    - NAME: INSTALL DEPENDENCIES
+      RUN: |
+        SET -X
+        ./.CI/DEPS.SH ${{ MATRIX.PLUGIN }}
+    - NAME: TEST
+      RUN: |
+        SET -X
+        EXPORT GITHUB_TOKEN=${{ SECRETS.GITHUB_TOKEN }}
+        EXPORT PYTHON=PYTHON${{ MATRIX.PYTHON-VERSION }}
+        EXPORT PLUGIN=${{ MATRIX.PLUGIN }}
+        EXPORT LOGGING=DEBUG
+        EXPORT PATH="${HOME}/.LOCAL/BIN:${PATH}"
+        EXPORT PYPI_TOKENS=$(MKTEMP)
+        CAT > ${PYPI_TOKENS} <<EOF
+        EXAMPLES/SHOULDI=${{ SECRETS.PYPI_SHOULDI }}
+        MODEL/DAAL4PY=${{ SECRETS.PYPI_MODEL_DAAL4PY }}
+        MODEL/TENSORFLOW=${{ SECRETS.PYPI_MODEL_TENSORFLOW }}
+        MODEL/TENSORFLOW_HUB=${{ SECRETS.PYPI_MODEL_TENSORFLOW_HUB }}
+        MODEL/SCRATCH=${{ SECRETS.PYPI_MODEL_SCRATCH }}
+        MODEL/SCIKIT=${{ SECRETS.PYPI_MODEL_SCIKIT }}
+        MODEL/SPACY=${{ SECRETS.PYPI_MODEL_SPACY }}
+        MODEL/VOWPALWABBIT=${{ SECRETS.PYPI_MODEL_VOWPALWABBIT }}
+        MODEL/AUTOSKLEARN=${{ SECRETS.PYPI_MODEL_AUTOSKLEARN }}
+        MODEL/PYTORCH=${{ SECRETS.PYPI_MODEL_PYTORCH }}
+        MODEL/XGBOOST=${{ SECRETS.PYPI_MODEL_XGBOOST }}
+        SOURCE/MYSQL=${{ SECRETS.PYPI_SOURCE_MYSQL }}
+        SOURCE/MONGODB=${{ SECRETS.PYPI_SOURCE_MONGODB }}
+        FEATURE/GIT=${{ SECRETS.PYPI_FEATURE_GIT }}
+        FEATURE/AUTH=${{ SECRETS.PYPI_FEATURE_AUTH }}
+        OPERATIONS/BINSEC=${{ SECRETS.PYPI_OPERATIONS_BINSEC }}
+        OPERATIONS/DATA=${{ SECRETS.PYPI_OPERATIONS_DATA }}
+        OPERATIONS/DEPLOY=${{ SECRETS.PYPI_OPERATIONS_DEPLOY }}
+        OPERATIONS/IMAGE=${{ SECRETS.PYPI_OPERATIONS_IMAGE }}
+        OPERATIONS/NLP=${{ SECRETS.PYPI_OPERATIONS_NLP }}
+        SERVICE/HTTP=${{ SECRETS.PYPI_SERVICE_HTTP }}
+        CONFIGLOADER/YAML=${{ SECRETS.PYPI_CONFIG_YAML }}
+        CONFIGLOADER/IMAGE=${{ SECRETS.PYPI_CONFIG_IMAGE }}
         EOF
-        export TWINE_USERNAME=__token__
-        if [ "x${PLUGIN}" = "x." ]; then
-          export TWINE_PASSWORD=${{ secrets.PYPI_DFFML }}
-        else
-          export TWINE_PASSWORD=$(grep "${PLUGIN}=" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
-        fi
-        rm ${PYPI_TOKENS}
-        ./.ci/run.sh "${PLUGIN}"
-        if [ "x${PLUGIN}" = "x." ]; then
-          CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} codecov
-        fi
+        EXPORT TWINE_USERNAME=__TOKEN__
+        IF [ "X${PLUGIN}" = "X." ]; THEN
+          EXPORT TWINE_PASSWORD=${{ SECRETS.PYPI_DFFML }}
+        ELSE
+          EXPORT TWINE_PASSWORD=$(GREP "${PLUGIN}=" "${PYPI_TOKENS}" | SED 'S/^[^=]*=//G')
+        FI
+        RM ${PYPI_TOKENS}
+        ./.CI/RUN.SH "${PLUGIN}"
+        IF [ "X${PLUGIN}" = "X." ]; THEN
+          CODECOV_TOKEN=${{ SECRETS.CODECOV_TOKEN }} CODECOV
+        FI
 
-  tutorials:
-    runs-on: ubuntu-latest
-    if: false
-    strategy:
-      fail-fast: false
-      max-parallel: 100
-      matrix:
-        python-version: [3.7]
-        docs:
-        - docs/cli.rst
-        - docs/examples/dataflows.rst
-        - docs/examples/integration.rst
-        - docs/examples/or_covid_data_by_county.rst
-        - docs/examples/shouldi.rst
-        - docs/examples/innersource/swportal.rst
-        - docs/examples/innersource/microservice.rst
-        - docs/examples/innersource/kubernetes.rst
-        - docs/examples/icecream_sales.rst
-        - docs/examples/data_cleanup/data_cleanup.rst
-        - docs/examples/data_cleanup/data_cleanup_classfication.rst
-        - docs/installation.rst
-        - docs/troubleshooting.rst
-        - docs/tutorials/accuracy/mse.rst
-        - docs/tutorials/dataflows/io.rst
-        - docs/tutorials/dataflows/nlp.rst
-        - docs/tutorials/models/iris.rst
-        - docs/tutorials/models/package.rst
-        - docs/tutorials/models/docs.rst
-        - docs/tutorials/models/slr.rst
-        - docs/tutorials/sources/complex.rst
-        - docs/tutorials/sources/file.rst
+  TUTORIALS:
+    RUNS-ON: UBUNTU-LATEST
+    IF: FALSE
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MAX-PARALLEL: 100
+      MATRIX:
+        PYTHON-VERSION: [3.7]
+        DOCS:
+        - DOCS/CLI.RST
+        - DOCS/EXAMPLES/DATAFLOWS.RST
+        - DOCS/EXAMPLES/INTEGRATION.RST
+        - DOCS/EXAMPLES/OR_COVID_DATA_BY_COUNTY.RST
+        - DOCS/EXAMPLES/SHOULDI.RST
+        - DOCS/EXAMPLES/INNERSOURCE/SWPORTAL.RST
+        - DOCS/EXAMPLES/INNERSOURCE/MICROSERVICE.RST
+        - DOCS/EXAMPLES/INNERSOURCE/KUBERNETES.RST
+        - DOCS/EXAMPLES/ICECREAM_SALES.RST
+        - DOCS/EXAMPLES/DATA_CLEANUP/DATA_CLEANUP.RST
+        - DOCS/EXAMPLES/DATA_CLEANUP/DATA_CLEANUP_CLASSFICATION.RST
+        - DOCS/INSTALLATION.RST
+        - DOCS/TROUBLESHOOTING.RST
+        - DOCS/TUTORIALS/ACCURACY/MSE.RST
+        - DOCS/TUTORIALS/DATAFLOWS/IO.RST
+        - DOCS/TUTORIALS/DATAFLOWS/NLP.RST
+        - DOCS/TUTORIALS/MODELS/IRIS.RST
+        - DOCS/TUTORIALS/MODELS/PACKAGE.RST
+        - DOCS/TUTORIALS/MODELS/DOCS.RST
+        - DOCS/TUTORIALS/MODELS/SLR.RST
+        - DOCS/TUTORIALS/SOURCES/COMPLEX.RST
+        - DOCS/TUTORIALS/SOURCES/FILE.RST
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout full upstream repo
-      run: |
-        git remote set-url origin https://github.com/intel/dffml
-        git fetch --prune --unshallow
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        git config --global user.email "dffml@intel.com"
-        git config --global user.name "DFFML CI/CD"
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        set -x
-        ./.ci/deps.sh .
-    - name: Test
-      run: |
-        set -x
-        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export PYTHON=python${{ matrix.python-version }}
-        export PLUGIN=${{ matrix.plugin }}
-        export LOGGING=debug
-        export PATH="${HOME}/.local/bin:${PATH}"
-        ./.ci/run.sh consoletest ${{ matrix.docs }}
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: CHECKOUT FULL UPSTREAM REPO
+      RUN: |
+        GIT REMOTE SET-URL ORIGIN HTTPS://GITHUB.COM/INTEL/DFFML
+        GIT FETCH --PRUNE --UNSHALLOW
+        GIT FETCH --DEPTH=1 ORIGIN +REFS/TAGS/*:REFS/TAGS/*
+        GIT CONFIG --GLOBAL USER.EMAIL "DFFML@INTEL.COM"
+        GIT CONFIG --GLOBAL USER.NAME "DFFML CI/CD"
+    - NAME: SET UP PYTHON ${{ MATRIX.PYTHON-VERSION }}
+      USES: ACTIONS/SETUP-PYTHON@V2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+    - NAME: GET PIP CACHE
+      ID: PIP-CACHE
+      RUN: |
+        PYTHON -C "FROM PIP._INTERNAL.LOCATIONS IMPORT USER_CACHE_DIR; PRINT('::SET-OUTPUT NAME=DIR::' + USER_CACHE_DIR)"
+    - NAME: PIP CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: ${{ STEPS.PIP-CACHE.OUTPUTS.DIR }}
+        KEY: ${{ RUNNER.OS }}-PIP-${{ HASHFILES('**/SETUP.PY') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-PIP-
+    - NAME: INSTALL DEPENDENCIES
+      RUN: |
+        SET -X
+        ./.CI/DEPS.SH .
+    - NAME: TEST
+      RUN: |
+        SET -X
+        EXPORT GITHUB_TOKEN=${{ SECRETS.GITHUB_TOKEN }}
+        EXPORT PYTHON=PYTHON${{ MATRIX.PYTHON-VERSION }}
+        EXPORT PLUGIN=${{ MATRIX.PLUGIN }}
+        EXPORT LOGGING=DEBUG
+        EXPORT PATH="${HOME}/.LOCAL/BIN:${PATH}"
+        ./.CI/RUN.SH CONSOLETEST ${{ MATRIX.DOCS }}
 
-  macos:
-    runs-on: macos-latest
-    if: false
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout full upstream repo
-      run: |
-        git remote set-url origin https://github.com/intel/dffml
-        git fetch --prune --unshallow
-        git config --global user.email "dffml@intel.com"
-        git config --global user.name "DFFML CI/CD"
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Setup DFFML
-      run: |
-        pip install -U pip setuptools wheel
-        pip install -e .[dev]
-        dffml service dev install -skip model/daal4py
-        # XGBoost requires libomp on OSX
-        brew install libomp
-    - name: Test
-      run: |
-        python -m unittest discover -v
-        python -m pip freeze
+  MACOS:
+    RUNS-ON: MACOS-LATEST
+    IF: FALSE
+    STRATEGY:
+      FAIL-FAST: FALSE
+      MATRIX:
+        PYTHON-VERSION: [3.7]
+    STEPS:
+    - USES: ACTIONS/CHECKOUT@V2
+    - NAME: CHECKOUT FULL UPSTREAM REPO
+      RUN: |
+        GIT REMOTE SET-URL ORIGIN HTTPS://GITHUB.COM/INTEL/DFFML
+        GIT FETCH --PRUNE --UNSHALLOW
+        GIT CONFIG --GLOBAL USER.EMAIL "DFFML@INTEL.COM"
+        GIT CONFIG --GLOBAL USER.NAME "DFFML CI/CD"
+    - NAME: SET UP PYTHON ${{ MATRIX.PYTHON-VERSION }}
+      USES: ACTIONS/SETUP-PYTHON@V2
+      WITH:
+        PYTHON-VERSION: ${{ MATRIX.PYTHON-VERSION }}
+    - NAME: GET PIP CACHE
+      ID: PIP-CACHE
+      RUN: |
+        PYTHON -C "FROM PIP._INTERNAL.LOCATIONS IMPORT USER_CACHE_DIR; PRINT('::SET-OUTPUT NAME=DIR::' + USER_CACHE_DIR)"
+    - NAME: PIP CACHE
+      USES: ACTIONS/CACHE@V1
+      WITH:
+        PATH: ${{ STEPS.PIP-CACHE.OUTPUTS.DIR }}
+        KEY: ${{ RUNNER.OS }}-PIP-${{ HASHFILES('**/SETUP.PY') }}
+        RESTORE-KEYS: |
+          ${{ RUNNER.OS }}-PIP-
+    - NAME: SETUP DFFML
+      RUN: |
+        PIP INSTALL -U PIP SETUPTOOLS WHEEL
+        PIP INSTALL -E .[DEV]
+        DFFML SERVICE DEV INSTALL -SKIP MODEL/DAAL4PY
+        # XGBOOST REQUIRES LIBOMP ON OSX
+        BREW INSTALL LIBOMP
+    - NAME: TEST
+      RUN: |
+        PYTHON -M UNITTEST DISCOVER -V
+        PYTHON -M PIP FREEZE
