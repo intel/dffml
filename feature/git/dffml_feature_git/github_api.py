@@ -198,9 +198,6 @@ def make_github_operations(
                     logger.error(error)
                     continue
 
-            commit_message = make_commit_message(repo, fork)
-            pull_request_body = make_pull_request_body(repo, fork)
-
             try:
                 fork.create_git_ref(
                     ref="refs/heads/" + new_branch_name,
@@ -236,8 +233,11 @@ def make_github_operations(
                 else:
                     logger.info(msg)
 
+            commit_message = make_commit_message(repo, fork, old_content)
+            pull_request_body = make_pull_request_body(repo, fork, old_content)
+
             # Transform the content
-            content = transform_file_content(old_content)
+            content = transform_file_content(repo, fork, old_content)
 
             # Update file content
             if old_content:
@@ -298,7 +298,7 @@ file_content = (
         "workflows",
         "pin_downstream.yml",
     )
-    .read_text()
+    .read_bytes()
 )
 
 
@@ -309,13 +309,19 @@ async def main(repos, file_name):
         token,
         repo_urls,
         new_branch_name,
-        lambda _upstream, fork: commit_message,
-        lambda _upstream, fork: pull_request_body.replace(
-            "REPO_ORG/REPO_NAME", fork.full_name
+        lambda _upstream, _fork, _old_content: commit_message,
+        lambda _upstream, fork, _old_content: pull_request_body.replace(
+            "REPO_ORG/REPO_NAME",
+            fork.full_name,
         ),
-        lambda content: content.upper()
-        if content is not None
-        else file_content,
+        lambda upstream, _fork, old_content: (
+            old_content if old_content is not None else file_content
+        )
+        .decode()
+        .replace(
+            "- master",
+            f"- {upstream.default_branch}",
+        ),
         fail_on_not_present=False,
     )
     return
