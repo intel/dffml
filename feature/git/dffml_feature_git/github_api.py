@@ -1,5 +1,7 @@
 import os
+import sys
 import json
+import time
 import asyncio
 import logging
 
@@ -172,15 +174,33 @@ def make_github_operations(
     for repo_url in repo_urls:
         try:
             # Fork the repository
+            print("\n\n\n\nUPDATING FOR", repo_url, "\n\n\n", file=sys.stderr)
             org, repo_name = repo_url.split("/")[-2:]
             repo = g.get_repo(f"{org}/{repo_name}")
             fork = user.create_fork(repo)
 
+            # Create a new branch from the default branch
+            fork_not_ready_error = None
+            for i in range(0, 5):
+                try:
+                    fork_default_branch = fork.get_branch(fork.default_branch)
+                    fork_not_ready_error = None
+                    break
+                except github.GithubException as error:
+                    fork_not_ready_error = error
+                    time.sleep(2)
+            if fork_not_ready_error is not None:
+                try:
+                    raise Exception(
+                        "Fork not yet ready"
+                    ) from fork_not_ready_error
+                except Exception as error:
+                    logger.error(error)
+                    continue
+
             commit_message = make_commit_message(repo, fork)
             pull_request_body = make_pull_request_body(repo, fork)
 
-            # Create a new branch from the default branch
-            fork_default_branch = fork.get_branch(fork.default_branch)
             try:
                 fork.create_git_ref(
                     ref="refs/heads/" + new_branch_name,
@@ -241,17 +261,27 @@ def make_github_operations(
             snoop.pp(fork)
             base = base_repo.default_branch
             head = f"{user.login}:{fork.name}:{new_branch_name}"
-            base_repo.create_pull(
+            pr = base_repo.create_pull(
                 title=commit_message,
                 body=pull_request_body,
                 head=head,
                 base=base,
             )
 
-        except GithubException as error:
-            raise Exception(
-                f"Unable to complete operations for {repo_url} due to {error}"
-            ) from error
+            print(
+                "\n\n\n\nUPDATED SUCCESSFULLY",
+                pr.html_url,
+                "\n\n\n",
+                file=sys.stderr,
+            )
+
+        except Exception as error:
+            try:
+                raise Exception(
+                    f"Unable to complete operations for {repo_url} due to {error}"
+                ) from error
+            except Exception as error:
+                logger.error(error)
 
 
 import pathlib
