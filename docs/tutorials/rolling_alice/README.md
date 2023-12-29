@@ -1,3 +1,7 @@
+# `alice` branch has been rebased into `main` branch, please see: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/
+
+---
+
 # [Rolling Alice](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/)
 
 > This is Alice's plan. We are building her as a community, reach out
