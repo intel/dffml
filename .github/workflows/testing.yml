@@ -133,13 +133,8 @@ jobs:
         # Serialize the certificate
         cert_pem = cert.public_bytes(encoding=Encoding.PEM)
 
-        # Display or save the PEM encoded certificate
-        contents = b""
-        try:
-            pathlib.Path("public-keys", "x509").read_bytes()
-        except:
-            pass
-        pathlib.Path("public-keys", "x509").write_bytes(contents + b"\n" + cert_pem)
+        # Save the PEM encoded certificate
+        pathlib.Path("public-keys", "x509").write_bytes(cert_pem)
     - name: Remove ssh private
       run: |
         rm -v ssh-private
