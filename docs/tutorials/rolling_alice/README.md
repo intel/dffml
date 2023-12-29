@@ -2,18 +2,15 @@
 
 > This is Alice's plan. We are building her as a community, reach out
 > if you want to get involved. The plan is fairly abstract, as our goals are to
-> take Alice (the nickname for the architecture) and ensure the fundamentals we
-> need are baked into core infrastructure and specifications. Alice the
+> take Alice (the nickname for the entity and the architecture) and ensure the
+> fundamentals we need are baked into core infrastructure and specifications. Alice the
 > architecture is a pattern (as we all are). At a high level, this means we
 > need to ensure a secure pattern for decentralized event driven communication
 > between N agents. The pattern enables an agent to understand it's operating
 > context and make decisions in alignment with it's strategic principles.
 >
 > Discussion thread https://github.com/intel/dffml/discussions/1406?sort=new
-> we will be the central point for communications discussing Alice
-> until she is merged into the `main` branch. At which point
-> communications will branch off in a decentralized fashion reflective
-> of her overlay (plugin) ecosystem.
+> we will be the central point for communications discussing Alice.
 >
 > [Rolling Alice Progress Reports](https://gist.github.com/pdxjohnny/07b8c7b4a9e05579921aa3cc8aed4866)
 
