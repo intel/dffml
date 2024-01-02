@@ -1,4 +1,4 @@
-FROM python:3.7-buster
+FROM python:3.11-buster
 
 # ========================== BEGIN DOCKER SETUP ================================
 #
