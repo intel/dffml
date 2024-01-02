@@ -1,6 +1,6 @@
 [run]
 source =
-    dffml_config_jsonschema
+    dffml_configloader_jsonschema
     tests
 branch = True
 

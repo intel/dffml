@@ -1,2 +1,2 @@
 [dffml.configloader]
-jsonschema = dffml_config_jsonschema.configloader:JSONSchemaConfigLoader
+jsonschema = dffml_configloader_jsonschema.configloader:JSONSchemaConfigLoader

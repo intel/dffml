@@ -1,3 +1,3 @@
 include README.rst
 include LICENSE
-recursive-include dffml_config_jsonschema *
+recursive-include dffml_configloader_jsonschema *

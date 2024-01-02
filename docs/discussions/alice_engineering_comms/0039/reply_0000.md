@@ -16,7 +16,7 @@ $ dffml version
 dffml 0.4.0 /src/dffml/dffml 5c89b6780 (dirty git repo)
 dffml-config-yaml 0.1.0 /src/dffml/configloader/yaml/dffml_config_yaml 5c89b6780 (dirty git repo)
 dffml-config-image not installed
-dffml-config-jsonschema 0.0.1 /src/dffml/configloader/jsonschema/dffml_config_jsonschema 5c89b6780 (dirty git repo)
+dffml-configloader-jsonschema 0.0.1 /src/dffml/configloader/jsonschema/dffml_configloader_jsonschema 5c89b6780 (dirty git repo)
 dffml-model-scratch not installed
 dffml-model-scikit not installed
 dffml-model-tensorflow not installed

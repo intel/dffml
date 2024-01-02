@@ -7,7 +7,7 @@ Install from pip
 
 .. code-block:: console
 
-    $ pip install dffml-config-jsonschema
+    $ pip install dffml-configloader-jsonschema
 
 Usage
 
