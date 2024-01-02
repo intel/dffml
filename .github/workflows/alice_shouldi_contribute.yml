@@ -59,7 +59,7 @@ jobs:
         set -x
         pwd
         alice shouldi contribute -keys "${REPO_URL}" -log debug
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: collector_output
         path: .tools/open-architecture/innersource/repos.json
