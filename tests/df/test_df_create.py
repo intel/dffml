@@ -1,8 +1,10 @@
 import io
+import os
 import sys
 import json
 import pathlib
 import tempfile
+import unittest
 import importlib
 import contextlib
 
@@ -107,3 +109,26 @@ class TestDataflowCreate(AsyncTestCase):
                         for i in range(0, 5)
                     ],
                 )
+
+
+@unittest.skipIf(
+    "DFFML_TEST_FUZZ" in os.environ,
+    f"Set DFFML_TEST_FUZZ env var to run fuzz tests",
+)
+class TestFuzzDataFlowCreate(AsyncTestCase):
+    async def test_create(self):
+        import atheris
+
+        with atheris.instrument_imports():
+            import dffml.df.base
+        
+        def TestOneInput(data):
+            async with self.make_dataflow(
+                data.decode(errors='ignore'),
+                [operation_qualname, "get_single"],
+                ["ops:echo_string.outputs.result,=get_single_spec"],
+            ) as _dataflow:
+                pass
+        
+        atheris.Setup([], TestOneInput)
+        atheris.Fuzz()
