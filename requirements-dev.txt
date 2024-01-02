@@ -8,7 +8,7 @@ ipython
 testbook
 nbsphinx
 nbsphinx_link
-black==19.10b0
+black==24.1a1
 jsbeautifier>=1.14.0
 autoflake
 twine
