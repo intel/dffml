@@ -1,7 +1,7 @@
 from dffml.util.asynctestcase import AsyncTestCase
 
-# from dffml_config_jsonschema.configloader import JSONSchemaConfigLoader
-# ------------------- BEGIN dffml_config_jsonschema.configloader ------------------
+# from dffml_configloader_jsonschema.configloader import JSONSchemaConfigLoader
+# ------------------- BEGIN dffml_configloader_jsonschema.configloader ------------------
 import ast
 import json
 import enum
@@ -72,7 +72,7 @@ class JSONSchemaConfigLoader(BaseConfigLoader):
     CONFIG = JSONSchemaConfigLoaderConfig
 
 
-# -------------------  END  dffml_config_jsonschema.configloader ------------------
+# -------------------  END  dffml_configloader_jsonschema.configloader ------------------
 
 
 TEST_0_SCHEMA_SHOULD_BE = {
