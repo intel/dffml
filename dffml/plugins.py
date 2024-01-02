@@ -23,7 +23,6 @@ def inpath(binary):
 CORE_PLUGINS = [
     ("configloader", "yaml"),
     ("configloader", "image"),
-    ("configloader", "jsonschema"),
     ("model", "scratch"),
     ("model", "scikit"),
     ("model", "tensorflow"),
