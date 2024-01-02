@@ -63,7 +63,7 @@ jobs:
       max-parallel: 40
       matrix: ${{ fromJSON(inputs.manifests) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: '${{ github.repository }}'
           ref: '${{ matrix.commit }}'
