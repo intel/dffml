@@ -16,6 +16,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   manifest:
     runs-on: ubuntu-latest
@@ -25,11 +28,16 @@ jobs:
       length: ${{ steps.create-manifest-instance.outputs.length }}
       manifest: ${{ steps.create-manifest-instance.outputs.github_actions_manifest }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          egress-policy: audit
+
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
           python-version: "3.11"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Build manifest from plugins.json from pull request
         id: create-manifest-instance
         env:
@@ -70,6 +78,8 @@ jobs:
 
   
   pin_downstream_pep_440:
+    permissions:
+      contents: write  # for Git to git push
     name: "Pin downstream to latest commit"
     runs-on: ubuntu-latest
     # Disabled currently
@@ -88,6 +98,11 @@ jobs:
       max-parallel: 100
       matrix: ${{ fromJSON(needs.manifest.outputs.manifest) }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        with:
+          egress-policy: audit
+
       - name: Checkout downstream
         env:
           # TODO Pull requests on pull requests, probably from renovate/dependabot

@@ -22,3 +22,68 @@ updates:
     directory: /
     schedule:
       interval: daily
+
+  - package-ecosystem: docker
+    directory: /.github/actions/create_manifest_instance_build_images_containers
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /dffml/skel/operations
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /examples/ffmpeg
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /examples/innersource/swportal
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /examples
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/binsec
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/data
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/deploy
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/image
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/neo4j
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /operations/nlp
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /service/http
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /service/ossse
+    schedule:
+      interval: daily
