@@ -10,7 +10,7 @@
       - https://github.com/ietf-scitt/use-cases/issues/14
     - As a follow on to the OpenSSF Metrics use case document and
       [Living Threat Models are better than Dead Threat Models](https://www.youtube.com/watch?v=TMlC_iAK3Rg&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw),
-      [Rolling Alice: Volume 1: Coach Alice: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
+      [Rolling Alice: Volume 1: Coach Alice: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
       will cover how we identify and query provenance on dependencies where caching
       on data flow execution is assisted via querying public SCITT infrastructure
       and sourcing cached state from trustworthy parties.

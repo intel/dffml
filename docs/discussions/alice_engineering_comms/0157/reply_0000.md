@@ -45,7 +45,7 @@
 - https://github.com/brycedrennan/imaginAIry
 - https://github.com/mage-ai/mage-ai
 - `Rolling Alice: Coach Alice: Versioning Learning`
-  - https://github.com/intel/dffml/blob/main/docs/arch/0010-schema.rst
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0010-schema.rst
   - *For continuous improvement*
     - Related
       - https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf

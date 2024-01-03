@@ -51,7 +51,7 @@ Error: Invalid request signature.
 POST /push/inbox 401 12 - 616.413 ms
 ```
 
-[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
+[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 ```console
 $ git grep FDQN
@@ -223,7 +223,7 @@ Error: Received 503 fetching actor. Body: no ssh tunnel here :(
 ```
 
 - MOTHERFUCKER FUCK YES FUCK YES FUCK YES FUCK YES!!!!!!!
-  - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
+  - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
 
 ![hack-the-planet-hackers-gif](https://user-images.githubusercontent.com/5950433/191852910-73787361-b00c-4618-bc5e-f32d656bbf0f.gif)
 
@@ -279,7 +279,7 @@ $ export IMAGE="registry.example.org/dffml"; export NEW_HASH=""; sed -i -r -e "s
   - [ ] Disable server stop on any exceptions, just keep on serving
   - [ ] `websocat --exit-on-eof --basic-auth alice:$(cat ../password) ws://localhost:8000/listen/websocket | tee staging_tempfile_for_testing | alice threats listen stdin activitypub`
     - We're about to start rolling very slowly (eventually we'll gain enough acceleration that the answer to Alice are you Rolling? will be YES!, however what we currently have is just the tippy top of the iceburg of what's needed for that, which is why that's volume 6)
-      - Ref Entity Analysis Trinity: https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
+      - Ref Entity Analysis Trinity: https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity
   - [x] Make it through the day
 - Future
   - [ ] Put `/webhook` should be `/admin/webhook`

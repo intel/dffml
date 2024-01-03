@@ -23,7 +23,7 @@ Supplier (original creator of the software product/component). Authorized Signin
       >   - https://mailarchive.ietf.org/arch/msg/scitt/sVaDAFfMSB7X_jjEBCZ1xt7vZJE/
       >     - > We additionally want to be able to do this without invalidating *future* builds once things are back under control.
 - How to open the definition of an entrypoint loadable class
-  - [![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
+  - [![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 ```console
 $ vim $(git grep -i mysql | grep @entrypoint | sed -e 's/:.*//g')
@@ -87,7 +87,7 @@ include:
   - Abstract version of our test_ci.py
 - JSON-LD and RDF https://earthstream.social/@mprorock/109756220250660052
   - Context awareness is important
-  - https://github.com/intel/dffml/blob/main/docs/arch/0010-Schema.rst
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0010-Schema.rst
   - https://arxiv.org/pdf/2210.03945.pdf
     - Understanding HTML with Large Language Models
   - https://arxiv.org/pdf/2209.15003.pdf
@@ -493,7 +493,7 @@ index 462bcbd..cad57a7 100644
 ```
 
 - Previous: https://asciinema.org/a/537643
-  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
     - We're going to put content addresses in both places, we'll then use the registry and proxies to serve content out of it ORAS.land style.
       - Proxies can handle scratch image with manifest to memetype for example to jpeg or anything.
     - SCITT will be for the receipts of ActivityPub messages (TCP handshake style)

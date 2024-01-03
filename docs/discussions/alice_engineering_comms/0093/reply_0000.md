@@ -9,7 +9,7 @@
   - https://github.com/pdxjohnny/telem/blob/8676810086c732e1a738ce58a6296993f7a87661/client/c/encrypt.c
   - https://github.com/pdxjohnny/hack
     - Looks like this packs shellcode for `exec` system calls on linux
-      - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
+      - [![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
     - Ref shim
   - https://github.com/pdxjohnny/freeze-tool/tree/master/logger
     - Stream logging / cross this with telemetry one
@@ -87,7 +87,7 @@
     - [ ] Have NVDStyle server take source as input/config so that we can point it at the discovered vulns
   - [ ] Track https://github.com/intel/cve-bin-tool/issues/2320#issuecomment-1303174689
         in relation to `policy.yml`
-    - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
+    - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
   - [ ] `alice please log todos -source static=json dynamic=nvdstyle`
     - [ ] Implement source for reading from NVDSytle API (op source for single function prototype?)
     - [ ] Enable creation of TODOs by overlaying operations which take the feature data as inputs (use dfpreprocess?)

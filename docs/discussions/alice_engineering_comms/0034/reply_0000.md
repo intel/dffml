@@ -10,9 +10,9 @@
 - k8s (job orchestrator, cloud dev envs, etc.)
   - https://kubernetes.io/docs/reference/node/kubelet-checkpoint-api/
   - Requires `Kubernetes v1.25 [alpha]`
-- [Architecting Alice: Writing the Wave](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
+- [Architecting Alice: Writing the Wave](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
   - https://github.com/intel/dffml/commit/baa1e2b986afb48325be379c60612c9c4aac7651
-  - https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0055.md
+  - https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0055.md
 - [Troubleshooting Failed `pip install` Commands](https://github.com/intel/dffml/discussions/1406#discussioncomment-3710985)
 - Resources
   - Badges

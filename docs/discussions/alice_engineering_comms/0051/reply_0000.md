@@ -1,7 +1,7 @@
 ## 2022-10-10 @pdxjohnny Engineering Logs
 
 - OS DecentrAlice: dracut fstab
-- [Volume 0: Chapter 5: Stream of Consciousness](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
+- [Volume 0: Chapter 5: Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
 - [2022-10-10 IETF SCITT Weekly](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-3840337)
 - [Dump GitHub Discussion to JSON 2022-10-10T17:58:31+00:00](https://gist.github.com/pdxjohnny/9f3dc18f0a42d3107aaa2363331d8faa)
 - https://gist.github.com/pdxjohnny/a0dc3a58b4651dc3761bee65a198a80d#file-run-vm-sh-L174-L200

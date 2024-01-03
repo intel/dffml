@@ -2,7 +2,7 @@
 
 > @agalvare: we also need a voting mechanism, and a way for other to train it
 
-https://github.com/intel/dffml/blob/main/docs/arch/alice/discussion/0023/reply_0022.md this plus the ATProto means we are piggybacking off of "social network". This way humans and AI and work together.
+https://github.com/intel/dffml/blob/alice/docs/arch/alice/discussion/0023/reply_0022.md this plus the ATProto means we are piggybacking off of "social network". This way humans and AI and work together.
 
 > The smart contract is able to make its own decisions based on learned experience (models) so as to continue to operate until its strategic goals are meet. As measured by oracle data ordained from trusted parties as is applicable to context. Where chains of trust are established via Peer DIDs between entities and data for provenance. Leveraging verifiable credentials (opencert) for review system to measure risk in absence of attestation.
 
@@ -17,6 +17,6 @@ https://github.com/w3c/cogai/pull/47
 > 
 > Alice doesn't use any machine learning yet, but later we can add models assist with automation of flows as needed.
 >
-> Alice's architecture, the [Open Architecture](https://github.com/intel/dffml/tree/main/docs/arch/0009-Open-Architecture.rst), is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds based on triggers and deadlines. She thinks in graphs, aka trains of thought, aka chains of system contexts. She operates in parallel, allowing her to represent N different entities.
+> Alice's architecture, the [Open Architecture](https://github.com/intel/dffml/tree/alice/docs/arch/0009-Open-Architecture.rst), is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds based on triggers and deadlines. She thinks in graphs, aka trains of thought, aka chains of system contexts. She operates in parallel, allowing her to represent N different entities.
 
 The "thinking in parallel" means we'd run multiple models (such as nanoGPT) and then choose the best result of them by the deadline.

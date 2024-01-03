@@ -7,7 +7,7 @@
     - IssueOps for cross repo trigger, workflow updates manifests
 - https://github.com/fountainhead/action-wait-for-check
 - oras.land to/from image
-  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
 - https://github.com/CycloneDX/specification/issues/197
 - https://microformats.io/
 - https://github.com/github/super-linter/blob/main/docs/using-rules-files.md

@@ -331,7 +331,7 @@ $ pytest
   - This looks nice for our 2nd party auto split out
 - https://github.com/ossf/wg-vulnerability-disclosures/issues/94#issuecomment-1483184591
   - Not sure if this is still active, but have been working on a methodology as part of this SCITT use case: [WIP: RFCv4: IETF SCITT: Use Case: OpenSSF Metrics: activitypub extensions for security.txt](https://github.com/ietf-scitt/use-cases/blob/748597b37401bd59512bfedc80158b109eadda9b/openssf_metrics.md#openssf-metrics). In this use case we're looking at OpenVEX as the format which we could use to submit the vuln. We'd use the description or evolution of the linked data format there to reference a SARIF or other standard format document or set of instances of formats which would act as the justification, with the status set to affected. Effectively proposing that this ad-hoc generated CVE-ID affects the product. Perhaps a schema for the example form above is needed / could be part of the vocabulary involved?
-    - [https://github.com/intel/dffml/blob/main/schema/security/vuln/proposed/0.0.0.schema.json](https://github.com/intel/dffml/blob/9303cbee00690d3b7ba3fb673d5402a3965cfdc0/schema/security/vuln/proposed/0.0.0.schema.json)
+    - [https://github.com/intel/dffml/blob/alice/schema/security/vuln/proposed/0.0.0.schema.json](https://github.com/intel/dffml/blob/9303cbee00690d3b7ba3fb673d5402a3965cfdc0/schema/security/vuln/proposed/0.0.0.schema.json)
 
 ```yaml
 $id: https://github.com/intel/dffml/raw/main/schema/security/vuln/proposed/0.0.0.schema.json

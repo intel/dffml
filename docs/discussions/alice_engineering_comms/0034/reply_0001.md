@@ -1,6 +1,6 @@
 # Architecting Alice: Writing the Wave
 
-> Moved to: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md
+> Moved to: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md
 
 > This tutorial was written by echoing examples to the shell, then code blocking the relevant console commands. We're going to use what we build here to allow tutorial writers to either speak the echo commands and we'll later insert them into the asciinema recordings we scrape the commands and outputs from. We could also use the date on the filename we record too plus the offsets to calculate point in time for a given recording. asciicast recordings have new content with a time delta stamp from the last read/write, we probably need to ensure recording are not made with `--idle-time-limit` for this. If we can get streaming working for the lines of asciinema output, critical piece here is ensuring writes are flushed on each line asciinema side, pretty sure this is the case but we need to check. Then we could potentially run these updates markdown comments realtime, Alice doing it sitting alongside of course.
 

@@ -16,7 +16,7 @@ $ dffml version
 dffml 0.4.0 /src/dffml/dffml 5c89b6780 (dirty git repo)
 dffml-config-yaml 0.1.0 /src/dffml/configloader/yaml/dffml_config_yaml 5c89b6780 (dirty git repo)
 dffml-config-image not installed
-dffml-configloader-jsonschema 0.0.1 /src/dffml/configloader/jsonschema/dffml_configloader_jsonschema 5c89b6780 (dirty git repo)
+dffml-config-jsonschema 0.0.1 /src/dffml/configloader/jsonschema/dffml_config_jsonschema 5c89b6780 (dirty git repo)
 dffml-model-scratch not installed
 dffml-model-scikit not installed
 dffml-model-tensorflow not installed
@@ -59,7 +59,7 @@ dffml-source-mysql not installed
             > ![image](https://user-images.githubusercontent.com/5950433/192642680-627f9da6-ebb1-45b6-9872-7202e8b3fcaf.png)
           - In our distributed compute setup, credential issuance is the execution (which we had been looking at confirming the trades of via the tbDEX protocol, no work has been done on that front recently from DFFML side)
           - What they refer to as a "Credential Manifest" is similar to what we refer to as an "Manifest Instance".
-            - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
+            - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
         - `SpecVersion` has all the properties we require of Manifests (see `$schema`) so we can indeed classify a "Credential Manifest" as a Manifest.
           - Alignment looking strong!
           - > ![image](https://user-images.githubusercontent.com/5950433/192644284-3cf55d65-ca00-4c25-98fa-babf1bfd945d.png)

@@ -33,12 +33,12 @@
   - Recurse with no overlay or orchestrator
 - Overlay
   - Populate JSON Source with a record with a repo name and records
-    - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/main/entities/alice/#contribute)
+    - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/alice/entities/alice/#contribute)
     - Overlay
       - `-sources dev=json -source-dev-filename .tools/open-architecture/innersource/repos.json -source-dev-readwrite -source-dev-allowempty`
       - Dataflow to read project name and associated repos from config file
         - Upstream
-          - https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#writing-operations
+          - https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#writing-operations
         - Overlay
           - Alice, please write an operation to read `repos` top level key similarly to how `name` was read.
       - Repo with `myconfig` in it compliant to allowlisted operation implementations which read `repos` and `name` keys
@@ -139,7 +139,7 @@ hello_python().then((result) => {
 - TODO
   - [x] Infra roll call
   - [ ] **PYCASCADES!!!**
-    - [x] Updated https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
+    - [x] Updated https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md
         - https://github.com/intel/dffml/commit/408d0ef29f60d0289fc2f7b6097faf8da9e6a8af
       - Sourced from ^
     - [x] Picture

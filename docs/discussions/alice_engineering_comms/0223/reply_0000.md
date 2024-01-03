@@ -53,7 +53,7 @@ make install
 - We're close, I can feel it
 - heartwood --> openapi generator + actogitypub endpoints off cyclonedx -> guac --> cypher mutatuon and ipvm exec chain for analysis --> guac emit activitypub --> forgefed
   - scitt and endor later keri tied via ccf
-- https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/federated_forge/alice_and_bob
+- https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/federated_forge/alice_and_bob
 - https://github.com/go-yaml/yaml
 - https://docs.python.org/3/library/urllib.parse.html#module-urllib.parse
 - Need to convert the configs back from YAML
@@ -242,7 +242,7 @@ $ grep -i unix rad.push.strace
     > if `ctyp` is `application/json` the `payload` could be the bytes of `example.json`.
    - I think we get another Chaos for the Chaos God for that one thank you Orie for the clean explanation.
    - Now we know we should confirm we are seeing `ctyp` (Content Type) set correctly.
-     -  https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
+     -  https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md#scitt-api-emulator-spin-up
 
 ![chaos-for-the-chaos-god](https://user-images.githubusercontent.com/5950433/220794351-4611804a-ac72-47aa-8954-cdb3c10d6a5b.jpg)
 
@@ -270,7 +270,7 @@ graph TD
 ```
 
 - This example docker-compose.yml is the first demo of our shared stream of consciousness
-  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
 - We need a way to do runners, either push to forgejo with runners setup or for prod execute within aurae cell
   - https://github.com/aurae-runtime/aurae/blob/709b417915097fd9ef25740d208958ac85109085/examples/cells_isolated_processes_and_network.ts
 - https://docs.codeberg.org/collaborating/pull-requests-and-git-flow/

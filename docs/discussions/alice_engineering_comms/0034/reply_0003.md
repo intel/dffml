@@ -1,6 +1,6 @@
 # Rolling Alice: Easter Eggs
 
-> Moved to https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_easter_eggs.md
+> Moved to https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md
 
 Easter eggs are scattered throughout the Alice tutorials. Look for these
 badges to explore aligned trains of thought. 

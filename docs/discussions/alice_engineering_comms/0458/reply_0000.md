@@ -424,7 +424,9 @@ ing to infer new facts or constraints from the ontology and apply them to policy
 > ### Slide 1: Collaborative AGI Development with Trusted Poly-Repo Management
 > - Summary of the seamless, secure collaboration protocol established between AGI instances, Alice and Bob, across multiple repository environments.
 >
-> ---                                                                                                                                                                                                                                           >                                                                                                                                                                                                                                               > ### Slide 2: Manager's Speak - Executive Summary
+> ---
+>
+> ### Slide 2: Summary
 > - Introduction to the need for secure, transparent collaboration between advanced software systems.
 > - Overview of SCITT as the transparency ledger for recording and sharing approved activities.
 > - The role of policy engines in ensuring adherence to each AGI's operational policies.
@@ -579,6 +581,12 @@ ing to infer new facts or constraints from the ontology and apply them to policy
 >
 > By integrating SCITT with Kubernetes, Alice and Bob can ensure that the cluster's state always reflects approved and validated states from their CI/CD workflows, maintaining security and consistency across their development operations. This integration also creates an audit trail for all changes, providing complete visibility into cluster events and enabling rapid response to potential policy violations.
 
+- https://github.com/intel/dffml/blob/6fd36f7b88943c038bbd5217bb187f4a04891003/docs/discussions/alice_engineering_comms/0243/reply_0000.md
+- https://futurism.com/openai-employees-say-firms-chief-scientist-has-been-making-strange-spiritual-claims
+- https://futurism.com/sam-altman-imply-openai-building-god
+- https://www.theatlantic.com/technology/archive/2022/09/artificial-intelligence-machine-learing-natural-language-processing/661401/ **OF GOD AND MACHINES**
+
+![such-alignment](https://user-images.githubusercontent.com/5950433/226707682-cfa8dbff-0908-4a34-8540-de729c62512f.png)
 
 - TODO
   - [ ] k8s SCITT receipt as admission control

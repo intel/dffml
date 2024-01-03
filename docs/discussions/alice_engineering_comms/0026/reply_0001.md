@@ -1,6 +1,6 @@
 # Architecting Alice: A Shared Stream of Consciousness
 
-> Moved to: https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+> Moved to: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
 
 In this tutorial we use dataflow as class to build Input, Redundancy,
 Lock, Operation, and Operation Implementation Networks which interact

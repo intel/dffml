@@ -9,7 +9,7 @@
   - [x] Accuracy Scorers
     - #1144
   - [ ] Machine Learning support for videos
-    - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
+    - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md
   - [x] Model directories auto stored into archives or remotely
     - #1128
     - #967

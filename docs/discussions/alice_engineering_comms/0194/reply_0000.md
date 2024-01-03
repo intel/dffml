@@ -9,7 +9,7 @@
   - TPM (most widely deployed)
     - https://www.tomsguide.com/news/billions-of-pcs-and-other-devices-vulnerable-to-newly-discovered-tpm-20-flaws
   - TXT
-    - We frequently skip talking about this in this thread to avoid too much acronym soup, but TPMs are only good for https://github.com/intel/dffml/tree/main/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst, aka tying keys into known hardware, without TXT (at least as we've been talking about them here). We just usually either talk about TPMs or TDX in this thread to illustrate the ends of the spectrum.
+    - We frequently skip talking about this in this thread to avoid too much acronym soup, but TPMs are only good for https://github.com/intel/dffml/tree/alice/docs/arch/0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option.rst, aka tying keys into known hardware, without TXT (at least as we've been talking about them here). We just usually either talk about TPMs or TDX in this thread to illustrate the ends of the spectrum.
     - Trusted eXecution exTensions and Boot Guard combined with also a TPM (or a virtual equivalent) enables attested compute (by way of Secure Boot)
       - https://edk2-docs.gitbook.io/understanding-the-uefi-secure-boot-chain/secure_boot_chain_in_uefi/intel_boot_guard
       - https://www.chromium.org/developers/design-documents/tpm-usage/#attesting-device-mode

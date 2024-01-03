@@ -1,0 +1,4 @@
+- https://github.com/Mozilla-Ocho/llamafile
+- https://datatracker.ietf.org/doc/html/draft-ietf-rats-eat#name-measurements-measurements-c
+- https://stackoverflow.com/questions/73653348/creating-tar-file-with-append
+- https://github.com/intel/ACON/blob/f8a6758958ff017eef87b1a3cdd11c6283adb413/doc/TDGuest.md

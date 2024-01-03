@@ -1,0 +1,2 @@
+- https://github.com/ossf/scorecard/issues/3763
+- https://www.codecentric.de/wissens-hub/blog/github-actions-test-a-full-tekton-ci-installation

@@ -85,7 +85,7 @@ system context includes
 
 ## Living THREATS.md
 
-Install Alice https://github.com/intel/dffml/tree/main/entities/alice
+Install Alice https://github.com/intel/dffml/tree/alice/entities/alice
 
 Create the `THREATS.md` file
 

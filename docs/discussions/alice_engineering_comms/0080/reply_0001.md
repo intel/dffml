@@ -36,7 +36,7 @@
     - Do you have access to run this? Yes? Just log a yes on you have access to run that effect.
     - Effects incoming run before WASM, effects outgoing
       - Sounds very similar to OA
-        - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
+        - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
         - https://github.com/intel/dffml/blob/main/docs/about.rst#what-is-key-objective-of-dataflows
    - Example Effect: Operation invocation manifest, it calls back in using the input effect.
    - If there are chunks then they can call into IPVM and it can use the

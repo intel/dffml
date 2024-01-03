@@ -1,0 +1,2 @@
+- https://github.com/wyl-willing/MindMap
+- [The uneasy transition from supply chains to ecosystems: The value-creation/value-capture dilemma](https://www.emerald.com/insight/content/doi/10.1108/MD-06-2013-0329/full/html)

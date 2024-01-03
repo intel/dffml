@@ -3,7 +3,7 @@
 - https://phoenixnap.com/kb/kubernetes-kind
 - Future
   - New events into DMZ KCP via ingress plugin
-- https://github.com/intel/dffml/tree/main/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine
+- https://github.com/intel/dffml/tree/alice/examples/tutorials/rolling_alice/transparency_service/kubernetes_dataflow_policy_engine
 - https://github.com/pixelfed/pixelfed/blob/dev/.github/workflows/build-docker.yml
   - https://didme.me
 - https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/using-openid-connect-with-reusable-workflows#defining-the-trust-conditions
@@ -212,6 +212,6 @@ Starting Neo4j.
     - https://github.com/neo4j/graph-data-science-client/blob/main/examples/load-data-via-graph-construction.ipynb
     - https://github.com/neo4j/graph-data-science-client/blob/main/examples/heterogeneous-node-classification-with-hashgnn.ipynb
   - [ ] SCITT instance whos policy makes it act as the OIDC notary proxy. A service that sits in front of an instance which issues claims based on valid OIDC and job_workflow_ref. The instance it submits claims to has the did:web or did:pwq or did:keri in its allowlist. The content address or content of the  receipt is submitted within the claim whose receipt is attached to the releaseasset.json as a property base32 encoded. Upon federation of the releaseasset receipt the receiver now knows upload auth checked out. Insert policy on federation event you create two receipts, first triahing incoming into cobtext localvthen reciot for inclustyoon in context local. thjis way we can traberse back but maintain payload
-  - [ ] [Volume 0: Chapter 8: Transport Acquisition](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
+  - [ ] [Volume 0: Chapter 8: Transport Acquisition](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0008_transport_acquisition.md)
     - [ ] activitypub-starter-kit easier deployment
       - https://github.com/vercel/ncc

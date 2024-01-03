@@ -39,7 +39,7 @@
             - container push
               - Trigger `workflow_dispatch` by looking in workflows for `workflow_dispatch`-able workflows for `on.push.paths`  
                 -  Optionally take allowlist or blocklist given as endpoint configuration or seed input
-                - Validate schema is https://github.com/intel/dffml/tree/main/schema/dffml/image/container/build/0.0.1.schema.jso
+                - Validate schema is https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.jso
                 - Look in referenced dockerfiles
                   - Build dockerfile style pipdeptree
                     - #596

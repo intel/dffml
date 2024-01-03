@@ -4,7 +4,7 @@
   - State of the art updated to 98335d941116e76bbf4e07422adc2b5061e47934
   - Overlay of CI/CD library detection example: https://github.com/intel/dffml/commit/90d5c52f4dd64f046a2e2469d001e32ec2d53966
 
-Install Alice: https://github.com/intel/dffml/tree/main/entities/alice/
+Install Alice: https://github.com/intel/dffml/tree/alice/entities/alice/
 
 ```console
 $ python -m venv .venv
@@ -49,7 +49,7 @@ untagged:
     - https://pydantic-docs.helpmanual.io/usage/schema/#schema-customization
   - Initial commit: 168a3e26c62d7e0c8dd92b1761ec5fad273fb9c6
   - Added `$schema` to make output schema a valid Manifest schema per ADR requirements
-    - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
+    - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
 - KERI
   - https://keri.one
   - https://humancolossus.foundation/blog/thinking-of-did-keri-on/keri-resources/

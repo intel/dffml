@@ -34,7 +34,7 @@
   - Finally a decent nodemon replacement with less heavy deps?
 - Sketch of manifest instance for PR validation for #1207
   - ref todos: Need AcitivityPub Security based CD and PR based CD
-    - https://github.com/intel/dffml/blob/main/schema/github/actions/result/container/example-pull-request-validation.yaml
+    - https://github.com/intel/dffml/blob/alice/schema/github/actions/result/container/example-pull-request-validation.yaml
 
 **schema/github/actions/result/container/example-pull-request-validation.yaml**
 

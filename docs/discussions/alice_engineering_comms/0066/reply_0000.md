@@ -9,7 +9,7 @@
 - https://github.com/jurgisp/memory-maze
   - https://twitter.com/danijarh/status/1584893538180874241
 - Future
-  - Expand upon [Volume 1: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md) to add dynamic analysis, aka tell me what the delta on CI env is. 
+  - Expand upon [Volume 1: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md) to add dynamic analysis, aka tell me what the delta on CI env is. 
 - Misc people to circle back with
   - John Whiteman was planning on writing collectors and analyzing AST
   - Michael could help us generate PDFs from Sphinx sites

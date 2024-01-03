@@ -17,7 +17,7 @@
   - Chaos metric
 - A wild manifest appears!
   - https://github.com/openvex/vexctl#3-vexing-a-results-set
-  - https://github.com/intel/dffml/blob/main/docs/arch/0008-Manifest.md
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
 
 ![image](https://user-images.githubusercontent.com/5950433/215843365-9a03f49f-2607-4e48-acd0-21269814427d.png)
 

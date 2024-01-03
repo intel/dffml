@@ -2,7 +2,7 @@
 
 - Alice
   - Ran through contributing setup on local PC
-    - https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#cloning-the-repo
+    - https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#cloning-the-repo
 - [ ] `alice please build if needed and run /path/to/repo`
   - Try two different repos, mainly focused on C
     - https://github.com/sedihglow/rpi4

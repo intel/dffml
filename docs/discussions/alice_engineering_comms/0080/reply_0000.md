@@ -34,7 +34,7 @@
     - > FISSIONCodes: You've heard of 
 [@IPFS](https://mobile.twitter.com/IPFS), but what about IPVM? Fission is working on the Interplanetary Virtual Machine - a way to add content-addressed computation to IPFS. 🤯 With content-addressed computation we can work more efficiently and save time and compute power, all while operating in the decentralized web.
     - > John: With regards to bindings and interface discussion. The Open Architecture currently is looking at software definition via manifests and data flows. Dynamic context aware overlays are then used to enable deployment specific analysis, synthesis, and runtime evaluation. This allows for decoupling from the underlying execution environment (i.e. WASM). Traversing metadata graphs on code from remote sources allows for orchestration sandboxing to be dynamic, context aware configurable, and negotiable for the execution of compute contract. This methodology is work in progress. Binding generation (syscalls, etc.) should follow the same overlay enabled pattern. Calling convention here is effectively the (Credential) Manifest.
-      - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
+      - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
       - https://intel.github.io/dffml/main/about.html#what-is-key-objective-of-dataflows
   - [2022-11-07 Engineering Logs](https://github.com/intel/dffml/discussions/1406?sort=new#discussioncomment-4073154)
     - @marc-hb Zephyr example
@@ -82,6 +82,6 @@ $ youtube-dl --no-call-home --no-cache-dir -x --audio-format mp3 --add-metadata 
 - Aghin already got us started webhooks!
   - https://intel.github.io/dffml/main/examples/webhook/index.html
     - > Aghin, one of our GSoC 2020 students, wrote operations and tutorials which allow users to receive web hooks from GitHub and re-deploy their containerized models and operations whenever their code is updated.
-  - https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
+  - https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md
 - TODO
   - [ ] Update `Architecting Alice: Stream of of Consciousness` using webhook demo as upstream.

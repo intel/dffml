@@ -1,7 +1,7 @@
 ## 2023-11-05 IETF 118 Hackathon Day 2
 
 - A.J. is having issues with OpenAPI spec
-  - [2023-03-23 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/blob/main/docs/discussions/alice_engineering_comms/0217/reply_0000.md)
+  - [2023-03-23 @pdxjohnny Engineering Logs](https://github.com/intel/dffml/blob/alice/docs/discussions/alice_engineering_comms/0217/reply_0000.md)
 
 ```console
 $ npx swagger-cli bundle docs/openapi/openapi.yml -o docs/openapi/openapi.json --dereference

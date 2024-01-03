@@ -35,7 +35,7 @@
       - https://github.com/intel/dffml/issues/595
     - We should capture the webhook event from the release upload and play with that to update pinning within downstream CD
       - #906
-      - [Rolling Alice: Architecting Alice: Stream of Consciousness](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
+      - [Rolling Alice: Architecting Alice: Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
   - [ ] https://github.com/intel/project-example-for-python/issues/3
     - [ ] Auto roll in alignment with conventional commits and https://tqrg.github.io/secom/
   - [ ] https://github.com/ossf/wg-vulnerability-disclosures/issues/124

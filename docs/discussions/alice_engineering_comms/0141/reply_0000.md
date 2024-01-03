@@ -18,7 +18,7 @@
 - https://hachyderm.io/@kat_kime/109652239958849080
   - Many people talking about trust required
   - We are trying to enable a closed loop for trust for software developers to understand their own projects, what they can trust (should you really dump that dep? Or did dynamic sandboxing results cached elsewhere in your org say that it violates policy at runtime, aka backdoored coin miners and ransomware? You wouldn't know that type of thing by bumping the dep by hand, you'd almost for sure get pwned and now your dev box got pwned.
-    - https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
+    - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
 - ``ensure_`` functions into (bellow) which can then be overlayed as desired
   via CLI or via install of ad-hoc blank package with only entry_points.txt to
   enable them as desired.

@@ -11,7 +11,7 @@
     - `--save-config` has been removed
 - Docker
   - https://github.com/pdxjohnny/dockerfiles/blob/406f0b94838f7dcd1792c394061a2ee18c4f7487/sshd/Dockerfile
-- https://github.com/intel/dffml/blob/main/entities/alice/CONTRIBUTING.rst#cloning-the-repo
+- https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst#cloning-the-repo
 - Vim
   - Exit insert mode `Ctrl-[`
 
