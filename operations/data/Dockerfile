@@ -3,7 +3,7 @@
 # docker run --rm -ti -p 80:8080 gitpod/dffml_operations_data  -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
-FROM ubuntu:20.04@sha256:f2034e7195f61334e6caff6ecf2e965f92d11e888309065da85ff50c617732b8
+FROM ubuntu:22.04@sha256:6042500cf4b44023ea1894effe7890666b0c5c7871ed83a97c36c76ae560bb9b
 
 RUN apt-get update && \
   apt-get install -y \
