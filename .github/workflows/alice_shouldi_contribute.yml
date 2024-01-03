@@ -9,13 +9,21 @@ on:
         type: string
 
 
+permissions:
+  contents: read
+
 jobs:
   collector:
     name: Collector
     runs-on: ubuntu-latest
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+      with:
+        egress-policy: audit
+
     - name: Set up Python 3.9
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
       with:
         python-version: 3.9
     - name: Configure git user info
@@ -59,7 +67,7 @@ jobs:
         set -x
         pwd
         alice shouldi contribute -keys "${REPO_URL}" -log debug
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
       with:
         name: collector_output
         path: .tools/open-architecture/innersource/repos.json
