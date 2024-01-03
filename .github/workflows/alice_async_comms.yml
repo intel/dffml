@@ -7,6 +7,7 @@ name: "Alice: Async Comms"
 # - https://github.com/Textualize/rich/blob/84e628655a2981ee90413ca3f35001ec3954161d/.github/workflows/readmechanged.yml#L1-L24 (MIT)
 
 on:
+  workflow_dispatch: null
   schedule:
   - cron:  '0 6 * * *'
 
@@ -20,8 +21,29 @@ jobs:
         uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
         with:
           egress-policy: audit
-
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Dump engineering log entries
+        id: dump-logs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "docs: discussions: Alice Engineering Comms"
+          DISCUSSION_NUMBER: 1406
+        run: |
+          set -xeuo pipefail
+
+          python -m pip install -U pip setuptools wheel
+          python -m pip install aiohttp
+          python -u scripts/dump_discussion.py --token "$GH_TOKEN" --owner $(echo $GITHUB_REPOSITORY | sed -e 's/\/.*//g') --repo $(echo $GITHUB_REPOSITORY | sed -e 's/.*\///g') --discussion-number $DISCUSSION_NUMBER | tee /dev/stderr | sed -e 's/\/tree\/alice/\/tree\/main/g' -e 's/\/blob\/alice/\/blob\/main/g' | python -u scripts/discussion_dump_to_markdown.py
+          echo "msg=$TITLE: $(date -Iseconds)" >> $GITHUB_OUTPUT
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5.0.2
+        with:
+          commit-message: ${{ steps.dump-logs.outputs.msg }}
+          title: ${{ steps.dump-logs.outputs.msg }}
+          branch: chore-docs-alice-comms
+          delete-branch: true
+          author: 'Alice OA <aliceoa@intel.com>'
+          add-paths: docs
       - name: Post engineering log entry
         env:
           GITHUB_TOKEN: ${{ github.token }}
