@@ -79,6 +79,9 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
         response = await session.post("https://api.github.com/graphql", headers=headers, json={"query": query, "variables": variables})
         result = await response.json()
 
+        if "data" not in result:
+            raise Exception(json.dumps(result, indent=4, sort_keys=True))
+
         discussion_title = result["data"]["repository"]["discussion"]["title"]
         discussion_body = result["data"]["repository"]["discussion"]["body"]
         comments = result["data"]["repository"]["discussion"]["comments"]["nodes"]
@@ -96,6 +99,9 @@ async def fetch_discussion_data(session, token, owner, repo, discussion_number):
                 variables["repliesCursor"] = replies_cursor
                 response = await session.post("https://api.github.com/graphql", headers=headers, json={"query": query, "variables": variables})
                 reply_result = await response.json()
+
+                if "replies" not in reply_result:
+                    raise Exception(json.dumps(reply_result, indent=4, sort_keys=True))
 
                 reply_nodes = comment["replies"]["nodes"]
                 has_next_reply_page = comment["replies"]["pageInfo"]["hasNextPage"]
