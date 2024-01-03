@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.9@sha256:30678bb79d9eeaf98ec0ce83cdcd4d6f5301484ef86873a711e69df2ca77e8ac AS builder
+FROM docker.io/library/python:3.12@sha256:3733015cdd1bd7d9a0b9fe21a925b608de82131aa4f3d397e465a1fcb545d36f AS builder
 
 COPY images_containers_manifest.py /images_containers_manifest.py
 
