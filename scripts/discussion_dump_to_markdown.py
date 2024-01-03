@@ -107,8 +107,6 @@ import pathlib
 import tempfile
 from typing import Callable, Type, Union, NewType, Dict
 
-import dffml
-
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 
 from dump_discussion import Reply, Comment, Discussion
