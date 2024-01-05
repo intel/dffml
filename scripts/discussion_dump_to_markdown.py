@@ -175,12 +175,13 @@ async def main():
     for comment in input_data["comments"]:
         discussion.comments.append(
             Comment(
+                id=comment["id"],
                 body=comment["body"],
                 replies=[],
             )
         )
         for reply in comment["replies"]:
-            discussion.comments[-1].replies.append(Reply(body=reply["body"]))
+            discussion.comments[-1].replies.append(Reply(id=reply["id"], body=reply["body"]))
     output_markdown(discussion, pathlib.Path(__file__).parents[1])
     # os.system(f"rm -rf 'docs/tutorials/alice/'")
 
