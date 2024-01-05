@@ -1,0 +1,2 @@
+- https://github.com/stellar-amenities/assistants/tree/main/examples/hello-world-intel-neural-chat-nodejs-function-calling
+- https://github.com/stellar-amenities/assistants/blob/main/ee/k8s/README.md

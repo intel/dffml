@@ -1,0 +1,2 @@
+- https://docs.ockam.io/guides/examples/basic-web-app
+  - activitypub scitt
