@@ -1,0 +1,4 @@
+- https://www.phoronix.com/news/FFmpeg-CLI-MT-Merged
+- https://github.com/SBOMit/specification/blob/f41506b3d3a74b16d2f3964a8deed9cdd3b43471/specification.md
+- https://github.com/CycloneDX/specification/blob/e8ae437941d01c006c0a5f0450e183238e899d8b/schema/bom-1.6.schema.json#L276-L281
+  - > The array of references to evidence that supports this claim

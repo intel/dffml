@@ -1,0 +1,3 @@
+- https://github.com/stellar-amenities/assistants/issues/1
+- https://github.com/transitive-bullshit/OpenOpenAI
+- https://github.com/lm-sys/FastChat

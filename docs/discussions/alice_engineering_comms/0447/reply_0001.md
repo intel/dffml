@@ -53,6 +53,7 @@
       - The owner will need to lookup own key in the log often
       - Each time owners key changes must check that key change has been correctly included in the log
       - Owner needs to remember ephocs they changed their key (hmmm)
+- https://github.com/scitt-community/scitt-examples/pull/5
 - TODO
   - [ ] Specify the privacy guarantees
   - [ ] Review compliance requirements about removing information from logs on mailing list

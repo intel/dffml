@@ -1,0 +1,1 @@
+- https://hackaday.com/2023/11/22/esp32-used-as-wireless-can-bus-reader/

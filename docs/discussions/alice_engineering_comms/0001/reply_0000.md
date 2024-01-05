@@ -60,8 +60,6 @@ Hope you’ve been well. It’s John from Intel. Thanks again to you and the tea
 
 I periodically check the minutes so I joined today and asked about the "Alpha-Omega" project from last week’s minutes which I then did some research on. We just started what looks to me to be an aligned project, coincidentally named Alice Omega Alpha: https://github.com/intel/dffml/tree/main/entities/alice
 
-It looks to me like Alice's mission to proactively enable developers and organizations to deliver organizationally context aware, adaptive secure by default best practices to teams aligns with project Alpha-Omega’s goals.
-
 Alice is the nickname for both the entity and the architecture, the Open Architecture, which is a methodology for interpretation of existing well established, formats, protocols, and other domain specific representations of architecture. What we end up with is some JSON, YAML, or other blob of structured data that we can use to build cross language tooling focused more on policy and intent, incorporating data from arbitrary sources to create a holistic picture of software across dependency boundaries by focusing on threat models.
 
 Alice will be doing scans of open source projects and we’d still love to collaborate to contribute metrics to the OpenSSF metrics database, we can easily have her shoot applicable metrics off to that DB. We’ve also been looking at fusing VEX and DIDs to facilitate distributed vulnerability disclosure and patch distribution.

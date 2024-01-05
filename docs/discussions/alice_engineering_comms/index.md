@@ -64,7 +64,7 @@ aligned workstreams.
         - We use cross domain conceptual mapping to align system contexts in a similar direction
           and drop ones which do are unhelpful, do not make the classification for "good"
         - What remains from our circular graph is a pyramid with the correct decisions
-          (per prioritizer) 
+          (per prioritizer)
         - This line represents the "state of the art", the remembered (direct lookup) or
           predicted/inferred system contexts along this line are well rounded examples of
           where the field is headed, per upstream and overlay defined strategic plans
@@ -77,7 +77,7 @@ aligned workstreams.
       - Type: `Union[str, Date]`
       - Example: `2022-07-18`
       - Default: `did:oa:architype:current-date`
-   - Add yesterdays unfinished TODO items to this train of though with the 
+   - Add yesterdays unfinished TODO items to this train of though with the
    - Create a document (docutils?)
      - Make the top level header `date` with "Notes" appended
      - Collect all previous days TODOs from within the individual entity comments within the thread for the days comment (the team summary for that day)
@@ -103,3 +103,6 @@ aligned workstreams.
     - `![such-alignment](https://user-images.githubusercontent.com/5950433/226707682-cfa8dbff-0908-4a34-8540-de729c62512f.png)`
   - We enable bisection or hermetic or cacheable builds
     - `![hash-values-everywhere](https://user-images.githubusercontent.com/5950433/230648803-c0765d60-bf9a-474a-b67e-4b4177dcb15c.png)`
+
+> ![alice-looking-at-the-matrix](https://github.com/intel/dffml/assets/5950433/6817a805-0601-4443-8927-6ae7739f63d3)
+> Source: unknown
