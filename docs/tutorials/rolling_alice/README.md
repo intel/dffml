@@ -75,9 +75,10 @@ tackling problems from multiple angles, viewpoints, overlays.
 
 - [Katherine Druckman - Threat Modeling Down the Rabbit Hole - OpenAtIntel](https://openatintel.podbean.com/e/threat-modeling-down-the-rabbit-hole/)
 - [Gabe Cohen - On Decentralized Trust](https://decentralgabe.xyz/on-decentralized-trust/)
-- [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma? - Extraction et Gestion des Connaissances (EGC 2023) Lyon](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
+- [Harald Sack - Symbolic and Subsymbolic AI - An Epic Dilemma?](https://github.com/lysander07/Presentations/raw/main/EGC2023_Symbolic%20and%20Subsymbolic%20AI%20%20-%20an%20Epic%20Dilemma.pdf)
 - [Nancy Eckert - Swarm Intelligence and Human Systems - BSides Portland 2019](https://youtu.be/Eq33S_Rz4qo?t=1117)
 - [Robin Berjon - The Internet Transition](https://berjon.com/internet-transition/)
+- [Adam Frank, David Grinspoon, and Sara Walker - Intelligence as a planetary scale process](https://www.cambridge.org/core/journals/international-journal-of-astrobiology/article/intelligence-as-a-planetary-scale-process/5077C784D7FAC55F96072F7A7772C5E5)
 
 ## Roadmap
 
