@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
+from sklearn.feature_selection import f_classif, SelectKBest, SelectPercentile
 
 from dffml.df.base import op
 
@@ -14,6 +15,10 @@ from .definitions import (
     random_state,
     n_components,
     missing_values,
+    target_data,
+    k,
+    percentile,
+    score_func
 )
 
 
@@ -206,8 +211,78 @@ async def ordinal_encoder(data):
     Returns
     -------
     result: Encoded data for categorical values
+
+    References:
+
+        - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html
+    
     """
     enc = OneHotEncoder()
     enc.fit(data)
     new_data = enc.transform(data).toarray()
+    return {"result": new_data}
+
+@op(
+    inputs={"data": input_data, "target_data": target_data, "k": k, "score_func": score_func},
+    outputs={"result": output_data}
+)
+async def select_k_best(data, target_data, score_func=f_classif, k=10):
+    """
+    Select the top k features, based on the score function.
+
+    Parameters
+    ----------
+    data : List[List[int]]
+        Input data, excluding the target column
+    target_data : List[int]
+        1D list containing values for the target column.
+    score_func : function
+        Function that takes in data and target_data, and returns 
+        a pair of arrays (scores, pvalues) or a single array with
+        scores.
+    k : int
+        Number of top features to select.
+
+    Returns
+    -------
+    result: Encoded data for categorical values
+    """
+
+    selector = SelectKBest(score_func, k=k)
+    new_data = selector.fit_transform(data, target_data)
+    return {"result": new_data}
+
+@op(
+    inputs={"data": input_data, "target_data": target_data, "percentile": percentile, "score_func": score_func},
+    outputs={"result": output_data}
+)
+async def select_percentile(data, target_data, score_func=f_classif, percentile=10):
+    """
+    Select a certain top percentile of features, based on the score function.
+
+    Parameters
+    ----------
+    data : List[List[int]]
+        Input data, excluding the target column
+    target_data : List[int]
+        1D list containing values for the target column.
+    score_func : function
+        Function that takes in data and target_data, and returns 
+        a pair of arrays (scores, pvalues) or a single array with
+        scores.
+    percentile : int
+        Percentile of top features to select.
+
+    Returns
+    -------
+    result: Encoded data for categorical values
+
+    References:
+
+        - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html
+
+    """
+
+    selector = SelectPercentile(score_func, percentile=percentile)
+    new_data = selector.fit_transform(data, target_data)
     return {"result": new_data}
