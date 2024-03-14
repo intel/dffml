@@ -1,0 +1,3 @@
+- https://openssf.org/case-studies/2024/02/16/scaling-up-supply-chain-security-implementing-sigstore-for-seamless-container-image-signing/
+- https://github.com/openvinotoolkit/model_server/tree/main/demos/python_demos/llm_text_generation
+- https://www.intel.com/content/www/us/en/newsroom/news/ai-everywhere-core-ultra-5th-gen-xeon-news.html

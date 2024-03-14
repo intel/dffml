@@ -1,0 +1,1 @@
+- https://sdk.vercel.ai/docs/guides/providers/openai#guide-save-to-database-after-completion
