@@ -3,7 +3,7 @@
 # docker run --rm -ti -p 80:8080 pdxjohnny/dffml_operations_neo4j  -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
-FROM ubuntu:22.04@sha256:6042500cf4b44023ea1894effe7890666b0c5c7871ed83a97c36c76ae560bb9b
+FROM ubuntu:22.04@sha256:a2bbdf79d03f6d4171bbd6ebb4782f6229375951987d3427ec3d9373f9841cd7
 
 RUN apt-get update && \
   apt-get install -y \
