@@ -1,6 +1,14 @@
-- We'll have TCB levels for tool use
+## 2024-03-24 @pdxjohnny Engineering Logs
+
 - https://python.langchain.com/docs/use_cases/tool_use/agents
-- https://python.langchain.com/docs/use_cases/graph/semantic
+  - https://python.langchain.com/docs/use_cases/tool_use/parallel
+  - > Chains are great when we know the specific sequence of tool usage needed for any user input. But for certain use cases, how many times we use tools depends on the input. In these cases, we want to let the model itself decide how many times to use tools and in what order. Agents let us do just this.
+    >
+    > LangChain comes with a number of built-in agents that are optimized for different use cases. Read about all the agent types here.
+    >
+    >As an example, let’s try out the OpenAI tools agent, which makes use of the new OpenAI tool-calling API (this is only available in the latest OpenAI models, and differs from function-calling in that the model can return multiple function invocations at once).
+- https://platform.openai.com/docs/quickstart?context=python
+  - > First, create an [OpenAI account](https://platform.openai.com/signup) or [sign in](https://platform.openai.com/login). Next, navigate to the [API key page](https://platform.openai.com/account/api-keys) and "Create new secret key", optionally naming the key. Make sure to save this somewhere safe and do not share it with anyone.
 
 ```python
 import json
@@ -91,3 +99,6 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+- We'll have TCB levels for tool use
+- https://python.langchain.com/docs/use_cases/graph/semantic
