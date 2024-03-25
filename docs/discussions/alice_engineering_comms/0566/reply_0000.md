@@ -1,0 +1,1 @@
+- https://blog.pydantic.dev/blog/2024/01/18/llm-validation/

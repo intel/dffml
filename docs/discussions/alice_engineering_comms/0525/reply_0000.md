@@ -1,0 +1,1 @@
+- https://github.com/in-toto/attestation/blob/main/spec/predicates/runtime-trace.md#schema

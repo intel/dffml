@@ -1,0 +1,7 @@
+- https://github.com/csaf-poc/csaf_webview/blob/5115e538d0ffce8574a86ad6536ed3b3cca936a1/README.md
+  - Using IETF ROLIE mentioned by AJ on the list, eventing
+- https://oasis-open.github.io/csaf-documentation/
+- https://github.com/python/bedevere/blob/f47538cda36f700b12f90fddb77a05c125ed9018/bedevere/gh_issue.py
+  - Setting status checks on webhook event
+- https://github.com/gidgethub/gidgethub
+- https://gidgethub.readthedocs.io/en/latest/#quickstart

@@ -1,0 +1,3 @@
+- https://github.com/llm-platform-security/SecGPT
+- https://github.com/scitt-community/scitt-api-emulator/commit/28ddd31739742acd1ca2e7db380e7b0635c947cb
+  - GitHub Actions Workflow Execution as policy engine in 1,000 lines. Prep for SLSA L4 in transparency configuration receipt
