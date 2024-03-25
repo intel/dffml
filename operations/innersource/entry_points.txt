@@ -1,2 +1,0 @@
-[dffml.service.cli]
-innersource = dffml_operations_innersource.cli:InnerSourceCLI
