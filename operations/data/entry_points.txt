@@ -1,8 +1,0 @@
-[dffml.operation]
-principal_component_analysis = dffml_operations_data.operations:principal_component_analysis
-singular_value_decomposition = dffml_operations_data.operations:singular_value_decomposition
-simple_imputer = dffml_operations_data.operations:simple_imputer
-one_hot_encoder = dffml_operations_data.operations:one_hot_encoder
-standard_scaler = dffml_operations_data.operations:standard_scaler
-remove_whitespaces = dffml_operations_data.operations:remove_whitespaces
-ordinal_encoder = dffml_operations_data.operations:ordinal_encoder
