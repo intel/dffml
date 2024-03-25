@@ -1,2 +1,0 @@
-DFFML Source for MongoDB
-========================

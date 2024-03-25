@@ -1,2 +1,0 @@
-[dffml.source]
-mongodb = dffml_source_mongodb.source:MongoDBSource
