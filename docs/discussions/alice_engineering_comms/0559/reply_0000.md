@@ -1,0 +1,28 @@
+## 2024-03-10 @pdxjohnny Engineering Logs
+
+- https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/pull/145
+  - Asked on mailing list about content addressing and federation
+    - Orie responded saying recent PR took care of that
+    - This is that PR
+    - Need to PR emulator with new PR to land after https://github.com/scitt-community/scitt-api-emulator/pull/39 and before https://github.com/scitt-community/scitt-api-emulator/pull/37
+      - Refactor entry IDs into content address URNs using examples from arch doc
+- Federation section was removed from the core CBOR API SCITT arch doc
+  - The question is now, what spec changes ensure MVP federation
+  - We have ~1 week to get it added back in some form or figure out a path to extensions before last call at IETF 119
+  - It seems like SCRAPI may be the correct place, the key is how do we do the advertisement of how one might federate to receive updates from the service which issued a transparent statement, we want to get to that workflow in DID `serviceAddress` style stuff we explored a long while back
+    - https://ietf-wg-scitt.github.io/draft-ietf-scitt-scrapi/draft-ietf-scitt-scrapi.html
+    - For federation discovery we can attempt to resolve `transparency.service/.well-known/transparency-configuration#federation` to discover methods of federating with an SCRAPI service.
+    - We can PR SCRAPI with this section based off https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/issues/79#issuecomment-1797016940
+    - Since URIs are now all content addressed non-CBOR API extensions of SCITT such as SCRAPI are probably the correct level of abstraction to broadcast federation mechanisms, since CBOR API is data format, and SCRAPI is an HTTP API which is explicitly the exchange of the underlying CBOR API elements in another "OSI like" layer.
+- https://ietf-wg-scitt.github.io/draft-ietf-scitt-scrapi/draft-ietf-scitt-scrapi.html#name-transparency-configuration
+- TODO
+  - [x] Address requested updates to https://github.com/scitt-community/scitt-api-emulator/pull/39
+    - [ ] SCITT SCRAPI key loader for `jwks` on `transparency.service/.well-known/transparency-configuration#jwks.keys`
+  - [ ] Resurrect labeled property graph of receipts for use in workflow policy engine
+    - https://docs.hatchet.run/home/tutorials/fastapi-react/result-streaming
+    - https://docs.hatchet.run/home/features/durable-execution
+      - Resume-able execution from the graph built of receipts
+        - We'll make statements where payload is content address of ORAS artifact, or payload is directly an input to the workflow. Manifest of input transparent statements will become `context.workflow_inputs()`
+          - https://docs.hatchet.run/sdks/python-sdk/creating-a-workflow#getting-access-to-the-input-data
+      - Workflow is in payload of receipt
+        - Transparency `registration_policy` is this receipt

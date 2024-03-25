@@ -1,0 +1,4 @@
+- https://github.com/intel/intel-extension-for-transformers/blob/main/intel_extension_for_transformers/neural_chat/examples/finetuning/instruction/README.md
+  - https://gist.github.com/airMeng/28f98f8e94c5d44d3fd7c2a85652c13f
+- https://github.com/IntelLabs/ScalableVectorSearch
+- https://docs.pandas-ai.com/en/latest/getting-started/#smartdatalake

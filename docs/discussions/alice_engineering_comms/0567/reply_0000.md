@@ -1,0 +1,4 @@
+- https://docs.celeryq.dev/en/stable/userguide/extending.html
+- https://docs.celeryq.dev/en/stable/userguide/workers.html
+- https://www.starlette.io/lifespan/
+- https://github.com/BerriAI/litellm?tab=readme-ov-file#openai-proxy---docs

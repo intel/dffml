@@ -1,0 +1,4 @@
+- https://github.com/MegaManSec/SSH-Snake
+- https://securitylabs.datadoghq.com/articles/kubernetes-security-fundamentals-part-1/
+- https://securitylabs.datadoghq.com/articles/kubernetes-security-fundamentals-part-2/
+- https://securitylabs.datadoghq.com/articles/kubernetes-security-fundamentals-part-3/
