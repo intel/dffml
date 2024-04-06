@@ -3,7 +3,9 @@ r"""
 
 ## Install Dependencies
 
-python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier
+```bash
+python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier pgvector psycopg2-binary
+```
 
 ## References
 
@@ -24,6 +26,9 @@ First, we index 3 blog posts.
 """
 import sys
 import pathlib
+import snoop
+
+snoop().__enter__()
 
 # https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/markdown.html#retain-elements
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -58,13 +63,13 @@ def load_docs_dffml():
 docs = load_docs_dffml()
 print("Number of dffml docs:", len(docs))
 
-sys.exit(0)
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 
+# TODO Embeddings for all links referenced in docs
+"""
 urls = [
     "https://lilianweng.github.io/posts/2023-06-23-agent/",
     "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
@@ -73,19 +78,45 @@ urls = [
 
 docs = [WebBaseLoader(url).load() for url in urls]
 docs_list = [item for sublist in docs for item in sublist]
+snoop.pp(docs_list[0])
 
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
     chunk_size=100, chunk_overlap=50
 )
 doc_splits = text_splitter.split_documents(docs_list)
+"""
+from langchain_community.vectorstores.pgvector import PGVector
 
-# Add to vectorDB
-vectorstore = Chroma.from_documents(
-    documents=doc_splits,
-    collection_name="rag-chroma",
-    embedding=OpenAIEmbeddings(),
-)
+embeddings = OpenAIEmbeddings()
+
+# docker run --rm -e POSTGRES_DB=docs_ai_alice_dffml -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user -v $HOME/embeddings/openai/var-lib-postgresq-data:/var/lib/postgresql/data:z -p 5432:5432 pgvector/pgvector:pg16
+CONNECTION_STRING = "postgresql+psycopg2://user:password@localhost:5432/docs_ai_alice_dffml"
+
+@cachier(pickle_reload=False)
+def load_vectorstore():
+    # Add to vectorDB
+    global docs
+    vectorstore = PGVector(
+        collection_name="rag-docs-ai-alice-dffml",
+        connection_string=CONNECTION_STRING,
+        embedding_function=embeddings,
+    )
+    vectorstore.add_documents(docs)
+    return vectorstore
+
+    vectorstore = Chroma(
+        "rag-chroma",
+        OpenAIEmbeddings(),
+    )
+    # TODO If using Chroma chunk add_texts args into batches of 5,460
+    # https://github.com/chroma-core/chroma/issues/1079
+    # vectorstore.add_texts(docs)
+    return vectorstore
+
+vectorstore = load_vectorstore()
 retriever = vectorstore.as_retriever()
+
+sys.exit(0)
 
 """
 Then we create a retriever tool.
@@ -93,13 +124,13 @@ Then we create a retriever tool.
 
 from langchain.tools.retriever import create_retriever_tool
 
-tool = create_retriever_tool(
+retriever_tool_ai_alice_dffml_docs = create_retriever_tool(
     retriever,
-    "retrieve_blog_posts",
-    "Search and return information about Lilian Weng blog posts on LLM agents, prompt engineering, and adversarial attacks on LLMs.",
+    "retrieve_ai_alice_dffml_docs",
+    "Search and return information about AI, Alice, and DFFML.",
 )
 
-tools = [tool]
+tools = [retriever_tool_ai_alice_dffml_docs]
 
 from langgraph.prebuilt import ToolExecutor
 
@@ -433,7 +464,7 @@ from langchain_core.messages import HumanMessage
 inputs = {
     "messages": [
         HumanMessage(
-            content="What does Lilian Weng say about the types of agent memory?"
+            content="Can you please describe the data centric fail safe architecture for artificial general intelligence known as the Open Archietcture and also known as Alice?"
         )
     ]
 }
