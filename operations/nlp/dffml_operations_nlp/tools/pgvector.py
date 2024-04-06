@@ -1,10 +1,17 @@
 r"""
-- References
-    - https://python.langchain.com/docs/integrations/vectorstores/pgvector/
-    - https://langchain-doc.readthedocs.io/en/latest/modules/indexes/chain_examples/vector_db_qa_with_sources.html
-    - https://github.com/pgvector/pgvector?tab=readme-ov-file#dockerq
+# DFFML LangGraph Agenic RAG
 
-pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph
+## Install Dependencies
+
+python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier
+
+## References
+
+- https://python.langchain.com/docs/integrations/vectorstores/pgvector/
+- https://langchain-doc.readthedocs.io/en/latest/modules/indexes/chain_examples/vector_db_qa_with_sources.html
+- https://github.com/pgvector/pgvector?tab=readme-ov-file#dockerq
+
+
 LangGraph Retrieval Agent
 Retrieval Agents are useful when we want to make decisions about whether to retrieve from an index.
 
@@ -15,6 +22,43 @@ We can incorperate this into LangGraph.
 Retriever
 First, we index 3 blog posts.
 """
+import sys
+import pathlib
+
+# https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/markdown.html#retain-elements
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
+
+
+class UnstructuredMarkdownLoaderRetainElements(UnstructuredMarkdownLoader):
+    def __init__(self, *args, **kwargs):
+        kwargs["mode"] = "elements"
+        super().__init__(*args, **kwargs)
+
+
+# Path to root of dffml monorepo
+DFFML_GIT_REPO_ROOT_PATH = pathlib.Path(__file__).parents[4]
+DFFML_DOCS_PATH = DFFML_GIT_REPO_ROOT_PATH.joinpath("docs")
+
+# https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/directory_loader.html#change-loader-class
+from langchain_community.document_loaders import DirectoryLoader
+from cachier import cachier
+
+
+@cachier(pickle_reload=False)
+def load_docs_dffml():
+    loader = DirectoryLoader(
+        DFFML_DOCS_PATH.resolve(),
+        glob="**/*.md",
+        loader_cls=UnstructuredMarkdownLoaderRetainElements,
+    )
+    docs = loader.load()
+    return docs
+
+
+docs = load_docs_dffml()
+print("Number of dffml docs:", len(docs))
+
+sys.exit(0)
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
