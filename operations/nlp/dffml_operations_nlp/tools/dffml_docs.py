@@ -7,6 +7,10 @@ r"""
 python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier pgvector psycopg2-binary pymongo
 ```
 
+## Usage
+
+python dffml_docs.py "Please write a whitepaper on the data centric fail safe architecture for artificial general intelligence known as the Open Architecture. Please include how SCITT and federation help multiple instances communicate securely."
+
 ## References
 
 - https://python.langchain.com/docs/integrations/vectorstores/pgvector/
@@ -88,6 +92,7 @@ text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
 )
 doc_splits = text_splitter.split_documents(docs_list)
 """
+import openai
 from langchain_community.vectorstores.pgvector import PGVector
 
 embeddings = OpenAIEmbeddings()
@@ -168,7 +173,6 @@ compression_retriever = ContextualCompressionRetriever(base_compressor=compresso
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain_openai import ChatOpenAI
 
-question = "What are the approaches to Task Decomposition?"
 llm = ChatOpenAI(temperature=0)
 retriever_from_llm = MultiQueryRetriever.from_llm(
     retriever=compression_retriever, llm=llm
@@ -180,12 +184,9 @@ import logging
 logging.basicConfig()
 logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
 
-# unique_docs = retriever_from_llm.get_relevant_documents(query=question)
-
+"""
 # TODO Recursive
-import json
 query = "Open Architecture Alice"
-
 docs = retriever_from_llm.get_relevant_documents(query)
 
 first = True
@@ -197,6 +198,7 @@ while first or (len(docs) != len(docs_iter)):
         if "parent_id" in doc.metadata:
             docs.append(docstore.mget([doc.metadata["parent_id"]]))
     docs_iter = docs.copy()
+"""
 
 # sys.exit(0)
 
@@ -259,6 +261,12 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolInvocation
 from langchain_core.output_parsers import StrOutputParser
+
+
+@cachier(pickle_reload=False)
+def cached_hub_pull(*args, **kwargs):
+    return hub.pull(*args, **kwargs)
+
 
 ### Edges
 
@@ -471,7 +479,7 @@ def generate(state):
     docs = last_message.content
 
     # Prompt
-    prompt = hub.pull("rlm/rag-prompt")
+    prompt = cached_hub_pull("rlm/rag-prompt")
 
     # LLM
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, streaming=True)
@@ -539,10 +547,14 @@ app = workflow.compile()
 import pprint
 from langchain_core.messages import HumanMessage
 
+query = " ".join(sys.argv[1:])
+if not query.strip():
+    query = "Please write a whitepaper on the data centric fail safe architecture for artificial general intelligence known as the Open Architecture. Please include how SCITT and federation help multiple instances communicate securely."
+
 inputs = {
     "messages": [
         HumanMessage(
-            content="Can you please write a papper on the data centric fail safe architecture for artificial general intelligence known as the Open Archietcture ?"
+            content=query,
         )
     ]
 }
@@ -551,8 +563,12 @@ inputs = {
 #     snoop.pp(doc)
 
 # sys.exit(0)
+import rich.console
+import rich.markdown
 
-snoop.__exit__(None, None, None)
+rich_console = rich.console.Console(width=80)
+
+chat_log = []
 
 for output in app.stream(inputs):
     for key, value in output.items():
@@ -560,43 +576,12 @@ for output in app.stream(inputs):
         pprint.pprint("---")
         pprint.pprint(value, indent=2, width=80, depth=None)
         for message in value.get("messages", []):
-            if isinstance(message, str):
-                print(textwrap.wrap(message, width=80))
-            elif hasattr(message, "content"):
-                print(textwrap.wrap(message.content, width=80))
+            content = message
+            if hasattr(message, "content"):
+                content = message.content
+            rich_console.print(rich.markdown.Markdown(content))
+            chat_log.append(content)
     pprint.pprint("\n---\n")
-r"""
----CALL AGENT---
-"Output from node 'agent':"
-'---'
-{ 'messages': [ AIMessage(content='', additional_kwargs={'function_call': {'arguments': '{"query":"types of agent memory"}', 'name': 'retrieve_blog_posts'}})]}
-'\n---\n'
----DECIDE TO RETRIEVE---
----DECISION: RETRIEVE---
----EXECUTE RETRIEVAL---
-"Output from node 'retrieve':"
-'---'
-{ 'messages': [ FunctionMessage(content='Table of Contents\n\n\n\nAgent System Overview\n\nComponent One: Planning\n\nTask Decomposition\n\nSelf-Reflection\n\n\nComponent Two: Memory\n\nTypes of Memory\n\nMaximum Inner Product Search (MIPS)\n\n\nComponent Three: Tool Use\n\nCase Studies\n\nScientific Discovery Agent\n\nGenerative Agents Simulation\n\nProof-of-Concept Examples\n\n\nChallenges\n\nCitation\n\nReferences\n\nPlanning\n\nSubgoal and decomposition: The agent breaks down large tasks into smaller, manageable subgoals, enabling efficient handling of complex tasks.\nReflection and refinement: The agent can do self-criticism and self-reflection over past actions, learn from mistakes and refine them for future steps, thereby improving the quality of final results.\n\n\nMemory\n\nMemory\n\nShort-term memory: I would consider all the in-context learning (See Prompt Engineering) as utilizing short-term memory of the model to learn.\nLong-term memory: This provides the agent with the capability to retain and recall (infinite) information over extended periods, often by leveraging an external vector store and fast retrieval.\n\n\nTool use\n\nThe design of generative agents combines LLM with memory, planning and reflection mechanisms to enable agents to behave conditioned on past experience, as well as to interact with other agents.', name='retrieve_blog_posts')]}
-'\n---\n'
----CHECK RELEVANCE---
----DECISION: DOCS RELEVANT---
----GENERATE---
-"Output from node 'generate':"
-'---'
-{ 'messages': [ 'Lilian Weng mentions two types of agent memory: short-term '
-                'memory and long-term memory. Short-term memory is used for '
-                'in-context learning, while long-term memory allows the agent '
-                'to retain and recall information over extended periods.']}
-'\n---\n'
-"Output from node '__end__':"
-'---'
-{ 'messages': [ HumanMessage(content='What does Lilian Weng say about the types of agent memory?'),
-                AIMessage(content='', additional_kwargs={'function_call': {'arguments': '{"query":"types of agent memory"}', 'name': 'retrieve_blog_posts'}}),
-                FunctionMessage(content='Table of Contents\n\n\n\nAgent System Overview\n\nComponent One: Planning\n\nTask Decomposition\n\nSelf-Reflection\n\n\nComponent Two: Memory\n\nTypes of Memory\n\nMaximum Inner Product Search (MIPS)\n\n\nComponent Three: Tool Use\n\nCase Studies\n\nScientific Discovery Agent\n\nGenerative Agents Simulation\n\nProof-of-Concept Examples\n\n\nChallenges\n\nCitation\n\nReferences\n\nPlanning\n\nSubgoal and decomposition: The agent breaks down large tasks into smaller, manageable subgoals, enabling efficient handling of complex tasks.\nReflection and refinement: The agent can do self-criticism and self-reflection over past actions, learn from mistakes and refine them for future steps, thereby improving the quality of final results.\n\n\nMemory\n\nMemory\n\nShort-term memory: I would consider all the in-context learning (See Prompt Engineering) as utilizing short-term memory of the model to learn.\nLong-term memory: This provides the agent with the capability to retain and recall (infinite) information over extended periods, often by leveraging an external vector store and fast retrieval.\n\n\nTool use\n\nThe design of generative agents combines LLM with memory, planning and reflection mechanisms to enable agents to behave conditioned on past experience, as well as to interact with other agents.', name='retrieve_blog_posts'),
-                'Lilian Weng mentions two types of agent memory: short-term '
-                'memory and long-term memory. Short-term memory is used for '
-                'in-context learning, while long-term memory allows the agent '
-                'to retain and recall information over extended periods.']}
-'\n---\n'
 
-"""
+import pathlib
+pathlib.Path("~/chat-log.txt").expanduser().write_text("\n\n".join(chat_log))
