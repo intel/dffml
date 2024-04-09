@@ -4,7 +4,7 @@ r"""
 ## Install Dependencies
 
 ```bash
-python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier pgvector psycopg2-binary
+python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier pgvector psycopg2-binary pymongo
 ```
 
 ## References
@@ -28,6 +28,7 @@ import sys
 import pathlib
 import snoop
 import textwrap
+import urllib.parse
 
 snoop = snoop()
 snoop.__enter__()
@@ -91,43 +92,117 @@ from langchain_community.vectorstores.pgvector import PGVector
 
 embeddings = OpenAIEmbeddings()
 
-# docker run --rm -e POSTGRES_DB=docs_ai_alice_dffml -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user -v $HOME/embeddings/openai/var-lib-postgresq-data:/var/lib/postgresql/data:z -p 5432:5432 pgvector/pgvector:pg16
-CONNECTION_STRING = "postgresql+psycopg2://user:password@localhost:5432/docs_ai_alice_dffml"
+from langchain.retrievers import ParentDocumentRetriever
+from langchain_community.storage import MongoDBStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# This text splitter is used to create the parent documents
+parent_splitter = RecursiveCharacterTextSplitter(chunk_size=2000)
+# This text splitter is used to create the child documents
+# It should create documents smaller than the parent
+child_splitter = RecursiveCharacterTextSplitter(chunk_size=400)
+
+# The storage layer for the parent documents
+# docker run --name mongo-docstores-dffml-docs -d --restart=always -e MONGO_INITDB_ROOT_USERNAME=user -e MONGO_INITDB_ROOT_PASSWORD=password -v $HOME/docstores/mongo-data:/data/db:z -p 127.0.0.1:27017:27017 mongo:7
+MONGODB_USERNAME = "user"
+MONGODB_PASSWORD = "password"
+# @{urllib.parse.quote_plus(socket_path)}
+MONGODB_CONNECTION_STRING = f"mongodb://{urllib.parse.quote_plus(MONGODB_USERNAME)}:{urllib.parse.quote_plus(MONGODB_PASSWORD)}@localhost:27017"
+MONGODB_DATABASE_NAME = "docs"
+MONGODB_COLLECTION_NAME = "ai_alice_dffml"
+docstore = MongoDBStore(
+    connection_string=MONGODB_CONNECTION_STRING,
+    db_name=MONGODB_DATABASE_NAME,
+    collection_name=MONGODB_COLLECTION_NAME,
+)
+
+# docker run --name postgres-embeddings-dffml-docs -d --restart=always -e POSTGRES_DB=docs_ai_alice_dffml -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user -v $HOME/embeddings/openai/var-lib-postgresq-data:/var/lib/postgresql/data:z -p 127.0.0.1:5432:5432 pgvector/pgvector:pg16
+POSTGRESQL_CONNECTION_STRING = "postgresql+psycopg2://user:password@localhost:5432/docs_ai_alice_dffml"
 
 # cachier does not work with PGVector @cachier(pickle_reload=False)
-def load_vectorstore():
+def load_retriever():
     # Add to vectorDB
     global docs
     vectorstore = PGVector(
-        collection_name="rag-docs-ai-alice-dffml",
-        connection_string=CONNECTION_STRING,
+        collection_name="rag-docs-ai-alice-dffml-for-parent-document-retriever",
+        connection_string=POSTGRESQL_CONNECTION_STRING,
         embedding_function=embeddings,
+        use_jsonb=True,
     )
-    # vectorstore.add_documents(docs)
-    return vectorstore
+    retriever = ParentDocumentRetriever(
+        vectorstore=vectorstore,
+        docstore=docstore,
+        child_splitter=child_splitter,
+        parent_splitter=parent_splitter,
+    )
+    # TODO If no docs from search then add, only uncomment next line on fresh db
+    # retriever.add_documents(docs)
+    return retriever
 
+    # TODO If using Chroma chunk add_texts args into batches of 5,460
+    # https://github.com/chroma-core/chroma/issues/1079
     vectorstore = Chroma(
         "rag-chroma",
         OpenAIEmbeddings(),
     )
-    # TODO If using Chroma chunk add_texts args into batches of 5,460
-    # https://github.com/chroma-core/chroma/issues/1079
-    # vectorstore.add_texts(docs)
+    # retriever.add_documents(docs)
     return vectorstore
 
-vectorstore = load_vectorstore()
-retriever = vectorstore.as_retriever()
-
-# sys.exit(0)
+# TODO https://python.langchain.com/docs/integrations/retrievers/merger_retriever/
+retriever = load_retriever()
 
 """
 Then we create a retriever tool.
 """
-
 from langchain.tools.retriever import create_retriever_tool
 
+from langchain.llms import OpenAI
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import LLMChainExtractor
+
+# base_retriever defined somewhere above...
+
+compressor = LLMChainExtractor.from_llm(OpenAI(temperature=0))
+compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
+
+from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain_openai import ChatOpenAI
+
+question = "What are the approaches to Task Decomposition?"
+llm = ChatOpenAI(temperature=0)
+retriever_from_llm = MultiQueryRetriever.from_llm(
+    retriever=compression_retriever, llm=llm
+)
+
+# Set logging for the queries
+import logging
+
+logging.basicConfig()
+logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
+
+# unique_docs = retriever_from_llm.get_relevant_documents(query=question)
+
+# TODO Recursive
+import json
+query = "Open Architecture Alice"
+
+docs = retriever_from_llm.get_relevant_documents(query)
+
+first = True
+docs_iter = docs.copy()
+while first or (len(docs) != len(docs_iter)):
+    first = False
+    for doc in docs_iter:
+        snoop.pp(doc.page_content, doc.metadata)
+        if "parent_id" in doc.metadata:
+            docs.append(docstore.mget([doc.metadata["parent_id"]]))
+    docs_iter = docs.copy()
+
+# sys.exit(0)
+
 retriever_tool_ai_alice_dffml_docs = create_retriever_tool(
-    retriever,
+    # retriever,
+    retriever_from_llm,
     "retrieve_ai_alice_dffml_docs",
     "Search and return information about AI, Alice, and DFFML.",
 )
@@ -467,17 +542,15 @@ from langchain_core.messages import HumanMessage
 inputs = {
     "messages": [
         HumanMessage(
-            content="Can you please describe the data centric fail safe architecture for artificial general intelligence known as the Open Archietcture and also known as Alice?"
+            content="Can you please write a papper on the data centric fail safe architecture for artificial general intelligence known as the Open Archietcture ?"
         )
     ]
 }
 
-docs_with_score = vectorstore.similarity_search_with_score("alice")
+# for doc in vectorstore.similarity_search_with_score("alice"):
+#     snoop.pp(doc)
 
-for doc in docs_with_score:
-    snoop.pp(doc)
-
-sys.exit(0)
+# sys.exit(0)
 
 snoop.__exit__(None, None, None)
 
@@ -487,7 +560,10 @@ for output in app.stream(inputs):
         pprint.pprint("---")
         pprint.pprint(value, indent=2, width=80, depth=None)
         for message in value.get("messages", []):
-            textwrap.wrap(message.content, width=80)
+            if isinstance(message, str):
+                print(textwrap.wrap(message, width=80))
+            elif hasattr(message, "content"):
+                print(textwrap.wrap(message.content, width=80))
     pprint.pprint("\n---\n")
 r"""
 ---CALL AGENT---
