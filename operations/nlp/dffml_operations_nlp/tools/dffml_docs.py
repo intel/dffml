@@ -3,7 +3,9 @@ r"""
 
 ## Install Dependencies
 
-python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier
+```bash
+python -m pip install langchain_community tiktoken langchain-openai langchainhub chromadb langchain langgraph langchain-community unstructured[markdown] cachier pgvector psycopg2-binary pymongo
+```
 
 ## References
 
@@ -24,6 +26,12 @@ First, we index 3 blog posts.
 """
 import sys
 import pathlib
+import snoop
+import textwrap
+import urllib.parse
+
+snoop = snoop()
+snoop.__enter__()
 
 # https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/markdown.html#retain-elements
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -58,13 +66,13 @@ def load_docs_dffml():
 docs = load_docs_dffml()
 print("Number of dffml docs:", len(docs))
 
-sys.exit(0)
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 
+# TODO Embeddings for all links referenced in docs
+"""
 urls = [
     "https://lilianweng.github.io/posts/2023-06-23-agent/",
     "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
@@ -73,33 +81,133 @@ urls = [
 
 docs = [WebBaseLoader(url).load() for url in urls]
 docs_list = [item for sublist in docs for item in sublist]
+snoop.pp(docs_list[0])
 
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
     chunk_size=100, chunk_overlap=50
 )
 doc_splits = text_splitter.split_documents(docs_list)
+"""
+from langchain_community.vectorstores.pgvector import PGVector
 
-# Add to vectorDB
-vectorstore = Chroma.from_documents(
-    documents=doc_splits,
-    collection_name="rag-chroma",
-    embedding=OpenAIEmbeddings(),
+embeddings = OpenAIEmbeddings()
+
+from langchain.retrievers import ParentDocumentRetriever
+from langchain_community.storage import MongoDBStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# This text splitter is used to create the parent documents
+parent_splitter = RecursiveCharacterTextSplitter(chunk_size=2000)
+# This text splitter is used to create the child documents
+# It should create documents smaller than the parent
+child_splitter = RecursiveCharacterTextSplitter(chunk_size=400)
+
+# The storage layer for the parent documents
+# docker run --name mongo-docstores-dffml-docs -d --restart=always -e MONGO_INITDB_ROOT_USERNAME=user -e MONGO_INITDB_ROOT_PASSWORD=password -v $HOME/docstores/mongo-data:/data/db:z -p 127.0.0.1:27017:27017 mongo:7
+MONGODB_USERNAME = "user"
+MONGODB_PASSWORD = "password"
+# @{urllib.parse.quote_plus(socket_path)}
+MONGODB_CONNECTION_STRING = f"mongodb://{urllib.parse.quote_plus(MONGODB_USERNAME)}:{urllib.parse.quote_plus(MONGODB_PASSWORD)}@localhost:27017"
+MONGODB_DATABASE_NAME = "docs"
+MONGODB_COLLECTION_NAME = "ai_alice_dffml"
+docstore = MongoDBStore(
+    connection_string=MONGODB_CONNECTION_STRING,
+    db_name=MONGODB_DATABASE_NAME,
+    collection_name=MONGODB_COLLECTION_NAME,
 )
-retriever = vectorstore.as_retriever()
+
+# docker run --name postgres-embeddings-dffml-docs -d --restart=always -e POSTGRES_DB=docs_ai_alice_dffml -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user -v $HOME/embeddings/openai/var-lib-postgresq-data:/var/lib/postgresql/data:z -p 127.0.0.1:5432:5432 pgvector/pgvector:pg16
+POSTGRESQL_CONNECTION_STRING = "postgresql+psycopg2://user:password@localhost:5432/docs_ai_alice_dffml"
+
+# cachier does not work with PGVector @cachier(pickle_reload=False)
+def load_retriever():
+    # Add to vectorDB
+    global docs
+    vectorstore = PGVector(
+        collection_name="rag-docs-ai-alice-dffml-for-parent-document-retriever",
+        connection_string=POSTGRESQL_CONNECTION_STRING,
+        embedding_function=embeddings,
+        use_jsonb=True,
+    )
+    retriever = ParentDocumentRetriever(
+        vectorstore=vectorstore,
+        docstore=docstore,
+        child_splitter=child_splitter,
+        parent_splitter=parent_splitter,
+    )
+    # TODO If no docs from search then add, only uncomment next line on fresh db
+    # retriever.add_documents(docs)
+    return retriever
+
+    # TODO If using Chroma chunk add_texts args into batches of 5,460
+    # https://github.com/chroma-core/chroma/issues/1079
+    vectorstore = Chroma(
+        "rag-chroma",
+        OpenAIEmbeddings(),
+    )
+    # retriever.add_documents(docs)
+    return vectorstore
+
+# TODO https://python.langchain.com/docs/integrations/retrievers/merger_retriever/
+retriever = load_retriever()
 
 """
 Then we create a retriever tool.
 """
-
 from langchain.tools.retriever import create_retriever_tool
 
-tool = create_retriever_tool(
-    retriever,
-    "retrieve_blog_posts",
-    "Search and return information about Lilian Weng blog posts on LLM agents, prompt engineering, and adversarial attacks on LLMs.",
+from langchain.llms import OpenAI
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import LLMChainExtractor
+
+# base_retriever defined somewhere above...
+
+compressor = LLMChainExtractor.from_llm(OpenAI(temperature=0))
+compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
+
+from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain_openai import ChatOpenAI
+
+question = "What are the approaches to Task Decomposition?"
+llm = ChatOpenAI(temperature=0)
+retriever_from_llm = MultiQueryRetriever.from_llm(
+    retriever=compression_retriever, llm=llm
 )
 
-tools = [tool]
+# Set logging for the queries
+import logging
+
+logging.basicConfig()
+logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
+
+# unique_docs = retriever_from_llm.get_relevant_documents(query=question)
+
+# TODO Recursive
+import json
+query = "Open Architecture Alice"
+
+docs = retriever_from_llm.get_relevant_documents(query)
+
+first = True
+docs_iter = docs.copy()
+while first or (len(docs) != len(docs_iter)):
+    first = False
+    for doc in docs_iter:
+        snoop.pp(doc.page_content, doc.metadata)
+        if "parent_id" in doc.metadata:
+            docs.append(docstore.mget([doc.metadata["parent_id"]]))
+    docs_iter = docs.copy()
+
+# sys.exit(0)
+
+retriever_tool_ai_alice_dffml_docs = create_retriever_tool(
+    # retriever,
+    retriever_from_llm,
+    "retrieve_ai_alice_dffml_docs",
+    "Search and return information about AI, Alice, and DFFML.",
+)
+
+tools = [retriever_tool_ai_alice_dffml_docs]
 
 from langgraph.prebuilt import ToolExecutor
 
@@ -212,7 +320,7 @@ def grade_documents(state):
 
     # LLM with tool and enforce invocation
     llm_with_tool = model.bind(
-        tools=[convert_to_openai_tool(grade_tool_oai)],
+        tools=[grade_tool_oai],
         tool_choice={"type": "function", "function": {"name": "grade"}},
     )
 
@@ -278,6 +386,7 @@ def agent(state):
     return {"messages": [response]}
 
 
+@snoop
 def retrieve(state):
     """
     Uses tool to execute retrieval.
@@ -433,15 +542,28 @@ from langchain_core.messages import HumanMessage
 inputs = {
     "messages": [
         HumanMessage(
-            content="What does Lilian Weng say about the types of agent memory?"
+            content="Can you please write a papper on the data centric fail safe architecture for artificial general intelligence known as the Open Archietcture ?"
         )
     ]
 }
+
+# for doc in vectorstore.similarity_search_with_score("alice"):
+#     snoop.pp(doc)
+
+# sys.exit(0)
+
+snoop.__exit__(None, None, None)
+
 for output in app.stream(inputs):
     for key, value in output.items():
         pprint.pprint(f"Output from node '{key}':")
         pprint.pprint("---")
         pprint.pprint(value, indent=2, width=80, depth=None)
+        for message in value.get("messages", []):
+            if isinstance(message, str):
+                print(textwrap.wrap(message, width=80))
+            elif hasattr(message, "content"):
+                print(textwrap.wrap(message.content, width=80))
     pprint.pprint("\n---\n")
 r"""
 ---CALL AGENT---
