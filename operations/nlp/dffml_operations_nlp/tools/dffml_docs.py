@@ -27,8 +27,10 @@ First, we index 3 blog posts.
 import sys
 import pathlib
 import snoop
+import textwrap
 
-snoop().__enter__()
+snoop = snoop()
+snoop.__enter__()
 
 # https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/markdown.html#retain-elements
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -92,7 +94,7 @@ embeddings = OpenAIEmbeddings()
 # docker run --rm -e POSTGRES_DB=docs_ai_alice_dffml -e POSTGRES_PASSWORD=password -e POSTGRES_USER=user -v $HOME/embeddings/openai/var-lib-postgresq-data:/var/lib/postgresql/data:z -p 5432:5432 pgvector/pgvector:pg16
 CONNECTION_STRING = "postgresql+psycopg2://user:password@localhost:5432/docs_ai_alice_dffml"
 
-@cachier(pickle_reload=False)
+# cachier does not work with PGVector @cachier(pickle_reload=False)
 def load_vectorstore():
     # Add to vectorDB
     global docs
@@ -101,7 +103,7 @@ def load_vectorstore():
         connection_string=CONNECTION_STRING,
         embedding_function=embeddings,
     )
-    vectorstore.add_documents(docs)
+    # vectorstore.add_documents(docs)
     return vectorstore
 
     vectorstore = Chroma(
@@ -116,7 +118,7 @@ def load_vectorstore():
 vectorstore = load_vectorstore()
 retriever = vectorstore.as_retriever()
 
-sys.exit(0)
+# sys.exit(0)
 
 """
 Then we create a retriever tool.
@@ -243,7 +245,7 @@ def grade_documents(state):
 
     # LLM with tool and enforce invocation
     llm_with_tool = model.bind(
-        tools=[convert_to_openai_tool(grade_tool_oai)],
+        tools=[grade_tool_oai],
         tool_choice={"type": "function", "function": {"name": "grade"}},
     )
 
@@ -309,6 +311,7 @@ def agent(state):
     return {"messages": [response]}
 
 
+@snoop
 def retrieve(state):
     """
     Uses tool to execute retrieval.
@@ -468,11 +471,23 @@ inputs = {
         )
     ]
 }
+
+docs_with_score = vectorstore.similarity_search_with_score("alice")
+
+for doc in docs_with_score:
+    snoop.pp(doc)
+
+sys.exit(0)
+
+snoop.__exit__(None, None, None)
+
 for output in app.stream(inputs):
     for key, value in output.items():
         pprint.pprint(f"Output from node '{key}':")
         pprint.pprint("---")
         pprint.pprint(value, indent=2, width=80, depth=None)
+        for message in value.get("messages", []):
+            textwrap.wrap(message.content, width=80)
     pprint.pprint("\n---\n")
 r"""
 ---CALL AGENT---
