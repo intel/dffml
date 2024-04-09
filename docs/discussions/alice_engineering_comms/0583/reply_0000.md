@@ -1,0 +1,1 @@
+- https://www.intel.com/content/www/us/en/developer/articles/technical/genai-playground-llms-with-camel-and-open-llama.html
