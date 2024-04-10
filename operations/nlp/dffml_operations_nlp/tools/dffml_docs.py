@@ -37,6 +37,18 @@ import urllib.parse
 snoop = snoop()
 snoop.__enter__()
 
+
+# NOTE We're working on the whitepaper writer currently.
+assistant = client.beta.assistants.create(
+  instructions="You are a customer support chatbot. Use your knowledge base to best respond to customer queries.",
+  model="gpt-4-turbo-preview",
+  tools=[{"type": "retrieval"}]
+)
+
+
+sys.exit(0)
+
+
 # https://langchain-doc.readthedocs.io/en/latest/modules/document_loaders/examples/markdown.html#retain-elements
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 
