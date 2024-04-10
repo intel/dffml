@@ -99,7 +99,7 @@ class WritePaperSectionContent(BaseModel):
     )
     text: str = Field(
         json_schema_extra={
-            "description": "The content for this section",
+            "description": "The content for this section. This should be at least 500 words",
         }
     )
     comments: str = Field(
