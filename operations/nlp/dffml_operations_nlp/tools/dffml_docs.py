@@ -155,6 +155,41 @@ class WritePaper(BaseModel):
     )
 
 
+# Sample JSON data, structured according to given Pydantic classes
+def generate_markdown(write_paper_model: WritePaper):
+    markdown_content = f"# {write_paper_model.outline.title}\n\n"
+    for slug, section in write_paper_model.sections.items():
+        markdown_content += (
+            f"## {section.section_number} {section.title}\n{section.brief}\n\n"
+        )
+        for sub_slug, subsection in section.subsections.items():
+            markdown_content += f"### {subsection.section_number} {subsection.title}\n{subsection.comments}\n\n{subsection.text}\n\n"
+    return markdown_content
+
+
+# Using the Pydantic model to parse and validate the data
+data_path = pathlib.Path("open-architecture.json")
+md_path = pathlib.Path("open-architecture.md")
+if data_path.exists():
+    data_text = data_path.read_text()
+    write_paper_instance = WritePaper.model_validate_json(data_text)
+
+    # Generate Markdown content
+    markdown_content = generate_markdown(write_paper_instance)
+
+    md_path.write_text(markdown_content)
+
+    # Print or save the markdown content
+    import rich.console
+    import rich.markdown
+
+    rich_console = rich.console.Console(width=80)
+
+    rich_console.print(rich.markdown.Markdown(markdown_content))
+
+sys.exit(0)
+
+
 # with open("WritePaper.schema.json", "wt") as fileobj:
 #     print(json.dumps(WritePaperSection.model_json_schema(), indent=4,
 #                      sort_keys=True), file=fileobj)
@@ -837,7 +872,7 @@ for outline_section in write_paper.outline.content.values():
     write_paper.sections[write_paper_section.slug] = write_paper_section
 
 
-pathlib.Path("open-architecture.json").write_text(write_paper.model_dump_json())
+data_path.write_text(write_paper.model_dump_json())
 
 print()
 
