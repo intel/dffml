@@ -155,6 +155,12 @@ class WritePaper(BaseModel):
     )
 
 
+# with open("WritePaper.schema.json", "wt") as fileobj:
+#     print(json.dumps(WritePaperSection.model_json_schema(), indent=4,
+#                      sort_keys=True), file=fileobj)
+
+# sys.exit(0)
+
 # Verify we are on PyDantic > 2
 WritePaperOutlineSection.model_json_schema()
 
