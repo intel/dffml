@@ -76,11 +76,14 @@ class WritePaperOutlineSection(BaseModel):
 
 class WritePaperOutline(BaseModel):
     title: str = Field(
+        default="No Title",
         json_schema_extra={
             "title": "Novel Title",
-        }
+        },
     )
-    content: Dict[str, WritePaperOutlineSection]
+    content: Dict[str, WritePaperOutlineSection] = Field(
+        default_factory=lambda: {},
+    )
 
 
 class WritePaperSectionContent(BaseModel):
@@ -114,6 +117,11 @@ class WritePaperSectionContent(BaseModel):
 
 
 class WritePaperSection(BaseModel):
+    slug: str = Field(
+        json_schema_extra={
+            "description": "The key for which this object is the value within the parent object",
+        }
+    )
     title: str = Field(
         json_schema_extra={
             "description": "The title for this sub-section",
@@ -135,6 +143,15 @@ class WritePaperSection(BaseModel):
         json_schema_extra={
             "title": "Subsection objects",
         }
+    )
+
+
+class WritePaper(BaseModel):
+    outline: WritePaperOutline = Field(
+        default_factory=lambda: WritePaperOutline(),
+    )
+    sections: Dict[str, WritePaperSection] = Field(
+        default_factory=lambda: {},
     )
 
 
@@ -702,7 +719,7 @@ def make_openai_streaming_event_handler():
 # https://asciinema.org/a/653378
 @snoop
 @cachier(pickle_reload=False)
-def do_pydantic_llm_call(prompt):
+def do_llm_call(prompt):
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
         role="user",
@@ -724,7 +741,10 @@ def do_pydantic_llm_call(prompt):
     return "".join(text)
 
 
-text = do_pydantic_llm_call(
+write_paper = WritePaper()
+
+
+text = do_llm_call(
     textwrap.dedent(
         f"""
         Could you please write me a series of one-shot prompts which I could use
@@ -771,11 +791,11 @@ snoop.pp(text)
 obj = json.loads(text)
 snoop.pp(obj)
 
-write_paper_outline = WritePaperOutline.model_validate(obj)
-snoop.pp(write_paper_outline)
+write_paper.outline = WritePaperOutline.model_validate(obj)
+snoop.pp(write_paper)
 
-for outline_section in write_paper_outline.content.values():
-    text = do_pydantic_llm_call(
+for outline_section in write_paper.outline.content.values():
+    text = do_llm_call(
         textwrap.dedent(
             f"""
             Can you please give me section number
@@ -805,8 +825,13 @@ for outline_section in write_paper_outline.content.values():
     obj = json.loads(text)
     snoop.pp(obj)
 
-    write_paper_section = WritePaperOutline.model_validate(obj)
+    write_paper_section = WritePaperSection.model_validate(obj)
     snoop.pp(write_paper_section)
+
+    write_paper.sections[write_paper_section.slug] = write_paper_section
+
+
+pathlib.Path("open-architecture.json").write_text(write_paper.model_dump_json())
 
 print()
 
