@@ -29,14 +29,112 @@ Retriever
 First, we index 3 blog posts.
 """
 import sys
+import json
 import atexit
 import pathlib
 import snoop
 import textwrap
 import urllib.parse
+from typing import Dict
 
 snoop = snoop()
 snoop.__enter__()
+
+from pydantic import BaseModel, Field
+
+
+class WritePaperOutlineSection(BaseModel):
+    slug: str = Field(
+        json_schema_extra={
+            "description": "The key for which this object is the value within the parent object",
+        }
+    )
+    title: str = Field(
+        json_schema_extra={
+            "description": "The title for this section",
+        }
+    )
+    text: str = Field(
+        json_schema_extra={
+            "description": "The prompt for this section which would be used in a series of one-shot prompts which will sequentially be feed to an LLM to generate a full technical book.",
+        }
+    )
+    comments: str = Field(
+        json_schema_extra={
+            "description": "LLM comments on why this section is relevant",
+        }
+    )
+    section_number: str = Field(
+        json_schema_extra={
+            "title": "Section Number",
+            "description": "Section number is integers with `.` as delimiter",
+            "examples": ["1.1.1"],
+        }
+    )
+
+
+class WritePaperOutline(BaseModel):
+    title: str = Field(
+        json_schema_extra={
+            "title": "Novel Title",
+        }
+    )
+    content: Dict[str, WritePaperOutlineSection]
+
+
+class WritePaperSectionContent(BaseModel):
+    slug: str = Field(
+        json_schema_extra={
+            "description": "The key for which this object is the value within the parent object",
+        }
+    )
+    title: str = Field(
+        json_schema_extra={
+            "description": "The title for this sub-section",
+        }
+    )
+    text: str = Field(
+        json_schema_extra={
+            "description": "The content for this section",
+        }
+    )
+    comments: str = Field(
+        json_schema_extra={
+            "description": "LLM comments on why this section is relevant",
+        }
+    )
+    section_number: str = Field(
+        json_schema_extra={
+            "title": "Section Number",
+            "description": "Section number is integers with `.` as delimiter",
+            "examples": ["1.1.1"],
+        }
+    )
+
+
+class WritePaperSection(BaseModel):
+    title: str = Field(
+        json_schema_extra={
+            "description": "The title for this sub-section",
+        }
+    )
+    brief: str = Field(
+        json_schema_extra={
+            "description": "LLM comments on why this section is relevant, could be the content of the prompt used to generate the section",
+        }
+    )
+    section_number: str = Field(
+        json_schema_extra={
+            "title": "Section Number",
+            "description": "Section number is integers with `.` as delimiter",
+            "examples": ["1.1.1"],
+        }
+    )
+    content: Dict[str, WritePaperSectionContent]
+
+
+# Verify we are on PyDantic > 2
+WritePaperOutlineSection.model_json_schema()
 
 OPENAI_MODEL_NAME_GPT_3_5 = "gpt-3.5-turbo"
 OPENAI_MODEL_NAME_GPT_4 = "gpt-4-turbo-2024-04-09"
@@ -70,6 +168,9 @@ instructions = textwrap.dedent(
     information of expansions of abbreviations you did not find within
     dffml.txt. Please favor sources from engineering log entries with dates
     farthest in the future when retrieving data.
+
+    If you are responding using JSON you MUST always ensure your response is
+    only JSON. Do not include other text.
     """,
 )
 
@@ -565,25 +666,6 @@ thread = client.beta.threads.create(
                 """
             ),
         },
-        {
-            "role": "user",
-            "content": textwrap.dedent(
-                """
-                Can you please give me section number A.1 of the paper where section
-                headers are nested json objects? Please wrap the object in a top
-                level JSON which contains the section number. Output nothing but
-                JSON. Provide your commentary in within the "comments" key's value. The titlee is In-Depth Overview of The Open Architecture
-
-                - **Brief:** Write a detailed introduction to the Open
-                  Architecture for AGI. Explain the core components, focusing on
-                  the architecture’s design philosophy. Discuss the significance
-                  of data-centric security, the structured dependency graph, and
-                  how SCITT and federation principles are incorporated at the
-                  system’s foundation.
-                """,
-            ),
-            "file_ids": [file.id],
-        },
     ]
 )
 
@@ -595,37 +677,114 @@ from openai import AssistantEventHandler
 # how we want to handle the events in the response stream.
 
 
-class EventHandler(AssistantEventHandler):
-    @override
-    def on_text_created(self, text) -> None:
-        print(f"\nassistant > ", end="", flush=True)
+def make_openai_streaming_event_handler():
+    text = []
 
-    @override
-    def on_text_delta(self, delta, snapshot):
-        print(delta.value, end="", flush=True)
+    class EventHandler(AssistantEventHandler):
+        @override
+        def on_text_created(self, text) -> None:
+            print(f"\nassistant > ", end="", flush=True)
 
-    def on_tool_call_created(self, tool_call):
-        print(f"\nassistant > {tool_call.type}\n", flush=True)
+        @override
+        def on_text_delta(self, delta, snapshot):
+            nonlocal text
+            text.append(delta.value)
+            print(delta.value, end="", flush=True)
 
-    def on_tool_call_delta(self, delta, snapshot):
-        if delta.type == "code_interpreter":
-            if delta.code_interpreter.input:
-                print(delta.code_interpreter.input, end="", flush=True)
-            if delta.code_interpreter.outputs:
-                print(f"\n\noutput >", flush=True)
-                for output in delta.code_interpreter.outputs:
-                    if output.type == "logs":
-                        print(f"\n{output.logs}", flush=True)
+    return EventHandler(), text
 
+
+message = client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    content=textwrap.dedent(
+        f"""
+        Could you please write me a series of one-shot prompts which I could use
+        sequentially to generate a full technical book where your response
+        conforms to the below json schema?
+
+        ```json
+        {WritePaperOutline.model_json_schema()}
+        ```
+
+        Please generate a response for the outline in that format under no
+        circumstances should your response text contain anything other than
+        a valid JSON object. DO NOT wrap in markdown.
+
+        The prompt for outline generation is as follows:
+
+        Please write a whitepaper on the data centric fail safe
+        architecture for artificial general intelligence known as the
+        Open Architecture. Please include how SCITT and federation help
+        multiple instances communicate securely. Can you please ensure
+        your response to flushes out the sections into at least 5
+        subsections each with their own 1000 word paragraphs of
+        content?. Please include sections on implementation and include
+        more from your sources. SCITT stands for Supply Chain Integrity,
+        Transparency and Trust (SCITT)
+
+        Explain in more detail. Can you please ensure your response to
+        flushes out the sections into at least 5 subsections each with
+        their own 1000 word paragraphs of content? Please include
+        another section which details how the policy engine executes
+        workflows which are analogous to langgraph flows, which we
+        synthesize to knative on kcp which were originally defined as
+        github actions workflows, using v8 and rustpython. Include
+        another section on how we determine which github actions to run
+        based on threat model and OSCAL data which produce the S2C2F
+        analysis of the dependency. Include information on workload
+        identity and how it is derived from the branches of the graph of
+        thoughts.
+        """,
+    ),
+    file_ids=[file.id],
+)
 
 # Then, we use the `create_and_stream` SDK helper
 # with the `EventHandler` class to create the Run
 # and stream the response.
+event_handler, text = make_openai_streaming_event_handler()
 with client.beta.threads.runs.stream(
     thread_id=thread.id,
     assistant_id=assistant.id,
     instructions=instructions,
-    event_handler=EventHandler(),
+    event_handler=event_handler,
+) as stream:
+    stream.until_done()
+
+text = "".join(text)
+write_paper_outline = WritePaperOutline.model_validate_json(text)
+snoop.pp(write_paper_outline)
+
+sys.exit(0)
+
+message = client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    content=textwrap.dedent(
+        f"""
+        Can you please give me section number {section.section_number} of the paper
+        where your response conforms to the below json schema?
+
+        ```json
+        {WritePaperSection.model_json_schema()}
+        ```
+
+        Please use the following JSON object to generate the section:
+
+        ```json
+        ```
+        """,
+    ),
+    file_ids=[file.id],
+)
+
+event_handler, text = make_openai_streaming_event_handler()
+with client.beta.threads.runs.stream(
+    thread_id=thread.id,
+    assistant_id=assistant.id,
+    instructions=instructions,
+    event_handler=event_handler,
 ) as stream:
     stream.until_done()
 
