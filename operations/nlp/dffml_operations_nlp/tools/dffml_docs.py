@@ -40,6 +40,7 @@ from typing import Dict
 snoop = snoop()
 snoop.__enter__()
 
+from cachier import cachier
 from pydantic import BaseModel, Field
 
 
@@ -130,7 +131,11 @@ class WritePaperSection(BaseModel):
             "examples": ["1.1.1"],
         }
     )
-    content: Dict[str, WritePaperSectionContent]
+    subsections: Dict[str, WritePaperSectionContent] = Field(
+        json_schema_extra={
+            "title": "Subsection objects",
+        }
+    )
 
 
 # Verify we are on PyDantic > 2
@@ -694,10 +699,33 @@ def make_openai_streaming_event_handler():
     return EventHandler(), text
 
 
-message = client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    content=textwrap.dedent(
+# https://asciinema.org/a/653378
+@snoop
+@cachier(pickle_reload=False)
+def do_pydantic_llm_call(prompt):
+    message = client.beta.threads.messages.create(
+        thread_id=thread.id,
+        role="user",
+        content=prompt,
+        file_ids=[file.id],
+    )
+    # Then, we use the `create_and_stream` SDK helper
+    # with the `EventHandler` class to create the Run
+    # and stream the response.
+    event_handler, text = make_openai_streaming_event_handler()
+    with client.beta.threads.runs.stream(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+        instructions=instructions,
+        event_handler=event_handler,
+    ) as stream:
+        stream.until_done()
+
+    return "".join(text)
+
+
+text = do_pydantic_llm_call(
+    textwrap.dedent(
         f"""
         Could you please write me a series of one-shot prompts which I could use
         sequentially to generate a full technical book where your response
@@ -737,56 +765,48 @@ message = client.beta.threads.messages.create(
         thoughts.
         """,
     ),
-    file_ids=[file.id],
 )
+snoop.pp(text)
 
-# Then, we use the `create_and_stream` SDK helper
-# with the `EventHandler` class to create the Run
-# and stream the response.
-event_handler, text = make_openai_streaming_event_handler()
-with client.beta.threads.runs.stream(
-    thread_id=thread.id,
-    assistant_id=assistant.id,
-    instructions=instructions,
-    event_handler=event_handler,
-) as stream:
-    stream.until_done()
+obj = json.loads(text)
+snoop.pp(obj)
 
-text = "".join(text)
-write_paper_outline = WritePaperOutline.model_validate_json(text)
+write_paper_outline = WritePaperOutline.model_validate(obj)
 snoop.pp(write_paper_outline)
 
-sys.exit(0)
+for outline_section in write_paper_outline.content.values():
+    text = do_pydantic_llm_call(
+        textwrap.dedent(
+            f"""
+            Can you please give me section number
+            {outline_section.section_number} of the paper where your response
+            conforms to the below json schema? Don't forget to fill out the
+            subsections object.
 
-message = client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    content=textwrap.dedent(
-        f"""
-        Can you please give me section number {section.section_number} of the paper
-        where your response conforms to the below json schema?
+            ```json
+            {WritePaperSection.model_json_schema()}
+            ```
 
-        ```json
-        {WritePaperSection.model_json_schema()}
-        ```
+            Please generate a response for the outline in that format under no
+            circumstances should your response text contain anything other than
+            a valid JSON object. DO NOT wrap in markdown.
 
-        Please use the following JSON object to generate the section:
+            Please use the following JSON object as input to generate the
+            section JSON object:
 
-        ```json
-        ```
-        """,
-    ),
-    file_ids=[file.id],
-)
+            ```json
+            {outline_section.model_dump_json()}
+            ```
+            """,
+        ),
+    )
+    snoop.pp(text)
 
-event_handler, text = make_openai_streaming_event_handler()
-with client.beta.threads.runs.stream(
-    thread_id=thread.id,
-    assistant_id=assistant.id,
-    instructions=instructions,
-    event_handler=event_handler,
-) as stream:
-    stream.until_done()
+    obj = json.loads(text)
+    snoop.pp(obj)
+
+    write_paper_section = WritePaperOutline.model_validate(obj)
+    snoop.pp(write_paper_section)
 
 print()
 
