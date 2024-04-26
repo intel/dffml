@@ -2,7 +2,7 @@
 # docker build -t intelotc/dffml_operations_binsec .
 # docker run --rm -ti -p 80:8080 intelotc/operations -insecure -log debug
 # curl -v http://127.0.0.1:80/list/sources
-FROM ubuntu:22.04@sha256:6042500cf4b44023ea1894effe7890666b0c5c7871ed83a97c36c76ae560bb9b
+FROM ubuntu:24.04@sha256:562456a05a0dbd62a671c1854868862a4687bf979a96d48ae8e766642cd911e8
 
 RUN apt-get update && \
   apt-get install -y \
