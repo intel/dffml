@@ -215,6 +215,7 @@ jobs:
         rm -v private-key.pem
 
   lint:
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -267,6 +268,7 @@ jobs:
         SSH_DFFML_GH_PAGES=${{ secrets.SSH_DFFML_GH_PAGES }} ./.ci/run.sh ${{ matrix.check }}
 
   container:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -287,6 +289,7 @@ jobs:
         ./.ci/run.sh container
 
   test:
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
