@@ -2,6 +2,9 @@ name: "00 PR Auto approve"
 
 on: pull_request_target
 
+permissions:
+  contents: read
+
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
@@ -9,6 +12,11 @@ jobs:
       pull-requests: write
     if: contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.actor)
     steps:
-      - uses: hmarr/auto-approve-action@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4 # v2.7.1
+        with:
+          egress-policy: audit
+
+      - uses: hmarr/auto-approve-action@8f929096a962e83ccdfa8afcf855f39f12d4dac7 # v4
         with:
           review-message: "LGTM"
