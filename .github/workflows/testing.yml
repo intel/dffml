@@ -67,152 +67,27 @@ jobs:
       run: |
         echo "tar=$(cd dist/ && echo *.tar.gz)" >> $GITHUB_OUTPUT
         echo "whl=$(cd dist/ && echo *.tar.gz)" >> $GITHUB_OUTPUT
-    - name: Attest Build Provenance
+    - name: Attest Build Provenance for tar
       uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
       with:
         subject-path: "dist/${{ steps.filename.outputs.tar }}"
-    - name: Attest Build Provenance
+    - name: Attest Build Provenance for whl
       uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
       with:
         subject-path: "dist/${{ steps.filename.outputs.whl }}"
-    - name: in-toto attestation for cyclonedx SBOM
-      id: in-toto-cyclonedx
-      env:
-        MODULE_NAME: dffml
-      run: |
-        echo "attestation<<GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
-        (python -m json.tool --sort-keys | tee -a $GITHUB_OUTPUT) <<EOF
-        {
-          "_type": "https://in-toto.io/Statement/v0.1",
-          "subject": [
-            {
-              "name": "$(cd dist/ && echo *.tar.gz)",
-              "digest": {"sha256": "$(cd dist/ && sha256sum $(echo *.tar.gz) | awk '{print $1}')"}
-            },
-            {
-              "name": "$(cd dist/ && echo *.whl)",
-              "digest": {"sha256": "$(cd dist/ && sha256sum $(echo *.whl) | awk '{print $1}')"}
-            }
-          ],
-          "predicateType": "https://cyclonedx.org/bom/v1.4",
-          "predicate": $(cat "${MODULE_NAME}-py${{ matrix.python-version }}.json")
-        }
-        EOF
-        echo "GITHUB_OUTPUT_EOF" >> $GITHUB_OUTPUT
-    - name: Checkout public-keys branch
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      with:
-        ref: public-keys
-        path: public-keys
-    - name: Generate keypair to sign SCITT statement
-      id: scitt-gen-keypair
-      run: |
-        ssh-keygen -q -f ssh-private -t ecdsa -b 384 -N '' -C "$(head -n 100 /dev/urandom | sha384sum | awk '{print $1}')" -I "$(date -Iseconds)" <<<y
-        cat ssh-private | python -c 'import sys; from cryptography.hazmat.primitives import serialization; print(serialization.load_ssh_private_key(sys.stdin.buffer.read(), password=None).private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption()).decode().rstrip())' > private-key.pem
-        # cat ssh-private.pub | tee -a public-keys/x509
-    - name: SSH key as x509
-      shell: python -u {0}
-      run: |
-        from cryptography import x509
-        from cryptography.x509.oid import NameOID
-        from cryptography.hazmat.primitives import hashes
-        from cryptography.hazmat.backends import default_backend
-        from cryptography.hazmat.primitives.asymmetric import rsa
-        from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
-        from jwcrypto import jwk, jws
-        import datetime
-        import pathlib
-
-        key = jwk.JWK.from_pem(pathlib.Path("private-key.pem").read_bytes())
-        rsa_public_key = jwk.JWK.from_json(key.export_public())
-
-        # Convert the JWK to a public key
-        public_key = rsa_public_key.get_op_key('verify')
-
-        # Create a builder for the X.509 certificate
-        subject = issuer = x509.Name([
-            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
-            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Oregon"),
-            x509.NameAttribute(NameOID.LOCALITY_NAME, "Portland"),
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "SCITT Emulator"),
-            x509.NameAttribute(NameOID.COMMON_NAME, "example.com"),
-        ])
-
-        cert_builder = x509.CertificateBuilder(
-            subject_name=subject,
-            issuer_name=issuer,
-            public_key=public_key,
-            serial_number=x509.random_serial_number(),
-            not_valid_before=datetime.datetime.utcnow(),
-            not_valid_after=datetime.datetime.utcnow() + datetime.timedelta(days=1),  # Certificate valid for 1 day
-            extensions=[]
-        )
-
-        # Self-sign the certificate with the private key
-        private_key_op = key.get_op_key('sign')
-        cert = cert_builder.sign(private_key=private_key_op, algorithm=hashes.SHA256(), backend=default_backend())
-
-        # Serialize the certificate
-        cert_pem = cert.public_bytes(encoding=Encoding.PEM)
-
-        # Save the PEM encoded certificate
-        pathlib.Path("public-keys", "x509").write_bytes(cert_pem)
-    - name: Remove ssh private
-      run: |
-        rm -v ssh-private
-    - name: Push new public key
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        set -xe
-        cd public-keys
-        gh auth setup-git
-        git config --global --add safe.directory "${PWD}"
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        git add -A
-        # If no delta clean exit
-        git commit -sm "Snapshot" || exit 0
-        git push -uf origin "HEAD:public-keys"
-        # Wait for propagation
-        # TODO x509 style polling?
-        sleep 10s
-    - name: Submit SBOM to SCITT
-      id: scitt-submit-sbom
-      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
-      with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
-        subject: pkg:github/${{ github.repository }}@${{ github.sha }}
-        payload: ${{ steps.in-toto-cyclonedx.outputs.attestation }}
-        private-key-pem: private-key.pem
-        scitt-url: https://scitt.unstable.chadig.com
-    - name: Create Pull Request
-      if: ${{ steps.generate-sbom.outputs.changed }}
-      uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
-      with:
-        commit-message: "chore: update SBOM for Python ${{ matrix.python-version }}"
-        title: "chore: update SBOM for Python ${{ matrix.python-version }}"
-        branch: chore-sbom-py${{ matrix.python-version }}
-        delete-branch: true
-        author: GitHub Actions <actions@github.com>
-        add-paths: sbom
     - uses: openvex/generate-vex@159b7ee4845fb48f1991395ce8501d6263407360
       name: Run vexctl
       id: vexctl
       with:
         product: pkg:github/${{ github.repository }}@${{ github.sha }}
-    - name: Submit OpenVEX to SCITT
-      id: scitt-submit-openvex
-      uses: scitt-community/scitt-api-emulator@f1f5c16630a28511e970b6903fbc4c0db6c07654
-      with:
-        issuer: did:web:raw.githubusercontent.com:intel:dffml:public-keys:x509
-        subject: pkg:github/${{ github.repository }}@${{ github.sha }}
-        payload: ${{ steps.vexctl.outputs.openvex }}
-        private-key-pem: private-key.pem
-        scitt-url: https://scitt.unstable.chadig.com
-    - name: Remove private key used in keypair to sign SCITT statement
+    - name: Output vexctl to file
+      shell: cp -v {0} vex.json
       run: |
-        rm -v private-key.pem
+        ${{ steps.vexctl.outputs.openvex }}
+    - name: Submit OpenVEX to Transparency Service
+      uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
+      with:
+        subject-path: vex.json
 
   lint:
     if: false
