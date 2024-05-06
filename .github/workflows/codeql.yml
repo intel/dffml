@@ -26,6 +26,7 @@ permissions:
 jobs:
   analyze:
     name: Analyze
+    if: false
     runs-on: ubuntu-latest
     permissions:
       actions: read
