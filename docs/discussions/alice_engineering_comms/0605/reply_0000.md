@@ -1,0 +1,5 @@
+- https://docs.sigstore.dev/logging/event_stream/
+  - 🛤️🛤️🛤️🛤️🛤️🛤️🛤️
+  - Time to relay
+- TODO
+  - [ ] Investigate potential for HTTP `CONNECT` only must be issued once, connection can be re-used for alternate domains.

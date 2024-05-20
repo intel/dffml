@@ -1,0 +1,3 @@
+- conflict-free replicated data type (CRDT) repos
+  - https://github.com/yjs/yjs
+  - https://github.com/toeverything/OctoBase
