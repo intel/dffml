@@ -1,0 +1,1 @@
+- https://docs.pydantic.dev/logfire/#simplicity

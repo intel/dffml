@@ -1,0 +1,8 @@
+- https://platform.openai.com/docs/api-reference/batch/create
+  - Within 24h 50% cost batch chat completions
+  - ndjson aka `.jsonl` aka `application/jsonl`
+  - > `{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "What is 2+2?"}]}}`
+- https://github.com/pydata/pydata-sphinx-theme
+  - New best known theme for accessibility
+- TODO
+  - [ ] Masquerade streams (an image 🛼) carrying perfect forward secrecy data for broadcast or p2p as comms channel for entities “telepathy” / comms
