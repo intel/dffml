@@ -1,0 +1,3 @@
+- Federated transparent statements enable the policy engine to distribute execution of jobs and their stacks.
+  - #772
+  - #790
