@@ -1,0 +1,6 @@
+- https://c2pa.org
+- https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture/blob/c908b73f459d8c817bbb7be7f0e4369e703bb0e1/draft-ietf-scitt-architecture.md?plain=1#L991
+- C2PA references can be URIs or URNs, although that breaks some validation for those. However, if we did our multi-linked SCITT statements we could have the schema and data linked in a standard way.
+- https://github.com/kubernetes-sigs/bom
+- C2PA uses CBOR
+- https://github.com/pdxjohnny/cve-bin-tool/pull/4
