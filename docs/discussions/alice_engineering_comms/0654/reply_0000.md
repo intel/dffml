@@ -1,0 +1,4 @@
+- TODO
+  - [ ] Mirror to container registrey based off manifests logged in SCITT.
+    - [ ] Use tier'd Manifest of Manifests (MoM) approach
+  - [ ] Each train of thought gets it's own discussion thread

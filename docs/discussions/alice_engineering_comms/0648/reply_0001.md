@@ -1,0 +1,40 @@
+## 2024-06-07 Metaschema
+
+- Oskar Engen
+  - Working on Python bindings
+- John Andersen
+  - Just lurking today
+- Robert Sherwood
+  - https://github.com/metanorma/oscal-ruby
+  - Hash/dict first mentality needs to move to array/list first as primary data structure. Aligns better with XML from OSCAL. Metapathing would work better if treated as nested lists.
+    - Challenge is how can we decouple the model from any of the bindings.
+    - Metapath is closest to a "native" concept of the structure
+  - https://multiple-dispatch.readthedocs.io/en/latest/design.html
+- AJ
+  - https://pages.nist.gov/xslt-blender/xproc-visualizer/
+  - Going to try to make some networkx graph image from models
+    - https://github.com/xee5ch/metaschema_exploration/blob/visualization/visualization/graph.ipynb
+      - https://pages.nist.gov/metaschema/specification/information-modeling/
+      - John: I played with DAGs with networkx and ended up settling on mermaid trying to do something similar a while back. It will be a bit more work but you'll be able to commit the generated mermaid directly into markdown on github for consistently updated docs based on the metaschema.
+      - ![networkx-dag-layout-in-topigraphical-order](https://github.com/intel/dffml/assets/5950433/34ea3c07-dfa5-4479-9532-a5ec5945eb1b)
+- Wendell Piez
+  - Exclusive choice implementation within jsonschema implementation
+    - https://github.com/usnistgov/metaschema-xslt/pull/108
+  - https://github.com/usnistgov/metaschema-xslt/pull/118
+- Dave Waltermire
+  - Most important thing about IETF group is coming up with a fun acronym
+    - https://github.com/ietf-wg-scitt/draft-ietf-scitt-architecture
+  - Arrays and maps in Java for metapath operations implemented
+    - Haven't implemented dynamic function definition
+  - Looking at SARIF based production of validation results
+    - Switch to pick the output format
+    - SARIF is JSON based, AJ started and Dave will finish producing JSON and SARIF using metaschema
+      - https://github.com/usnistgov/metaschema/pull/519
+  - Added type system to Java implementation which gives you human readable types for function definitions
+  - Dave now working at FedRamp using OSCAL for effectively admission control
+    - External constraints, layered in constraints, define them for FedRamp so that they can be validated for that org, (org overlays)
+    - Use SARIF output and XML and JSON to define constraint sets and validate tests.
+    - Will be open source as part of the FedRamp automation repo
+      - Using JEST for early POC
+    - This is an end to end example of definition and validation.
+      - Goal is for this to be an example for others to build and modify
