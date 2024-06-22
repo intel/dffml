@@ -25,6 +25,9 @@ on:
       - "**/*Dockerfile"
       - "**/*.manifest.json"
 
+permissions:
+  contents: read
+
 jobs:
   manifest:
     runs-on: ubuntu-latest
