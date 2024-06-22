@@ -95,8 +95,7 @@ def find_package_name_from_zip(tempdir, url):
     )[0].strip()
 
 
-@snoop
-@cachier.cachier(hash_func=lambda args, kwargs: shlex.join(kwargs["cmd"]))
+# @cachier.cachier(hash_func=lambda args, kwargs: shlex.join(kwargs["cmd"]))
 def pin_packages(cmd):
     cmd = copy.copy(cmd)
     i_install = cmd.index("install")
@@ -142,33 +141,38 @@ def pin_packages(cmd):
         pyproject_toml_path = pyproject_toml_dir_path.joinpath(
             "pyproject.toml"
         )
+        requirements_lock_txt_path = pyproject_toml_dir_path.joinpath(
+            "requirements-lock.txt"
+        )
+        pyproject = {
+            "build-system": {
+                "requires": ["setuptools >= 61.0"],
+                "build-backend": "setuptools.build_meta",
+            },
+            "project": {
+                "name": "pip-tools-compile-pin-deps",
+                "version": "1.0.0",
+                "dependencies": [
+                    *editable_packages,
+                    *[
+                        (
+                            arg
+                            if not ".zip" in arg and not "://" in arg
+                            else f"{find_package_name_from_zip(tempdir, arg)} @ {arg}"
+                        )
+                        for arg in packages
+                        if not ("==" in arg and "$" in arg)
+                    ],
+                ],
+            },
+        }
         pyproject_toml_path.write_text(
             tomli_w.dumps(
-                {
-                    "build-system": {
-                        "requires": ["setuptools >= 61.0"],
-                        "build-backend": "setuptools.build_meta",
-                    },
-                    "project": {
-                        "name": "pip-tools-compile-pin-deps",
-                        "version": "1.0.0",
-                        "dependencies": [
-                            *editable_packages,
-                            *[
-                                (
-                                    arg
-                                    if not ".zip" in arg and not "://" in arg
-                                    else f"{find_package_name_from_zip(tempdir, arg)} @ {arg}"
-                                )
-                                for arg in packages
-                                if "==" not in arg and "$" not in arg
-                            ],
-                        ],
-                    },
-                },
+                pyproject
             )
         )
 
+        # snoop.pp(editable_packages, packages, pyproject)
         print(pyproject_toml_path.read_text())
 
         cmd = [
@@ -176,12 +180,20 @@ def pin_packages(cmd):
             "-m",
             "piptools",
             "compile",
+            "--output-file",
+            str(requirements_lock_txt_path.resolve()),
             "--generate-hashes",
             str(pyproject_toml_path.resolve()),
         ]
-        return subprocess.check_output(
-            cmd,
-        )
+        # TODO ctx based redirect
+        with open(os.devnull, "wb") as devnull:
+            subprocess.check_call(
+                cmd,
+                # stdout=os.devnull,
+                # stderr=os.devnull,
+            )
+        result = requirements_lock_txt_path.read_text()
+        return result
 
 
 class Snippet(BaseModel):
@@ -244,10 +256,7 @@ def get_sarif_results(ossf_scorecard_sarif):
                 else:
                     yield event_subject, result
 
-@snoop
 def main():
-    ran = False
-
     for event, result in get_sarif_results(json.load(sys.stdin)):
         for location in result.locations:
             if (
@@ -264,6 +273,10 @@ def main():
                 raise FileNotFoundError(path)
 
             snippet = location.physicalLocation.region.snippet
+
+            if "dffml[all]" in snippet.text:
+                snoop.pp("skipping", result)
+                continue
 
             lines = path.read_text().split("\n")
 
@@ -286,9 +299,10 @@ def main():
                         snippet.text = snippet.text.replace(find, replace)
 
             pip_install_command = shlex.split(snippet.text)
+            # snoop.pp(pip_install_command)
             pinned_pip_install_command = pin_packages(pip_install_command)
+            # snoop.pp(pinned_pip_install_command)
             if pinned_pip_install_command is None:
-                snoop.pp("Nothing we can do here", pip_install_command)
                 continue
 
             new_lines = []
@@ -298,44 +312,34 @@ def main():
                     and line_number <= location.physicalLocation.region.endLine
                     and snippet.text in line
                 ):
-                    with snoop():
-                        line_start = line[: line.index(pip_install_command[0])]
-                        i_line_end = len(line_start) + 1
-                        while pip_install_command[-1] in line[
-                            i_line_end:
-                        ] and line.index(pip_install_command[-1], i_line_end):
-                            i_line_end = line.index(
-                                pip_install_command[-1], i_line_end
-                            ) + len(pip_install_command[-1])
-                        line_end = line[i_line_end:]
-                        shlex.join(pinned_pip_install_command)
-                        new_lines.append(
-                            line_start
-                            + shlex.join(
-                                [
-                                    "echo",
-                                    "-e",
-                                    pinned_pip_install_command,
-                                    "|",
-                                    "tee",
-                                    "requirements-lock.txt",
-                                ]
-                            )
-                            + line_end
+                    line_start = line[: line.index(pip_install_command[0])]
+                    i_line_end = len(line_start) + 1
+                    while pip_install_command[-1] in line[
+                        i_line_end:
+                    ] and line.index(pip_install_command[-1], i_line_end):
+                        i_line_end = line.index(
+                            pip_install_command[-1], i_line_end
+                        ) + len(pip_install_command[-1])
+                    line_end = line[i_line_end:]
+                    shlex.join(pinned_pip_install_command)
+                    new_lines.append(
+                        line_start
+                        + shlex.join(
+                            [
+                                "echo",
+                                "-e",
+                                json.dumps(pinned_pip_install_command)[1:-1],
+                                "|",
+                                "tee",
+                                "requirements-lock.txt",
+                            ]
                         )
-                        line = line_start + "python -m pip install -r requirements-lock.txt" + line_end
-                        snoop.pp(new_lines[-1], line)
-                        snoop.pp(location.physicalLocation, line_number, line)
+                        + line_end
+                    )
+                    line = line_start + "python -m pip install -r requirements-lock.txt" + line_end
 
-                        # XXX DEBUG
-                        ran = True
                 new_lines.append(line)
             path.write_text("\n".join(new_lines))
-
-            if ran:
-                break
-        if ran:
-            break
 
 
 if __name__ == "__main__":
