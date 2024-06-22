@@ -11,8 +11,8 @@ RUN apt-get update && \
     python3-pip \
     python3 \
     ca-certificates && \
-  python3 -m pip install -U pip && \
-  python3 -m pip install dffml-service-http && \
+  python3 -m pip install -U pip==24.1 --hash=sha256:a775837439bf5da2c1a0c2fa43d5744854497c689ddbd9344cf3ea6d00598540 --hash=sha256:bdae551038c0ce6a83030b4aedef27fc95f0daa683593fea22fa05e55ed8e317 && \
+  python3 -m pip install dffml-service-http==0.1.0.post0 --hash=sha256:27f1fdfdc560c6b9266a5657b9ad6b69d9b7da0acf1bd4b6a1317bd1c5c31bae --hash=sha256:a0e252836a36323156d191c535952210f263c47e1d00523f6993d1812f00fcfe && \
   apt-get purge -y \
     gcc \
     python3-dev && \
