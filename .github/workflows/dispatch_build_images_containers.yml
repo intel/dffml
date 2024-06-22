@@ -3,6 +3,9 @@
 # - https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
 name: "Dispatch: Build: Images: Containers"
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
     inputs:
