@@ -3,7 +3,7 @@
 # docker run --rm -ti -p 80:8080 himanshu/nlp  -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
-FROM ubuntu:24.04@sha256:562456a05a0dbd62a671c1854868862a4687bf979a96d48ae8e766642cd911e8
+FROM ubuntu:24.04@sha256:2e863c44b718727c860746568e1d54afd13b2fa71b160f5cd9058fc436217b30
 
 RUN apt-get update && \
   apt-get install -y \
