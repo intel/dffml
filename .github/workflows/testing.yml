@@ -71,11 +71,11 @@ jobs:
         echo "tar=$(cd dist/ && echo *.tar.gz)" >> $GITHUB_OUTPUT
         echo "whl=$(cd dist/ && echo *.tar.gz)" >> $GITHUB_OUTPUT
     - name: Attest Build Provenance for tar
-      uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
+      uses: actions/attest-build-provenance@bdd51370e0416ac948727f861e03c2f05d32d78e # v1.3.2
       with:
         subject-path: "dist/${{ steps.filename.outputs.tar }}"
     - name: Attest Build Provenance for whl
-      uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
+      uses: actions/attest-build-provenance@bdd51370e0416ac948727f861e03c2f05d32d78e # v1.3.2
       with:
         subject-path: "dist/${{ steps.filename.outputs.whl }}"
     - uses: openvex/generate-vex@159b7ee4845fb48f1991395ce8501d6263407360
@@ -88,7 +88,7 @@ jobs:
       run: |
         ${{ steps.vexctl.outputs.openvex }}
     - name: Submit OpenVEX to Transparency Service
-      uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940 # v1.0.0
+      uses: actions/attest-build-provenance@bdd51370e0416ac948727f861e03c2f05d32d78e # v1.3.2
       with:
         subject-path: vex.json
 
