@@ -336,7 +336,7 @@ def main():
                         )
                         + line_end
                     )
-                    line = line_start + "python -m pip install -r requirements-lock.txt" + line_end
+                    line = line_start + "python -m pip install --require-hashes -r requirements-lock.txt" + line_end
 
                 new_lines.append(line)
             path.write_text("\n".join(new_lines))
