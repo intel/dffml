@@ -3,7 +3,7 @@
 # docker run --rm -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 #
 # curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
-FROM ubuntu:24.04@sha256:562456a05a0dbd62a671c1854868862a4687bf979a96d48ae8e766642cd911e8
+FROM ubuntu:24.04@sha256:2e863c44b718727c860746568e1d54afd13b2fa71b160f5cd9058fc436217b30
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
