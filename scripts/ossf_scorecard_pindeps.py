@@ -176,7 +176,7 @@ def pin_packages(cmd):
         )
 
         # snoop.pp(editable_packages, packages, pyproject)
-        print(pyproject_toml_path.read_text())
+        # print(pyproject_toml_path.read_text())
 
         cmd = [
             sys.executable,
