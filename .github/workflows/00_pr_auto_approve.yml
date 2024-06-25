@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    if: contains(fromJson('["app/dependabot", "app/github-actions", "pdxjohnny"]'), github.actor)
+    if: contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.actor)
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
@@ -21,7 +21,7 @@ jobs:
         with:
           review-message: "LGTM"
 
-      - if: contains(fromJson('["app/dependabot", "app/github-actions"]'), github.actor)
+      - if: contains(fromJson('["dependabot[bot]", "github-actions[bot]"]'), github.actor)
         env:
           GH_TOKEN: ${{ github.token }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
