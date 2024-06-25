@@ -1,3 +1,6 @@
+"""
+Usage: python -c 'import sys, shlex, ossf_scorecard_pindeps; print(ossf_scorecard_pindeps.pin_packages(sys.argv[1:]))' pip install pip setuptools wheel | tee requirements-lock.txt
+"""
 import os
 import sys
 import json
