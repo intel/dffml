@@ -116,6 +116,10 @@ def pin_packages(cmd):
         cmd.remove("-U")
     if "--upgrade" in cmd:
         cmd.remove("--upgrade")
+    if "-e" in cmd:
+        # TODO DEBUG XXX TODO NOTE We need to install the pinned deps then the
+        # editable package
+        cmd.insert(cmd.index("install") + 1, "--no-deps")
 
     for i, package_name in enumerate(packages):
         if (
