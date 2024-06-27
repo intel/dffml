@@ -4,7 +4,13 @@ permissions:
   contents: read
 
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      # For 2nd party validation
+      name-with-owner:
+        type: string
+        description: "owner/repo"
+        default: '${{ github.repository }}'
   push:
     branches:
     - main
@@ -33,6 +39,8 @@ jobs:
         egress-policy: audit
 
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      with:
+        repository: ${{ inputs.name-with-owner || github.repository }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
       with:
