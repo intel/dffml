@@ -10,7 +10,6 @@ on:
       name-with-owner:
         type: string
         description: "owner/repo"
-        default: '${{ github.repository }}'
   push:
     branches:
     - main
