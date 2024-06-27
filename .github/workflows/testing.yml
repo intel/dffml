@@ -67,6 +67,7 @@ jobs:
         python -m build .
     - name: Generate SBOM
       id: generate-sbom
+      if: ${{ !inputs.name-with-owner }}
       uses: anthonyharrison/sbom4python@5b458354df89357bf0253e62ea4567b1807120e2
       with:
         python-version: ${{ matrix.python-version }}
@@ -87,14 +88,17 @@ jobs:
         subject-path: "dist/${{ steps.filename.outputs.whl }}"
     - uses: openvex/generate-vex@159b7ee4845fb48f1991395ce8501d6263407360
       name: Run vexctl
+      if: ${{ !inputs.name-with-owner }}
       id: vexctl
       with:
         product: pkg:github/${{ github.repository }}@${{ github.sha }}
     - name: Output vexctl to file
+      if: ${{ !inputs.name-with-owner }}
       shell: cp -v {0} vex.json
       run: |
         ${{ steps.vexctl.outputs.openvex }}
     - name: Submit OpenVEX to Transparency Service
+      if: ${{ !inputs.name-with-owner }}
       uses: actions/attest-build-provenance@bdd51370e0416ac948727f861e03c2f05d32d78e # v1.3.2
       with:
         subject-path: vex.json
