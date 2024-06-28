@@ -337,10 +337,6 @@ async def main(repos, file_name):
             )
             print(prs)
 
-
-if __name__ == "__main__":
-    asyncio.run(main(REPOS, FILE_PATH))
-
 # The GraphQL query template
 QUERY_TEMPLATE = """
 query($repo_name: String!, $owner: String!) {
@@ -412,3 +408,130 @@ async def old_main(repos, file_path):
             owner, repo, pr_data = await completed
             print(f"Pull requests for repo {owner}/{repo}:")
             print(json.dumps(pr_data, indent=2))
+
+
+import aiohttp
+import contextlib
+from pydantic import BaseModel, Field
+from gidgethub.aiohttp import GitHubAPI
+from typing import Any, Dict, List
+
+
+class GitHubQuery(BaseModel):
+    query: str
+    variables: dict
+
+
+class WorkflowRun(BaseModel):
+    id: str
+    name: str
+    created_at: str
+    logs_url: str
+
+
+class GitHubResponse(BaseModel):
+    data: dict
+    errors: list = None
+
+
+class GitHubClient(BaseModel):
+    token: str
+    username: str
+    session: aiohttp.ClientSession = None
+    gh: GitHubAPI = None
+
+    class Config:
+        arbitrary_types_allowed = True
+
+    async def __aenter__(self):
+        self._exit_stack = contextlib.AsyncExitStack()
+        await self._exit_stack.__aenter__()
+        self.session = await self._exit_stack.enter_async_context(
+            aiohttp.ClientSession()
+        )
+        self.gh = GitHubAPI(
+            self.session, self.username, oauth_token=self.token
+        )
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self._exit_stack.__aexit__(exc_type, exc, tb)
+
+    async def fetch_workflow_runs(
+        self, owner: str, repo: str, start_date: str, end_date: str
+    ) -> List[WorkflowRun]:
+        with snoop():
+            query = GitHubQuery(
+                query="""
+                query($owner: String!, $repo: String!, $start_date: DateTime!, $end_date: DateTime!) {
+                    repository(owner: $owner, name: $repo) {
+                        workflows {
+                            nodes {
+                                runs(first: 100, createdAfter: $start_date, createdBefore: $end_date, orderBy: {field: CREATED_AT, direction: DESC}) {
+                                    nodes {
+                                        id
+                                        name
+                                        createdAt
+                                        logsUrl
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                """,
+                variables={
+                    "owner": owner,
+                    "repo": repo,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+            )
+            response_data = await self.gh.post("/graphql", data=query.dict())
+            response = GitHubResponse(**response_data)
+            runs = response.data["repository"]["workflowRuns"]["nodes"]
+            return [WorkflowRun(**run) for run in runs]
+
+    async def download_log(self, url: str) -> str:
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/vnd.github.v3.raw",
+        }
+        async with self.session.get(url, headers=headers) as response:
+            return await response.text()
+
+
+async def fetch_and_parse_workflow_logs(
+    client: GitHubClient, owner: str, repo: str, start_date: str, end_date: str
+):
+    with snoop():
+        runs = await client.fetch_workflow_runs(owner, repo, start_date, end_date)
+        for run in runs:
+            log_content = await client.download_log(run.logs_url)
+            parse_workflow_logs(log_content)
+
+
+def parse_workflow_logs(log_content: str):
+    # Implement your log parsing logic here
+    print("Parsing log content...")
+    print(
+        log_content[:500]
+    )  # Print the first 500 characters for demonstration
+
+
+async def main():
+    with snoop():
+        token = os.environ["GH_TOKEN"]
+        owner, repo = os.environ["REPO_NAME_WITH_OWNER"].split("/")
+        start_date = os.environ["START_DATE"]
+        # Date format: "2022-01-01T00:00:00Z"
+        end_date = os.environ["END_DATE"]
+
+        async with GitHubClient(token=token, username=owner) as client:
+            await fetch_and_parse_workflow_logs(
+                client, owner, repo, start_date, end_date
+            )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
