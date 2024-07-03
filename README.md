@@ -4,6 +4,7 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/intel/dffml)
 [![codecov](https://codecov.io/gh/intel/dffml/branch/main/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
 [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intel/dffml/badge)](https://scorecard.dev/viewer/?uri=github.com/intel/dffml)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
 [![PyPI version](https://img.shields.io/pypi/v/dffml.svg)](https://pypi.org/project/dffml)
 
