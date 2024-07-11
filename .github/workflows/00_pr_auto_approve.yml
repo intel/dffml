@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.event.actor) }}
+    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
     steps:
       - name: 'Repository Dispatch: approve-pr'
         uses: peter-evans/repository-dispatch@v3
