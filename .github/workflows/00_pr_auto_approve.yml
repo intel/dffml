@@ -1,6 +1,7 @@
 name: "00 PR Auto approve"
 
-on: pull_request_target
+on:
+  workflow_dispatch: null
 
 permissions:
   contents: read
