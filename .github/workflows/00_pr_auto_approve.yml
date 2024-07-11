@@ -13,6 +13,8 @@ on:
 jobs:
   trigger-approve-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.event.actor) }}
     steps:
       - name: 'Repository Dispatch: approve-pr'
