@@ -1,6 +1,5 @@
 ![Logo-dark](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-darkmode.svg#gh-dark-mode-only)
 ![Logo-light](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-lightmode.svg#gh-light-mode-only)
-[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=main&event=push)](https://github.com/intel/dffml/actions)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/intel/dffml)
 [![codecov](https://codecov.io/gh/intel/dffml/branch/main/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
 [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594)
