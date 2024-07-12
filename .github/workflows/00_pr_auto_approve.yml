@@ -49,6 +49,7 @@ jobs:
       - uses: hmarr/auto-approve-action@8f929096a962e83ccdfa8afcf855f39f12d4dac7 # v4
         with:
           review-message: "LGTM"
+          pull-request-number: ${{ github.event.pull_request.number }}
 
       - env:
           GH_TOKEN: ${{ github.token }}
