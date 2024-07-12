@@ -12,8 +12,7 @@ on:
 # https://github.com/marketplace/actions/repository-dispatch
 jobs:
   trigger-approve-pr:
-    if: false
-    # if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
+    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -37,7 +36,7 @@ jobs:
     permissions:
       pull-requests: write
     # if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.actor) }}
-    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
+    if: ${{ contains(fromJson('["pdxjohnny"]'), github.event.actor) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
