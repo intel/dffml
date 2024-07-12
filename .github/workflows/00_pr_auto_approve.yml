@@ -35,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["github-actions[bot]", "pdxjohnny"]'), github.event.sender.login) && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.client_payload.actor) }}
     steps:
+      - uses: actions/checkout@v4
+
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
         with:
