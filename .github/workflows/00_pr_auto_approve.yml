@@ -36,8 +36,11 @@ jobs:
     permissions:
       pull-requests: write
     # if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.actor) }}
-    if: ${{ contains(fromJson('["pdxjohnny"]'), github.event.actor) }}
+    if: github.event_name != 'pull_request_review'
     steps:
+      - shell: cat -v {0}
+        run: ${{ github.event }}
+
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
         with:
