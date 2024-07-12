@@ -32,7 +32,7 @@ jobs:
             }
 
   approve-pr:
-    runs-on: ubuntu-latest  q
+    runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["github-actions[bot]", "pdxjohnny"]'), github.event.sender.login) && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.client_payload.actor) }}
