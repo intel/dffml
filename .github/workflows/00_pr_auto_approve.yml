@@ -12,10 +12,11 @@ on:
 # https://github.com/marketplace/actions/repository-dispatch
 jobs:
   trigger-approve-pr:
+    if: false
+    # if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
     steps:
       - name: 'Repository Dispatch: approve-pr'
         uses: peter-evans/repository-dispatch@v3
@@ -35,7 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.actor) }}
+    # if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.actor) }}
+    if: ${{ github.event_name == 'pull_request_review' && contains(fromJson('["pdxjohnny"]'), github.actor) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
@@ -46,8 +48,7 @@ jobs:
         with:
           review-message: "LGTM"
 
-      - if: contains(fromJson('["dependabot[bot]", "github-actions[bot]"]'), github.event.actor)
-        env:
+      - env:
           GH_TOKEN: ${{ github.token }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
         run: |
