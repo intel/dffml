@@ -33,8 +33,6 @@ jobs:
 
   approve-pr:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     if: ${{ github.event_name == 'repository_dispatch' && contains(fromJson('["github-actions[bot]", "pdxjohnny"]'), github.event.sender.login) && contains(fromJson('["dependabot[bot]", "github-actions[bot]", "pdxjohnny"]'), github.event.client_payload.actor) }}
     steps:
       - name: Harden Runner
@@ -46,9 +44,10 @@ jobs:
         with:
           review-message: "LGTM"
           pull-request-number: ${{ github.event.client_payload.pull_request.number }}
+          github-token: ${{ secrets.LICEOA_PAT }}
 
       - env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.LICEOA_PAT }}
           PULL_REQUEST_NUMBER: ${{ github.event.client_payload.pull_request.number }}
         run: |
           set -x
