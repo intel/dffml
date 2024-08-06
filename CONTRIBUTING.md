@@ -55,18 +55,6 @@ on each commit / packet / new data event: https://docs.tea.xyz/tea-white-paper/w
 >
 > This is our default settings for how Alice will interact with an open source community. CI/CD is how we role model the behavior (since she's an AI agent executing policy engine workflows in GitHub Actions format). we expect for and will be defining overlays. It effectivly defines the projects default win criteria: Successful contributions aligned with the purpose of the project. If a patchset aligns it's ready to go. CI/CD for values alignment.
 
-This document outlines requirements and their stringency levels using different examples.
-It defines actions taken by maintainers. Timelines for progression and example architypes for varying levels of maintainer / contributor involvement / engagement.
-
-- https://github.com/intel/dffml/issues/1207
-- https://github.com/intel/dffml/issues/1252
-- https://github.com/intel/dffml/issues/1061
-- https://github.com/intel/dffml/issues/1400
-- https://github.com/intel/dffml/issues/1273
-- https://github.com/intel/dffml/issues/1300
-- https://github.com/intel/dffml/issues/1657
-- https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
-
 ## Poly-Repo Development Culture
 
 A poly-repo (or polyglot repository) development culture refers to a software development practice where each project or service is stored in its own separate version control repository, as opposed to a mono-repo approach where multiple projects or services reside within a single repository. This approach is often used in large organizations where there are many independent projects or teams working on different parts of a system.
@@ -114,6 +102,7 @@ This section covers call outs on specific behavior or expectations or boundries 
 - https://github.com/intel/dffml/issues/1659
   - Some way we can see if a complete plan for execution (dataflow / workflow hypothesis and analysis via policy engine)
 - https://github.com/pdxjohnny/dotfiles/blob/8d9850f85314a9f5c30f5bb7b8e47ba3857357be/forge-install.sh#L1-L584
+
 ### Architecture Design Records
 
 - First have agents write specs as first step, then iterate on them and push the plans to orphan branches on forks, use git lfs for big files.
@@ -123,14 +112,18 @@ This section covers call outs on specific behavior or expectations or boundries 
 - Main docs for authors: https://authors.ietf.org/
 - https://www.ietf.org/how/ids/
 
-### Trigger Federation
+### Trigger Federation: SCITT: AI Agent Workload Identity with LiteLLM Recap (2024-07-11)
 
 By interacting with the forge, this will trigger the other entities AI to notify them optimally (**TODO** find notes on flow state priority interupts only)
 
-```bash
-git show cfae0f85e:.github/workflows/alice_async_comms.yml | tee .github/workflows/alice_async_comms.yml
-gh act run -P ubuntu-latest=ubuntu:22-04 -j posts -W .github/workflows/alice_async_comms.yml
-```
+- https://github.com/scitt-community/scitt-api-emulator/pull/37
+- https://github.com/pdxjohnny/litellm/commit/3b6b7427b15c0cadd23a8b5da639e22a2fba5043
+- https://github.com/scitt-community/scitt-api-emulator/commits/1e4ec8844aa1ead539ddfd1ac9b71623e25f4c0d
+- https://mailarchive.ietf.org/arch/msg/scitt/BjCAySWyODuhDWwn4kMtCoY5eDA/
+- https://github.com/search?q=repo%3Aintel%2Fdffml+Phase+0&type=code&p=2
+  - https://github.com/intel/dffml/blob/c50b68c3af49167e9cbfef4c31d4096de9e1846a/docs/discussions/alice_engineering_comms/0572/reply_0000.md
+  - https://github.com/intel/dffml/blob/c50b68c3af49167e9cbfef4c31d4096de9e1846a/docs/discussions/alice_engineering_comms/0573/reply_0000.md
+  - https://github.com/intel/dffml/blob/c50b68c3af49167e9cbfef4c31d4096de9e1846a/docs/discussions/alice_engineering_comms/0574/reply_0000.md
 
 ## CI/CD
 
@@ -381,3 +374,17 @@ Alice is going to be held to very high standards. We should expect this list to 
 We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using [InnerSource metric collectors](https://intel.github.io/dffml/main/examples/innersource/swportal.html).
 
 Alice will see problems and look for solutions. Problems are gaps between the present system capabilities and desired system capabilities or interpretations of outputs of strategic plans which are unfavorable by the strategic decision maker or the prioritizer.
+
+## References
+
+This document outlines requirements and their stringency levels using different examples.
+It defines actions taken by maintainers. Timelines for progression and example architypes for varying levels of maintainer / contributor involvement / engagement.
+
+- https://github.com/intel/dffml/issues/1207
+- https://github.com/intel/dffml/issues/1252
+- https://github.com/intel/dffml/issues/1061
+- https://github.com/intel/dffml/issues/1400
+- https://github.com/intel/dffml/issues/1273
+- https://github.com/intel/dffml/issues/1300
+- https://github.com/intel/dffml/issues/1657
+- https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
