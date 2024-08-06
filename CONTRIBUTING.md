@@ -11,11 +11,11 @@
 
 ## Abstract
 
-Federation is the act of communicating data about multiple streams of topics. Federation enables decentralized social networking and is the act of creating, updating, deleting, and delivering notifications and content. This CONTRIBUTING document details trust boundries and evaluation guidelines to determine security properties of abitrary entities so as optimally facilitate secure communication and collaberation towards shared goals while maintaining integrety of all trust boundries of all entities engaged. These methodolgies enable work on this project to progress in a self-directed nature where all contribuing and relant entities maintain agency and often distint strategic plans, principles and values for themselves and their long term or ad-hoc formed organizations.
+Federation is the act of communicating data about multiple streams of topics. Federation enables decentralized social networking and is the act of creating, updating, deleting, and delivering notifications and content. This CONTRIBUTING document details [trust boundaries](https://threat-modeling.com/data-flow-diagrams-in-threat-modeling/) and evaluation guidelines to determine security properties of arbitrary entities so as optimally facilitate secure communication and collaboration towards shared goals while maintaining integrity of all trust boundaries of all entities engaged. These methodologies enable work on this project to progress in a self-directed nature where all contributing and reliant entities maintain agency and often distinct strategic plans, principles and values for themselves and their long term or ad-hoc formed organizations.
 
 This document outlines best practices for poly-repo maintainers and contributors, detailing strategic plans and principles for federated code repositories. It emphasizes continuous trust evaluation, automated CI/CD workflows, and federated transparency receipts to ensure alignment with community-agreed values and strategic objectives. The document also addresses developer and maintainer expectations, federation triggers, and the integration of automated checks into CI/CD processes.
 
-- Trust boundaries are evaluated continuously, and misalignments trigger retraining of AI models and potential blocking of data events.
+- Trust boundaries are evaluated continuously, and misalignment triggers retraining of AI models and potential blocking of data events.
 - Developers and maintainers must document issues, federate forges, and adhere to CI/CD best practices for decentralized governance.
 - Federation triggers and automated workflows ensure optimal notification and alignment with community values and strategic plans.
 
@@ -29,15 +29,15 @@ Conditions that may result in a lack of federation include:
 
 Generic best practices for poly-repo maintainers and contributors. 👩🌟🛠️
 
-This doc details the DFFML upstream default strategic plans and principles for entites
+This doc details the DFFML upstream default strategic plans and principles for entities
 our code repository federates with. We treat this document as the community's default
 policy, you or the organizations you are engaged with MAY apply additional context
 dependent policies. Using these methodologies N entities without previous information
 about each other can successfully establish trust within previously unknown execution
-contexts and successfully collaberate towards shared goals (software development). These
-methods foster invovation, preserve entity agency and alignement to strategic plans,
+contexts and successfully collaborate towards shared goals (software development). These
+methods foster innovation, preserve entity agency and alignment to strategic plans,
 principles, and values across this poly-repo ecosystem and other concurrent repositories / work.
-These methodolgioes are practiced to maintain trust, security, and alignment with community goals.
+These methodologies are practiced to maintain trust, security, and alignment with community goals.
 
 When there is no contact with an entity, we block all attempts at federating new data events.
 This applies both directly and when detected through bill of materials (BOM) graph analysis
