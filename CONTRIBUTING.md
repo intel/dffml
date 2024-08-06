@@ -1,4 +1,4 @@
-# Contributing
+# CONTRIBUTING
 
 Please see the [contributing docs page](https://intel.github.io/dffml/main/contributing/).
 
@@ -9,6 +9,8 @@ Please see the [contributing docs page](https://intel.github.io/dffml/main/contr
 >     - **TODO LINK TO IMAGE OR DOC OR SECTION WITH WHITEBOARD SKETCH**
 
 ## Abstract
+
+Federation is the act of communicating data about multiple streams of topics. Federation enables decentralized social networking and is the act of creating, updating, deleting, and delivering notifications and content. This CONTRIBUTING document details trust boundries and evaluation guidelines to determine security properties of abitrary entities so as optimally facilitate secure communication and collaberation towards shared goals while maintaining integrety of all trust boundries of all entities engaged. These methodolgies enable work on this project to progress in a self-directed nature where all contribuing and relant entities maintain agency and often distint strategic plans, principles and values for themselves and their long term or ad-hoc formed organizations.
 
 This document outlines best practices for poly-repo maintainers and contributors, detailing strategic plans and principles for federated code repositories. It emphasizes continuous trust evaluation, automated CI/CD workflows, and federated transparency receipts to ensure alignment with community-agreed values and strategic objectives. The document also addresses developer and maintainer expectations, federation triggers, and the integration of automated checks into CI/CD processes.
 
