@@ -1,6 +1,7 @@
 # CONTRIBUTING
 
-Please see the [contributing docs page](https://intel.github.io/dffml/main/contributing/).
+- Please see the [contributing docs page for DFFML 1st Party Contributing Docs](https://intel.github.io/dffml/main/contributing/).
+- The following document is about contribuing to the DFFML [poly-repo 1st, 2nd, and 3rd party ecosystems]()
 
 > **WARNING: SECURITY**
 >
@@ -38,15 +39,21 @@ strategic plans and principles.
 
 These measures are in place to maintain trust, security, and alignment with community goals.
 
-When no contact with an entity: Blocking all attempts at federation of new data events directly or when detected in the bill of materials graph analysis of data events from old. This is our trigger for retraining the models which is why it's AI Looped In CI/CD Execution. Overlays may define additional consequencies. Overlays in use get added to all data event BOMs and TCB evaluation is done continuously and retroactivly invalidated if we learn nodes in a graph are not aligned with our running context's strategic plans, principles, and values.
-Following these recommendations for communication results in a record of the actions taken
-for each train of thought where data has been shared between entities. The authors of this
-document have made a best effort attempt to completely capture the these strategic values, plans,
-and principles. However, trust evaluation is an ever changing game and context applicable overlays
-and future updates to this doc will be done continuously. It should be viewed as a
-lessons learned doc and suggested interaction patterns
-context and the trust levels of the data within those contexts and the trust level in the
-policy evaluation / analysis executed and the 
+When there is no contact with an entity, we block all attempts at federating new data events.
+This applies both directly and when detected through bill of materials (BOM) graph analysis
+of past data events. This is our trigger for retraining the models, which is why it's
+referred to as AI Looped In CI/CD Execution. Overlays may define additional consequences.
+When overlays are used, they are added to all data event BOMs, and Trusted Computing Base (TCB)
+evaluations are conducted continuously. These evaluations are retroactively invalidated if
+we learn that nodes in a graph do not align with our strategic plans, principles, and values.
+
+Adhering to these communication recommendations results in a record of actions taken for
+each train of thought where data has been shared between entities. The authors of this
+document have made a best effort to fully capture these strategic values, plans, and
+principles. However, trust evaluation is an ever-changing process. Context-dependent
+overlays and future updates to this document will be made continuously. It SHOULD be
+viewed as a lessons-learned document, suggesting interaction patterns, the trust levels
+of the data within those contexts, and the trust level in the policy evaluation and analysis executed.
 
 **TODO** Document the anti-skynet part which is also the part which will auto help filter out people with malicious intent (the on the scam phone call with grandma defense idea)
 
@@ -116,7 +123,41 @@ This section covers call outs on specific behavior or expectations or boundries 
 
 ### Trigger Federation: SCITT: AI Agent Workload Identity with LiteLLM Recap (2024-07-11)
 
-By interacting with the forge, this will trigger the other entities AI to notify them optimally (**TODO** find notes on flow state priority interupts only)
+> Upstream: [WIP: Use Case: Attestations of alignment to S2C2F and org overlays #18](https://github.com/pdxjohnny/use-cases/blob/04499f4e4dedcec9add0e627f8aa742151f99297/openssf_metrics.md)
+
+Federation is triggered when an entity interacts with a forge, this will trigger
+the other entities AI to notify them optimally (**TODO** find notes on flow state priority interupts only).
+
+Think of federation as collection of data into shared database.
+Each database tells the other databases when there are updates.
+We use federation to enable self reporting and granularity
+as applicable to ad-hoc formed policy as desired by end-user.
+
+- Related: https://github.com/ossf/s2c2f/blob/main/specification/framework.md#appendix-relation-to-scitt
+- This use case will be mostly focused on the policy / gatekeeper component and federation components of [SCITT](https://datatracker.ietf.org/doc/draft-ietf-scitt-architecture/).
+  - 5.2.2: Registration Policies
+  - 7: Federation
+- This use case is a specialization of (cross between) the following use cases from the [Detailed Software Supply Chain Uses Cases for SCITT](https://datatracker.ietf.org/doc/draft-ietf-scitt-software-use-cases/) doc.
+  - 3.3: Security Analysis of a Software Product
+    - We'll cover OpenSSF Scorecard and other analysis mechanisms including meta static analysis / aggregation (example: GUAC).
+  - 3.4: Promotion of a Software Component by multiple entities
+    - We'll cover how these entities can leverage analysis mechanisms to achieve feature and bugfix equilibrium across the diverged environment.
+      - Future use cases could explore semantic patching to patch across functionally similar
+- Alice builds a python Package
+  - Notary checks for receipts from needed sign offs
+    - In this example the SCITT instance the notary inserting into it have the same insert/sign policies (system context, dataflow, open architecture document, living threat model)
+      - Alice has two jobs, one which bulds a Python package, and other which runs SCITT in a TEE (perhaps with a redis service container to ease comms)
+        - She auths to job in TEE (SGX in this example) local SCITT via OIDC, the SCITT notary and ledger are unified in this example and a claim is inserted that she had a valid OIDC token for job_workflow_sha + repositoryUri + repository_id + job.. The enclave is then dumped at the end of the job so that it can be joined to an other transparency services. This enables decentralized hermetic builds via federation of transparency services (by grafting them into org sepcific registires ad-hoc via CD eventing of forge federation).
+    - The notary is what's verifying the OIDC token.
+      - We can runs-on an SGX machine to do that.
+      - Using confidential compute and attribute based trust we can authenticate to a usage policy, this is the place for on/off chain contract negotiation.
+        - Off chain would be whenever we have to enter a hermetic enviornment (IPVM).
+  - Activity Pub Actors for signoff, send to inbox requesting signoff (issue ops), they say okay I'll add this exception sign off for this use case /system context to SCITT
+    - Then policy violating system context collects all needed exception receipts, listens for their entry via listening to the SCITT ActivityPub stream, and then re-issues request for admissions along with exception receipts using overlay section of serialized system context object
+
+> SCITT Federation as firewall demo: [https://github.com/scitt-community/scitt-api-emulator/tree/64cc40e269feba5cec8fb096d0ba648e921b6069](https://github.com/pdxjohnny/scitt-api-emulator/tree/demo-instance)
+
+[![SCITT Federation as Firewall](https://asciinema.org/a/622103.svg)](https://asciinema.org/a/622103)
 
 - https://github.com/scitt-community/scitt-api-emulator/pull/37
 - https://github.com/pdxjohnny/litellm/commit/3b6b7427b15c0cadd23a8b5da639e22a2fba5043
@@ -195,22 +236,22 @@ reviewed, the mentors rubrics will be averaged for each proposal. And the final
 score will be calculated for each proposal by tallying up all the points in the
 averaged subjective rubrics and the objective rubric. The proposals will then
 be ranked from highest to lowest. Final scoring will happen two days before
-slot requests are due to give students the most time possible to get more
+slot requests are due to give contributors the most time possible to get more
 contributions in, get better at debugging, show self direction, and engage with
 the community.
 
 #### Goals in Proposal
 
-The project proposed should have a clear value to the project's community. A
+The project proposed MUST have a clear value to the project's community. A
 high score here means if the project is selected (and subsequently completed),
 users would clearly benefit from it.
 
 #### Completeness of Proposal
 
-The proposal should contain enough details for it to be clear that the student
+The proposal MUST contain enough details for it to be clear that the contributor
 knows how to complete the goals they've outlined. More detail beyond proving
-they know the basics of what needs to be done is better. If a student proposed
-something but was short on detail, their contributions to the project should be
+they know the basics of what needs to be done is better. If a contributor proposed
+something but was short on detail, their contributions to the project MAY be
 taken into account. If their proposal lacks detail on implementation of
 something similar to what they've already done several times, it's not
 necessary that they re-explain in detail in the proposal, their contributions
@@ -218,16 +259,16 @@ speak for themselves.
 
 #### Time Commitment
 
-GSoC expects students to spend 30+ hours a week working on their proposed
+We expect contributors to estimate their engagement in hours a week for their proposed
 project / the project they are contributing to (assuming they've completed
-their proposed project). Students vary in skill level. As such, mentors should
-take their interactions with students into account as well as previous work a
-student has completed to estimate if the student will be able to complete the
-outlined proposal in the allotted time. Mentors should also think about students
+their proposed project). Students vary in skill level. As such, mentors MUST
+take their interactions with contributors into account as well as previous work a
+contributor has completed to estimate if the contributor will be able to complete the
+outlined proposal in the allotted time. Mentors MAY also think about contributors
 previous work and how long it seemed like they spent working on previous pull
 requests to estimate how long each action item in the proposal will take the
-student. Using this estimate, mentors should respond in the rubric with their
-thoughts on how many hours a week they think the student will be spending
+contributor. Using this estimate, mentors MUST respond in the rubric with their
+thoughts on how many hours a week they think the contributor will be spending
 working on their proposed project to complete it.
 
 #### Engagement with Community
@@ -235,18 +276,18 @@ working on their proposed project to complete it.
 Student engagement with the community is key to their success, the success of
 future GSoC applicants, and the project. We cannot effectively collaborate to
 build open source software if we don't talk to each other. The best outcome of
-GSoC is not only the completion of the student's project, but the student
-becoming a mentor for other students or new community members. A high score
-here shows active participation in the community and that the students actions
+GSoC is not only the completion of the contributor's project, but the contributor
+becoming a mentor for other contributors or new community members. A high score
+here shows active participation in the community and that the contributors actions
 show them trending towards becoming a mentor / maintainer in this organization
 or another someday.
 
 #### Mentor Vote
 
-Every mentor should vote for one proposal which is their personal favorite.
+Every mentor MAY vote for one proposal which is their personal favorite.
 Each mentor has different aspects about the project (DFFML) that are important
 to them (maintainers of different subsystems, etc.). Since the mentors will be
-advising students, it's important that they believe in the projects they are
+advising contributors, it's important that they believe in the projects they are
 guiding. This is how they signal what they believe is important or cool.
 
 #### Self Directed
@@ -257,7 +298,7 @@ project management and organization of work items so that everyone knows what
 the open bugs are on the project and what the planned enhancements are.
 Everything is done in public because anything is accessible to anyone on the
 internet and it's important that we all stay on the same page to effectively
-collaborate. Self directed students follow contribution guidelines and
+collaborate. Self directed contributors follow contribution guidelines and
 communicate their intentions to work on issues within the posted issue rather
 than other channels of communication which don't allow others to see the status
 of what's being worked on. This keeps the community in sync so there is no
@@ -265,23 +306,23 @@ duplication of work. In some projects (like DFFML) issues are labeled with the
 estimated amount of work they will take to complete. Students who take on
 larger issues will spend more time working on the problem on their own and less
 time with a mentor stepping them through what to do. This is a measure of the
-students resourcefulness and tenacity for solving difficult problems.
+contributors resourcefulness and tenacity for solving difficult problems.
 
 #### Debugging
 
 The act of working on any problem, programming in particular, is an exercise in
-figuring out what should be done, what has been done, and what's the current
-problem that is keeping what has been done from being what should be done. This
-loop of fail, fix, repeat, is debugging. Students should be actively testing
+figuring out what could be done, what has been done, and what's the current
+problem that is keeping what has been done from being what needs to be done. This
+loop of fail, fix, repeat, is debugging. Students MUST be actively testing
 their contributions. When those tests fail they need to use critical thinking
 to determine if what they've done is working or not. If it's not working they
 need to figure out what the next step would be in fixing it, and try that. If
-they can't figure it out, then they should ask for help. A student that asks
+they can't figure it out, then they SHOULD ask for help. A contributor that asks
 for help any time there is an issue without trying to figure out what the issue
 is before asking for help is not putting in enough effort. In addition, tests
 have to pass in the continuous integration (CI) environment. If the test
-doesn't pass in CI, then the student should be performing the debugging process
-looking at what's wrong in the CI environment. They should not say that they
+doesn't pass in CI, then the contributor MUST be performing the debugging process
+looking at what's wrong in the CI environment. They SHOULD not say that they
 don't know what is wrong because it works for them. Feigned ignorance of
 failing tests does not excuse their failure.
 
@@ -290,7 +331,7 @@ failing tests does not excuse their failure.
 Some open source projects (like DFFML) label issues with the estimated amount
 of work they will take to complete. Larger contributions, or those associated
 with larger issues, receive more points than smaller contributions. The goal
-here is to reward students who have put in more effort leading up to GSoC.
+here is to reward contributors who have put in more effort leading up to GSoC.
 They've worked hard to learn about the project they wrote a proposal for,
 and have worked hard to make that project better.
 
@@ -298,7 +339,7 @@ and have worked hard to make that project better.
 
 > Upstream: [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice)
 
-To think about how we think about editing this document and how it should be
+To think about how we think about editing this document and how it MUST be
 written, imagine an open source developer named Alice. Phrase things here so that
 she could ramp up on the project given no previous context, assumputions about
 known or practiced development methodologies, strategic principles, plans, and
@@ -351,25 +392,25 @@ following as we analyze the softare / system / entity over it's lifecycle.
 
 ### Expectations
 
-Alice is going to be held to very high standards. We should expect this list to grow for a long time (years). This list of expectations may at times contain fragments which need to be worked out more and are only fragment so the ideas don't get forgotten. 
+Alice is going to be held to very high standards. We expect this list to grow for a long time (years). This list of expectations may at times contain fragments which need to be worked out more and are only fragment so the ideas don't get forgotten. 
 
-- Alice should be able to work on any project as a remote developer
-  - She should be able to make changes to projects following the branch by abstraction methodology
+- Alice MUST be able to work on any project as a remote developer
+  - She MUST be able to make changes to projects following the branch by abstraction methodology
   - When she works on a github issue she'll comment what commands she tries and what files she modifies with diffs
-- Alice will maintain a system which allows her to respond to asynchronous messages
+- Alice MUST maintain a system which allows her to respond to asynchronous messages
   - Likely a datastore with the ability to listen for changes
   - Changes would be additions of messages from different sources (email, chat, etc.)
-- Alice should be able to accept a meeting, join it, and talk to you
+- Alice SHOULD be able to accept a meeting, join it, and talk to you
   - If Alice notices conversation getting off topic, she could interject to ask how it relates, and then update references in docs to that effect.
-  - You should be able to have a conversation about a universal blueprint and she should be able to go act on it.
-  - She should be able to analyze any codebase you have access to live and build and walk you through architecture diagrams
+  - You MUST be able to have a conversation about a universal blueprint and edit it and she MAY be able to go act on the fulfilment of that conversation.
+  - She MUST be able to analyze any codebase you have access to live and build and walk you through architecture diagrams
   - Alice build me a linux distro with these versions of these applications deploy it in a VM in QEMU, show me the screen while it's booting. Then give me control of it via this meeting. ... Okay now snapshot and deploy to XYZ CSP.
-    - She should figure out how to validate that she has a working linux distro by overlaying discovered tests with intergration tests such as boot check via qemu serial.
+    - Example test case: She MUST figure out how to validate that she has a working linux distro by overlaying discovered tests with intergration tests such as boot check via qemu serial.
   - Alice, spin up ABC helm charts and visualize the cluster (viewing in an AR headset)
   - Alice, let's talk about the automating classification web app included in the example.
     - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings. Begin work on issues found as you find them.
-- We should be able to see Alice think and understand her trains of thought
-  - If Alice is presenting and she estimates thinking of the correct solution will take longer than a reasonable time her next word is expected by to keep regular conversational cadence, she should either offer to brainstorm, work through it and wait until it makes sense to respond, maybe there are situations where the output is related to saving someone's life, then maybe she interupts as soon as she's done thinking. Provided she didn't detect that the train of thought which was being spoken about by others was not of higher prioritiy than her own (with regards to lifesaving metrics).
+- We SHOULD be able to see Alice think and understand her trains of thought
+  - If Alice is presenting and she estimates thinking of the correct solution will take longer than a reasonable time her next word is expected by to keep regular conversational cadence, she SHOULD either offer to brainstorm, work through it and wait until it makes sense to respond, maybe there are situations where the output is related to saving someone's life, then maybe she interupts as soon as she's done thinking. Provided she didn't detect that the train of thought which was being spoken about by others was not of higher prioritiy than her own (with regards to top priority level metrics).
 
 ### Alice's Understanding of Software Engineering
 
@@ -382,11 +423,22 @@ Alice will see problems and look for solutions. Problems are gaps between the pr
 This document outlines requirements and their stringency levels using different examples.
 It defines actions taken by maintainers. Timelines for progression and example architypes for varying levels of maintainer / contributor involvement / engagement.
 
-- https://github.com/intel/dffml/issues/1207
-- https://github.com/intel/dffml/issues/1252
-- https://github.com/intel/dffml/issues/1061
-- https://github.com/intel/dffml/issues/1400
-- https://github.com/intel/dffml/issues/1273
-- https://github.com/intel/dffml/issues/1300
-- https://github.com/intel/dffml/issues/1657
-- https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
+- 1st Party
+  - https://github.com/intel/dffml/issues/1207
+  - https://github.com/intel/dffml/issues/1252
+  - https://github.com/intel/dffml/issues/1061
+  - https://github.com/intel/dffml/issues/1400
+  - https://github.com/intel/dffml/issues/1273
+  - https://github.com/intel/dffml/issues/1300
+  - https://github.com/intel/dffml/issues/1657
+  - https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
+- IETF
+  - https://www.rfc-editor.org/rfc/rfc2119
+  - https://datatracker.ietf.org/wg/scitt/about/
+    - https://scitt.io
+    - 
+  - https://datatracker.ietf.org/wg/keytrans/about/
+- KERI
+  - https://keri.one
+  - https://github.com/decentralized-identity/keri/blob/352fd2c30bf3e76e8f8f78d2edccd01a9f943464/docs/KERI-made-easy.md
+- World 
