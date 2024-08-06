@@ -30,14 +30,14 @@ Conditions that may result in a lack of federation include:
 Generic best practices for poly-repo maintainers and contributors. 👩🌟🛠️
 
 This doc details the DFFML upstream default strategic plans and principles for entites
-our code repository federates with (when your Version Control Software (VCS) has enabled trust
-boundry based federation with known users and contributors. Your VCS will come with a default
-policy, you may have set one, your org, additional policies are context dependent. When
-N entities auto federate version controlled data in alignment with these best practices
-the ultimate concequence of repeated detected missalignment to any of these or overlayed
-strategic plans and principles.
-
-These measures are in place to maintain trust, security, and alignment with community goals.
+our code repository federates with. We treat this document as the community's default
+policy, you or the organizations you are engaged with MAY apply additional context
+dependent policies. Using these methodologies N entities without previous information
+about each other can successfully establish trust within previously unknown execution
+contexts and successfully collaberate towards shared goals (software development). These
+methods foster invovation, preserve entity agency and alignement to strategic plans,
+principles, and values across this poly-repo ecosystem and other concurrent repositories / work.
+These methodolgioes are practiced to maintain trust, security, and alignment with community goals.
 
 When there is no contact with an entity, we block all attempts at federating new data events.
 This applies both directly and when detected through bill of materials (BOM) graph analysis
