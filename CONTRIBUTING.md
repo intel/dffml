@@ -337,7 +337,7 @@ and have worked hard to make that project better.
 
 ## Alice: Abstracted Lifecycle Instantiatation of Contributor Efectivo
 
-> Upstream: [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/main/docs/tutorials/rolling_alice/0000_architecting_alice)
+> Upstream: [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/)
 
 To think about how we think about editing this document and how it MUST be
 written, imagine an open source developer named Alice. Phrase things here so that
