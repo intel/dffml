@@ -189,7 +189,7 @@ Boundries: I will federate changes from you and forward changes to others I am f
 
 - #1287
 
-Virtual branch - shared context dependent trains of thought within a poly-repo environment. If the overlays of an entity currently federating with. The N+1 federation new data event is always determined by a KERI duplicity detection protected channel. The tcb for trust evaluation is also party of relying party inputs.
+Virtual branch - shared context dependent trains of thought within a poly-repo environment. If the overlays of an entity currently federating with. The N+1 federation new data event is always determined by a KERI duplicity detection protected channel (this is critical because or else we are not able to see who is being duplictus over time, which we need for the relying parties analysis of ClearForTakeoff for AI agent (workload) identity (OIDC, sould based auth). The tcb for trust evaluation is also party of relying party inputs.
 
 - https://github.com/pdxHijohnny/dotfiles/issues/1
 
@@ -423,7 +423,9 @@ Alice will see problems and look for solutions. Problems are gaps between the pr
 This document outlines requirements and their stringency levels using different examples.
 It defines actions taken by maintainers. Timelines for progression and example architypes for varying levels of maintainer / contributor involvement / engagement.
 
-- 1st Party
+- Keyword Definitions used in Documentation
+  - https://www.rfc-editor.org/rfc/rfc2119
+- DFFML
   - https://github.com/intel/dffml/issues/1207
   - https://github.com/intel/dffml/issues/1252
   - https://github.com/intel/dffml/issues/1061
@@ -432,13 +434,28 @@ It defines actions taken by maintainers. Timelines for progression and example a
   - https://github.com/intel/dffml/issues/1300
   - https://github.com/intel/dffml/issues/1657
   - https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
-- IETF
-  - https://www.rfc-editor.org/rfc/rfc2119
-  - https://datatracker.ietf.org/wg/scitt/about/
+- OpenSSF
+  - [OpenSSF: Secure Supply Chain Consumption Framework (S2C2F): Simplified Requirements: Appendix: Relation to SCITT](https://github.com/ossf/s2c2f/blob/a08b79e61e27cc1e036837d93b32f2b4a9766cc4/specification/framework.md#appendix-relation-to-scitt)
+    - > The Supply Chain Integrity, Transparency, and Trust initiative, or SCITT, is a set of proposed industry standards for managing the compliance of goods and services across end-to-end supply chains. In the future, we expect teams to output "attestations of alignment" to the S2C2F requirements and store it in SCITT. The format of such attestations is to be determined.
+      - These attestations of alignment are outputs from successful chains of policy engine evalutions
+        - **TODO** relying party phase stuff from SCITT + LiteLLM commits linked added comments in code
+    - > ING-4	Mirror a copy of all OSS source code to an internal location
+      - This doc and the `THREATS.md`, the repo, and context data gained from allowlisted trusted sources seeds the basis for the trust store in that those aspects define the policy engines initial execution state pre-first new data event federation. The seed data is the basis from which all policy engine evalutions begin, as models within them may change given the inherent feedback loop in decentralized value chain analysis.
+- Luke 8:17
+  - IETF
     - https://scitt.io
-    - 
-  - https://datatracker.ietf.org/wg/keytrans/about/
-- KERI
-  - https://keri.one
-  - https://github.com/decentralized-identity/keri/blob/352fd2c30bf3e76e8f8f78d2edccd01a9f943464/docs/KERI-made-easy.md
-- World 
+    - https://datatracker.ietf.org/wg/scitt/about/
+    - https://datatracker.ietf.org/wg/keytrans/about/
+  - KERI
+    - https://keri.one
+    - https://github.com/decentralized-identity/keri/blob/352fd2c30bf3e76e8f8f78d2edccd01a9f943464/docs/KERI-made-easy.md
+      - > indirect nethod: "Because I am not always online I have my identifier's history served by online Witnesses. Your validator can do duplicity detection on those witnesses and validate whether or not I am being duplicitous"
+      - > Ambient verifiability: Verifiable by anyone, anywhere, at anytime. E.g. Ambient Duplicity Detection describes the possibility of detecting duplicity by anyone, anywhere, anytime.
+        - This fits nicely with SCITT's COSE countersigned receipts
+      - > Duplicity
+        >
+        > In KERI consistency is is used to described data that is internally consistent and cryptographically verifiably so. Duplicity is used to describe external inconsistency. Publication of two or more versions of a KEL log, each of which is internally consistent is duplicity. Given that signatures are non-repudiable any duplicity is detectable and provable given possession of any two mutually inconsistent versions of a KEL.
+        >
+        > In common language 'duplicity' has a slightly different connotation: 'two-facedness', 'dishonesty', 'deceitfulness', 'deviousness,'two-facedness', 'falseness'.
+- World Wide Web Consortium
+  - https://activitypub.rocks
