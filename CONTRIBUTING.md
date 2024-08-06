@@ -67,6 +67,31 @@ It defines actions taken by maintainers. Timelines for progression and example a
 - https://github.com/intel/dffml/issues/1657
 - https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
 
+## Poly-Repo Development Culture
+
+A poly-repo (or polyglot repository) development culture refers to a software development practice where each project or service is stored in its own separate version control repository, as opposed to a mono-repo approach where multiple projects or services reside within a single repository. This approach is often used in large organizations where there are many independent projects or teams working on different parts of a system.
+
+Here are some characteristics of a poly-repo development culture:
+
+- Isolation: Each repository can be managed independently, allowing for tailored workflows, versioning, and access controls that suit the specific needs of each project.
+- Decentralization: Teams can work autonomously without being affected by changes in other projects. This can reduce the coordination overhead that is often required in a mono-repo setup.
+- Flexibility: Different projects can use different tools, programming languages, and frameworks that are best suited for their specific requirements.
+- Scalability: As the organization grows, new repositories can be created without impacting existing ones, making it easier to scale the development process.
+
+However, a poly-repo approach can also introduce challenges, such as increased complexity in managing dependencies and versioning, as well as potential duplication of code and effort across repositories.
+
+Contribution guidelines play a crucial role in a poly-repo development culture by providing clear instructions and standards for contributing to each repository. These guidelines help enable quick ramp-up for new contributors and fast completion of issues by addressing several key areas:
+
+- Coding Standards: By outlining the coding conventions and best practices, contribution guidelines help maintain code quality and consistency across the project.
+- Workflow: Guidelines often include the preferred workflow for contributions, such as how to submit pull requests, conduct code reviews, and merge changes. This helps streamline the development process and reduces friction among team members.
+- Issue Tracking: Clear instructions on how to report bugs, request features, and track issues ensure that contributors can easily understand the current state of the project and what needs attention.
+- Setup Instructions: For new contributors, guidelines can provide step-by-step instructions on setting up the development environment, which is crucial for a quick start.
+- Testing: Guidelines may include testing requirements and instructions on how to write and run tests, which is essential for maintaining the stability of the project.
+- Documentation: Encouraging contributors to document their code and update existing documentation helps keep the project understandable and maintainable.
+- Communication: Guidelines often outline the preferred channels and etiquette for communication among contributors, which is important for collaboration and coordination.
+
+By establishing clear contribution guidelines, organizations can foster a more efficient and collaborative development environment, even when working with multiple repositories. This can lead to quicker onboarding of new team members, more efficient resolution of issues, and ultimately, a more productive development process.
+
 ## Best Practices
 
 CI/CD and GitOps facilitate.
