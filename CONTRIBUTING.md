@@ -228,7 +228,8 @@ graph TD
 
 This section covers the integration status of automated checks into the processes.
 
-- Orphan branches and other best practices to facilitate CI
+- [github.com/intel/dffml#1315: service: sw: src: change: notify: Service to facilitate poly repo pull model dev tooling](https://github.com/intel/dffml/issues/1315)
+- Orphan branches and other best practices to facilitate CI in VCS server agnostic ways
 - Eventually SCITT as Version Control Software type stuff aka to facilitate decentralized goverance
   - [github.com/intel/dffml#1415: Tutorial Feedback: Architecting Alice: Stream of Consciousness#1415](https://github.com/intel/dffml/discussions/1415)
   - https://github.com/builtree/builtree/blob/main/governance/STEERING-COMMITTEE.md
