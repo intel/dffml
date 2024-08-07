@@ -133,6 +133,60 @@ Each database tells the other databases when there are updates.
 We use federation to enable self reporting and granularity
 as applicable to ad-hoc formed policy as desired by end-user.
 
+```mermaid
+graph TD
+    subgraph Tool_Catalog[Tool Catalog]
+        subgraph Third_Party[3rd Party Catalog - Open Source / External OpenAPI Endpoints]
+            run_kubernetes_get_pod[kubectl get pod]
+            run_kubernetes_delete_deployment[kubectl delete deploy $deployment_name]
+        end
+        subgraph Second_Party[2nd Party Catalog - Org Local OpenAPI Endpoints]
+            query_org_database[Query Org Database]
+        end
+        query_org_database --> tool_catalog_list_tools
+        run_kubernetes_get_pod --> tool_catalog_list_tools
+        run_kubernetes_delete_deployment --> tool_catalog_list_tools
+        tool_catalog_list_tools[#47;tools#47;list]
+    end
+    subgraph llm_provider_Endpoint[LLM Endpoint - https://api.openai.com/v1/]
+        llm_provider_completions_endpoint[#47;chat#47;completions]
+
+        llm_provider_completions_endpoint --> query_org_database
+        llm_provider_completions_endpoint --> run_kubernetes_get_pod
+        llm_provider_completions_endpoint --> run_kubernetes_delete_deployment
+    end
+    subgraph Transparency_Service[Transparency Service]
+        Transparency_Service_Statement_Submission_Endpoint[POST #47;entries]
+        Transparency_Service_Policy_Engine[Decide admicability per Registration Policy]
+        Transparency_Service_Receipt_Endpoint[GET #47;receipts#47;urn...qnGmr1o]
+
+        Transparency_Service_Statement_Submission_Endpoint --> Transparency_Service_Policy_Engine
+        Transparency_Service_Policy_Engine --> Transparency_Service_Receipt_Endpoint
+    end
+    subgraph LLM_Proxy[LLM Proxy]
+        llm_proxy_completions_endpoint[#47;chat#47;completions]
+        intercept_tool_definitions[Intercept tool definitions to LLM]
+        add_tool_definitions[Add tools from tool catalog to tool definitions]
+        make_modified_request_to_llm_provider[Make modified request to llm_provider]
+        validate_llm_reponse_tool_calls[Validate LLM reponse tool calls]
+
+        llm_proxy_completions_endpoint --> intercept_tool_definitions
+        intercept_tool_definitions --> add_tool_definitions
+        tool_catalog_list_tools --> add_tool_definitions
+        add_tool_definitions --> make_modified_request_to_llm_provider
+        make_modified_request_to_llm_provider --> llm_provider_completions_endpoint
+        llm_provider_completions_endpoint --> validate_llm_reponse_tool_calls
+        validate_llm_reponse_tool_calls --> Transparency_Service_Statement_Submission_Endpoint
+        Transparency_Service_Receipt_Endpoint --> validate_llm_reponse_tool_calls
+        validate_llm_reponse_tool_calls --> llm_proxy_completions_endpoint
+    end
+    subgraph AI_Agent[AI Agent]
+        langchain_agent[langchain.ChatOpenAI] --> llm_proxy_completions_endpoint
+    end
+
+    llm_proxy_completions_endpoint -->|Return proxied response| langchain_agent
+```
+
 - Related: https://github.com/ossf/s2c2f/blob/main/specification/framework.md#appendix-relation-to-scitt
 - This use case will be mostly focused on the policy / gatekeeper component and federation components of [SCITT](https://datatracker.ietf.org/doc/draft-ietf-scitt-architecture/).
   - 5.2.2: Registration Policies
