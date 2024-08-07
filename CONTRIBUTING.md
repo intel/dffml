@@ -243,11 +243,11 @@ This section covers call outs on specific behavior or expectations or boundries 
 
 Boundries: I will federate changes from you and forward changes to others I am federating with if the analysis of the graph of thoughts leading to the send of the new data event is within acceptable risk tolerence. If we notice actions in the network unaligned to the defaults outlined in this document we we will begin enforcing these boundries. Additional boundries can be overlayed
 
-- #1287
+- [github.com/intel/dffml#1287: docs: examples: innersource: Org health and issue prioritization]()
 
 Virtual branch - shared context dependent trains of thought within a poly-repo environment. If the overlays of an entity currently federating with. The N+1 federation new data event is always determined by a KERI duplicity detection protected channel (this is critical because or else we are not able to see who is being duplictus over time, which we need for the relying parties analysis of ClearForTakeoff for AI agent (workload) identity (OIDC, sould based auth). The tcb for trust evaluation is also party of relying party inputs.
 
-- https://github.com/pdxHijohnny/dotfiles/issues/1
+- [github.com/pdxjohnny/dotfiles#1: Forge](https://github.com/pdxjohnny/dotfiles/issues/1)
 
 ## Codebase Housekeeping
 
