@@ -93,8 +93,8 @@ By establishing clear contribution guidelines, organizations can foster a more e
 
 CI/CD and GitOps facilitate.
 
-- https://github.com/intel/dffml/issues/1243
-- https://github.com/ietf-scitt/use-cases/pull/18
+- [github.com/intel/dffml#1243: infra: funding: Come up with a way to fund infra from community](https://github.com/intel/dffml/issues/1243)
+- [github.com/ietf-scitt/use-cases#18: Use Case: Attestations of alignment to S2C2F and org overlays](https://github.com/ietf-scitt/use-cases/pull/18)
 
 **TODO** Explain strategic plans and principles which the requirements in this doc relate to.
 
@@ -107,8 +107,8 @@ This section covers call outs on specific behavior or expectations or boundries 
 
 - Document issues in your forge
 - Federate forges
-- https://github.com/intel/dffml/issues/1658
-- https://github.com/intel/dffml/issues/1659
+  - [github.com/intel/dffml#1659: contributing: What makes an issue ready for a drive by contribution](https://github.com/intel/dffml/issues/1659)
+  - [github.com/intel/dffml#1658: contributing: github: Videos and frame by frames on how to click around github optimally](https://github.com/intel/dffml/issues/1658)
   - Some way we can see if a complete plan for execution (dataflow / workflow hypothesis and analysis via policy engine)
 - https://github.com/pdxjohnny/dotfiles/blob/8d9850f85314a9f5c30f5bb7b8e47ba3857357be/forge-install.sh#L1-L584
 
@@ -213,7 +213,9 @@ graph TD
 
 [![SCITT Federation as Firewall](https://asciinema.org/a/622103.svg)](https://asciinema.org/a/622103)
 
-- https://github.com/scitt-community/scitt-api-emulator/pull/37
+- [github.com/scitt-community/scitt-api-emulator#37: Federation via ActivityPub](https://github.com/scitt-community/scitt-api-emulator/pull/37)
+- [github.com/scitt-community/scitt-api-emulator#27: Simple decoupled file based policy engine](https://github.com/scitt-community/scitt-api-emulator/pull/27)
+  - [github.com/scitt-community/scitt-api-emulator#48: policy engine: Execution of YAML workflows](https://github.com/scitt-community/scitt-api-emulator/pull/48)
 - https://github.com/pdxjohnny/litellm/commit/3b6b7427b15c0cadd23a8b5da639e22a2fba5043
 - https://github.com/scitt-community/scitt-api-emulator/commits/1e4ec8844aa1ead539ddfd1ac9b71623e25f4c0d
 - https://mailarchive.ietf.org/arch/msg/scitt/BjCAySWyODuhDWwn4kMtCoY5eDA/
@@ -226,9 +228,9 @@ graph TD
 
 This section covers the integration status of automated checks into the processes.
 
-- orphan branches and other best practices to facilitate CI
+- Orphan branches and other best practices to facilitate CI
 - Eventually SCITT as Version Control Software type stuff aka to facilitate decentralized goverance
-  - https://github.com/intel/dffml/discussions/1415
+  - [github.com/intel/dffml#1415: Tutorial Feedback: Architecting Alice: Stream of Consciousness#1415](https://github.com/intel/dffml/discussions/1415)
   - https://github.com/builtree/builtree/blob/main/governance/STEERING-COMMITTEE.md
 
 https://thenewstack.io/what-are-the-next-steps-for-feature-flags and the following image sum up the motivations behind the [Entity Analysis Trinity](https://github.com/intel/dffml/tree/main/docs/tutorials/rolling_alice/0000_architecting_alice#entity-analysis-trinity), ThreatOps, and VCS+CI/CD a la https://github.com/scitt-community/scitt-api-emulator/pull/27#issuecomment-1528073552
@@ -434,13 +436,13 @@ following as we analyze the softare / system / entity over it's lifecycle.
 ### Terminology
 
 - Open Architecture
-  - Universal Blueprint
   - Standard architecture we use to describe anything. Provides the ability to use / reference domain specific architectures as needed to define architecture of whole.
   - https://github.com/intel/dffml/blob/main/docs/arch/0009-Open-Architecture.rst
+  - Referred to in old docs as Universal Blueprint
 - Think
   - Come up with new data flows and system context input
 - Thoughts
-  - Data Flows and system context input pairs (these two plus orchestration config we get the whole system context)
+  - Data / Work Flows and system context input pairs (these two plus orchestration config we get the whole system context)
 - Downstream Validation
   - Running validation on all dependent packages to check for API breakages or regressions in the ecosystem
 
@@ -480,13 +482,13 @@ It defines actions taken by maintainers. Timelines for progression and example a
 - Keyword Definitions used in Documentation
   - https://www.rfc-editor.org/rfc/rfc2119
 - DFFML
-  - https://github.com/intel/dffml/issues/1207
-  - https://github.com/intel/dffml/issues/1252
-  - https://github.com/intel/dffml/issues/1061
-  - https://github.com/intel/dffml/issues/1400
-  - https://github.com/intel/dffml/issues/1273
-  - https://github.com/intel/dffml/issues/1300
-  - https://github.com/intel/dffml/issues/1657
+  - [github.com/intel/dffml#1207: docs: arch: Inventory](https://github.com/intel/dffml/issues/1207)
+  - [github.com/intel/dffml#1252: arch: Isolation levels](https://github.com/intel/dffml/issues/1252)
+  - [github.com/intel/dffml#1061: docs: arch: 2nd and 3rd party plugins](https://github.com/intel/dffml/issues/1061)
+  - [github.com/intel/dffml#1400: df: overlay: Implement middleware/RBAC chains of ordered applications of overlays](https://github.com/intel/dffml/issues/1400)
+  - [github.com/intel/dffml#1273: util: testing: manifest: shim: Initial commit](https://github.com/intel/dffml/issues/1273)
+  - [github.com/intel/dffml#1300: manifest: shim: Add JSON schema validation](https://github.com/intel/dffml/issues/1300)
+  - [github.com/intel/dffml#1657: stream of consiousness: policy engine: step components: 1st party: MetaSchema based evaluation](https://github.com/intel/dffml/issues/1657)
   - https://github.com/intel/dffml/blob/f8377d07e181aaf69ba2fe168668dae4022bb436/docs/arch/alice/discussion/0036/reply_0067.md?plain=1#L14-L25
 - OpenSSF
   - [OpenSSF: Secure Supply Chain Consumption Framework (S2C2F): Simplified Requirements: Appendix: Relation to SCITT](https://github.com/ossf/s2c2f/blob/a08b79e61e27cc1e036837d93b32f2b4a9766cc4/specification/framework.md#appendix-relation-to-scitt)
