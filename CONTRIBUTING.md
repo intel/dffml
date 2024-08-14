@@ -279,6 +279,7 @@ proposals is very challenging, we have lots of applicants that do great work and
 needed to find a way to quantify their contributions. We use this rubric to do
 so.
 
+- [github.com/pdxjohnny/cve-bin-tool#1: ad-hoc CVEs for bandit scans](https://github.com/pdxjohnny/cve-bin-tool/issues/1)
 - https://github.com/blabla1337/skf-flask
 - https://github.com/OWASP/common-requirement-enumeration
 
@@ -287,7 +288,7 @@ so.
 
       subgraph system_context[System Context for Ideation]
 
-        requirements_management[OWASP common-requirement-enumeration<br>&#91Software System&#93]
+        requirements_management[ad-hoc VEX using<br>vulntology and OWASP common-requirement-enumeration<br>&#91Software System&#93]
         data_storage[oras.land<br>&#91Software System&#93]
         source_control[Source Code Management Forgejo<br>&#91Software System&#93]
         engineer[Software Engineer<br>&#91Entity&#93]
