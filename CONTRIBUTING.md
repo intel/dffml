@@ -280,6 +280,7 @@ needed to find a way to quantify their contributions. We use this rubric to do
 so.
 
 - [github.com/pdxjohnny/cve-bin-tool#1: ad-hoc CVEs for bandit scans](https://github.com/pdxjohnny/cve-bin-tool/issues/1)
+  - [github.com/ossf/wg-vulnerability-disclosures#94: Simple Vulnerability Intake Form for OSS Projects](https://github.com/ossf/wg-vulnerability-disclosures/issues/94#issuecomment-1484087075)
 - https://github.com/blabla1337/skf-flask
 - https://github.com/OWASP/common-requirement-enumeration
 
