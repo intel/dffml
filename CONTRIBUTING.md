@@ -291,15 +291,15 @@ so.
         data_storage[oras.land<br>&#91Software System&#93]
         source_control[Source Code Management Forgejo<br>&#91Software System&#93]
         engineer[Software Engineer<br>&#91Person&#93]
-        manager[Project Manager<br>&#91Person&#93]
+        prioritizer[Policy Engine Prioritizer<br>&#91Person&#93]
         project_idea[Project Idea THREATS.md + CONTRIBUTING.md<br>&#91Document&#93]
         ci_software[Continuous Integration<br>&#91Software System&#93]
         cd_software[Continuous Deployment<br>&#91Software System&#93]
         iaas[Infrastructure as a Service<br>&#91Software System&#93]
 
         project_idea -->|Understand requirements| requirements_management
-        requirements_management --> manager
-        manager -->|Communicate priority of tasks| engineer
+        requirements_management --> prioritizer
+        prioritizer -->|Communicate priority of tasks| engineer
         engineer --> source_control
         source_control --> ci_software
         data_storage -->|Pull dependencies from| ci_software
@@ -308,7 +308,7 @@ so.
         cd_software -->|Store copy| data_storage
         cd_software -->|Measure alignment to| project_idea
 
-        class manager,engineer,project_idea Person;
+        class prioritizer,engineer,project_idea Person;
         class innersource NewSystem;
         class ci_software,cd_software,requirements_management,source_control,data_storage,iaas ExistingSystem;
 
