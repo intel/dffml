@@ -279,6 +279,44 @@ proposals is very challenging, we have lots of applicants that do great work and
 needed to find a way to quantify their contributions. We use this rubric to do
 so.
 
+- https://github.com/blabla1337/skf-flask
+- https://github.com/OWASP/common-requirement-enumeration
+
+```mermaid
+    graph TD
+
+      subgraph system_context[System Context for Ideation]
+
+        requirements_management[OWASP common-requirement-enumeration<br>&#91Software System&#93]
+        data_storage[oras.land<br>&#91Software System&#93]
+        source_control[Source Code Management Forgejo<br>&#91Software System&#93]
+        engineer[Software Engineer<br>&#91Person&#93]
+        manager[Project Manager<br>&#91Person&#93]
+        project_idea[Project Idea THREATS.md + CONTRIBUTING.md<br>&#91Document&#93]
+        ci_software[Continuous Integration<br>&#91Software System&#93]
+        cd_software[Continuous Deployment<br>&#91Software System&#93]
+        iaas[Infrastructure as a Service<br>&#91Software System&#93]
+
+        project_idea -->|Understand requirements| requirements_management
+        requirements_management --> manager
+        manager -->|Communicate priority of tasks| engineer
+        engineer --> source_control
+        source_control --> ci_software
+        data_storage -->|Pull dependencies from| ci_software
+        iaas -->|Provide compute to| ci_software
+        ci_software -->|Validated version| cd_software
+        cd_software -->|Store copy| data_storage
+        cd_software -->|Measure alignment to| project_idea
+
+        class manager,engineer,project_idea Person;
+        class innersource NewSystem;
+        class ci_software,cd_software,requirements_management,source_control,data_storage,iaas ExistingSystem;
+
+      end
+
+      class system_context background;
+```
+
 ### Alignment Rubric
 
 ![Screenshot of grading rubric](https://dffml.github.io/dffml-pre-image-removal/master/_images/rubric-table.png)
