@@ -1,0 +1,1 @@
+prompt: How can I patch caddy to implement oidc auth in the same fashion as basic auth?

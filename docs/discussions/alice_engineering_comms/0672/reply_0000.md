@@ -1,0 +1,5 @@
+- https://github.com/occlum/occlum/blob/be4de47940ca6f9c3a9d4873587dfa592b2b2dc6/docs/remote_attestation.md
+- https://occlum.readthedocs.io/en/latest/tutorials/LLM_inference.html
+- https://github.com/mindsdb/mindsdb-js-sdk
+- TODO
+  - [ ] JSON schema for oidc config similar to SCITT for caddy
