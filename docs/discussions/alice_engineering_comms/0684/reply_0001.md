@@ -1,0 +1,1 @@
+- https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file#intel-gpus

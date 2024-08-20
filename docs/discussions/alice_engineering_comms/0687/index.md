@@ -1,0 +1,1 @@
+- https://github.com/geekan/MetaGPT/tree/main/examples/di

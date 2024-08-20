@@ -1,0 +1,1 @@
+- https://astral.sh/blog/uv

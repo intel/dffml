@@ -1,0 +1,3 @@
+- cose blob for bdiffs
+- pyexecl llm query
+- 
