@@ -85,6 +85,3 @@ tackling problems from multiple angles, viewpoints, overlays.
 - Acknowledge that in a rolling release there will always be vulns and agree on a pattern for remediation.
 - Integrate the acknowledgement and remediation into the dependency review process recrusivly, teaching the machine empathy.
 - Propagate trust through the decentralized interconnected dependency network, teach the machine to teach humans empathy.
-
-    Stand alone use      :after qa2  , 30d
-```
