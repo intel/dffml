@@ -1,3 +1,17 @@
+## PROJECT NOT UNDER ACTIVE MANAGEMENT
+
+This project will no longer be maintained by Intel.
+
+Intel has ceased development and contributions including, but not limited to, maintenance, bug fixes, new releases, or updates, to this project.
+
+Intel no longer accepts patches to this project.
+
+If you have an ongoing need to use this project, are interested in independently developing it, or would like to maintain patches for the open source software community, please see the dffml org or create your own fork of this project.
+
+Contact: webadmin@linux.intel.com
+
+---
+
 ![Logo-dark](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-darkmode.svg#gh-dark-mode-only)
 ![Logo-light](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-lightmode.svg#gh-light-mode-only)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/intel/dffml)
