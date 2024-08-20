@@ -1,0 +1,1 @@
+- https://github.com/electric-sql/electric/tree/main/examples/web-wa-sqlite
