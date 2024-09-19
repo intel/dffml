@@ -28,7 +28,7 @@ implementations in the same way.
 DFFML is also a tool for dataset generation. DFFML ues directed graphs to
 generate and modify datasets.
 
-Read more on the about page: https://intel.github.io/dffml/main/about.html
+Read more on the about page: https://intel.github.io/dffml/master/about.html
 
 Project Ideas
 -------------
@@ -75,7 +75,7 @@ project before the end of the summer, and have more that you want to do.
 Getting Started
 ---------------
 
-- Read the `Contributing <https://intel.github.io/dffml/main/contributing/index.html>`_ documentation.
+- Read the `Contributing <https://intel.github.io/dffml/master/contributing/index.html>`_ documentation.
 
 - Get your development environment set up
 

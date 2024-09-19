@@ -36,11 +36,11 @@ We broadly have two types of audience here, one is Citizen Data Scientists and M
 Documentation for the latest release is hosted at https://intel.github.io/dffml/
 
 Documentation for the main branch is hosted at
-https://intel.github.io/dffml/main/index.html
+https://intel.github.io/dffml/master/index.html
 
 ## Contributing
 
-The [contributing page](https://intel.github.io/dffml/main/contributing/index.html)
+The [contributing page](https://intel.github.io/dffml/master/contributing/index.html)
 will guide you through getting setup and contributing to DFFML.
 
 ## Help
