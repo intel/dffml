@@ -2,10 +2,10 @@ SPDXVersion: SPDX-2.3
 DataLicense: CC0-1.0
 SPDXID: SPDXRef-DOCUMENT
 DocumentName: Python-dffml
-DocumentNamespace: http://spdx.org/spdxdocs/Python-dffml-d412cbaf-e2c4-45c6-b5e6-4f2d1c3b0d1f
+DocumentNamespace: http://spdx.org/spdxdocs/Python-dffml-d5ccf3fd-2bb8-44c2-aa44-e1e56c5e5272
 LicenseListVersion: 3.22
-Creator: Tool: sbom4python-0.10.1
-Created: 2023-12-13T16:35:02Z
+Creator: Tool: sbom4python-0.10.2
+Created: 2023-12-29T22:09:56Z
 CreatorComment: <text>This document has been automatically generated.</text>
 ##### 
 
@@ -16,6 +16,7 @@ PrimaryPackagePurpose: APPLICATION
 PackageSupplier: Person: John Andersen (john.s.andersen@intel.com)
 PackageDownloadLocation: https://pypi.org/project/dffml/0.4.0
 FilesAnalyzed: false
+PackageChecksum: SHA1: 9720e3acb7fb865c74a3be65aaa8d741111477bf
 PackageLicenseDeclared: MIT
 PackageLicenseConcluded: MIT
 PackageCopyrightText: NOASSERTION
