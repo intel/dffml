@@ -99,7 +99,7 @@ class WritePaperSectionContent(BaseModel):
     )
     text: str = Field(
         json_schema_extra={
-            "description": "The content for this section. This should be at least 500 words",
+            "description": "The content for this section. This should be at least 1000 words. Please include mermaid diagrams to illustrate points when you think necessary",
         }
     )
     comments: str = Field(
@@ -186,8 +186,6 @@ if data_path.exists():
     rich_console = rich.console.Console(width=80)
 
     rich_console.print(rich.markdown.Markdown(markdown_content))
-
-sys.exit(0)
 
 
 # with open("WritePaper.schema.json", "wt") as fileobj:
@@ -873,6 +871,21 @@ for outline_section in write_paper.outline.content.values():
 
 
 data_path.write_text(write_paper.model_dump_json())
+
+write_paper_instance = write_paper
+
+# Generate Markdown content
+markdown_content = generate_markdown(write_paper_instance)
+
+md_path.write_text(markdown_content)
+
+# Print or save the markdown content
+import rich.console
+import rich.markdown
+
+rich_console = rich.console.Console(width=80)
+
+rich_console.print(rich.markdown.Markdown(markdown_content))
 
 print()
 
